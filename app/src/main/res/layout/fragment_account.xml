@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Old Password"
+        android:text="@string/oldPassword"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Password"
+        android:text="@string/newPassword"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Confirm password"
+        android:text="@string/confirmPassword"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText

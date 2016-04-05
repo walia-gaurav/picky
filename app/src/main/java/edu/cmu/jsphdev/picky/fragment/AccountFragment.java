@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 
 import edu.cmu.jsphdev.picky.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AccountFragment extends Fragment {
 
 

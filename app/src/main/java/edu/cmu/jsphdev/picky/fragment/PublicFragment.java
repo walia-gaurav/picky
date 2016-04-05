@@ -13,9 +13,6 @@ import android.widget.LinearLayout;
 
 import edu.cmu.jsphdev.picky.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class PublicFragment extends Fragment {
 
     Button i1;

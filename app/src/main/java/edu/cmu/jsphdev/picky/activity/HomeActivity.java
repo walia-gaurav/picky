@@ -9,13 +9,13 @@ import edu.cmu.jsphdev.picky.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    TabHost tabHost;
+    private TabHost tabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        tabHost = (TabHost) findViewById(R.id.tabHost1);
+        tabHost = (TabHost) findViewById(R.id.homeTabHost);
         tabHost.setup();
 
         /*
@@ -25,14 +25,17 @@ public class HomeActivity extends AppCompatActivity {
         addTabSpecs("Upload", R.id.uploadTab, R.drawable.upload_icon);
         addTabSpecs("Profile", R.id.profileTab, R.drawable.profile_icon);
         addTabSpecs("Account", R.id.accountTab, R.drawable.account_icon);
+        addTabSpecs("Logout", R.id.logoutTab, R.drawable.logout_icon);
 
 
     }
 
     private void addTabSpecs(String tag, int contentId, int icon) {
         TabHost.TabSpec spec = tabHost.newTabSpec(tag);
+
         spec.setContent(contentId);
         spec.setIndicator("", ContextCompat.getDrawable(this, icon));
         tabHost.addTab(spec);
     }
+
 }

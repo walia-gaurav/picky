@@ -19,7 +19,7 @@
         android:textColor="#FFFFFF"></TextView>
 
     <TabHost
-        android:id="@+id/tabHost1"
+        android:id="@+id/homeTabHost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom">
@@ -83,6 +83,18 @@
 
                     <fragment
                         android:name="edu.cmu.jsphdev.picky.fragment.AccountFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></fragment>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/logoutTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <fragment
+                        android:name="edu.cmu.jsphdev.picky.fragment.LogoutFragment"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"></fragment>
                 </LinearLayout>
