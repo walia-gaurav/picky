@@ -18,5 +18,6 @@
         <activity android:name=".activity.HomeActivity">
         </activity>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

@@ -2,6 +2,7 @@ package edu.cmu.jsphdev.picky.entities;
 
 public class Location {
 
+    private int id;
     private double latitude;
     private double longitude;
 
@@ -23,4 +24,12 @@ public class Location {
         this.longitude = longitude;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
 }

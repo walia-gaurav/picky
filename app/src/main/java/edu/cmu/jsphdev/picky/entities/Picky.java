@@ -2,6 +2,7 @@ package edu.cmu.jsphdev.picky.entities;
 
 public class Picky {
 
+    private int id;
     private String title;
     private Photo leftPhoto;
     private Photo rightPhoto;
@@ -66,6 +67,14 @@ public class Picky {
 
     public void setRightVotes(long rightVotes) {
         this.rightVotes = rightVotes;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }
