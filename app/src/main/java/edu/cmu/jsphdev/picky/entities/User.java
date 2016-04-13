@@ -2,6 +2,7 @@ package edu.cmu.jsphdev.picky.entities;
 
 public class User {
 
+    private int id;
     private String username;
     private String token;
     private String password;
@@ -30,6 +31,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }
