@@ -13,7 +13,7 @@
 
 
     <LinearLayout
-        android:id="@+id/frame1"
+        android:id="@+id/frame"
         android:layout_width="200px"
         android:layout_height="200px"
         android:orientation="horizontal"
@@ -21,7 +21,7 @@
 
 
         <Button
-            android:id="@+id/choice1"
+            android:id="@+id/leftChoiceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,7 +31,7 @@
             android:textColor="#FFFFFF"/>
 
         <Button
-            android:id="@+id/choice2"
+            android:id="@+id/rightChoiceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

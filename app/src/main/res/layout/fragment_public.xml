@@ -9,17 +9,18 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Which suit for tonight? ;)\n"/>
+        android:id="@+id/titleTextView"
+        android:text=""/>
 
     <LinearLayout
-        android:id="@+id/frame1"
+        android:id="@+id/frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
 
         <Button
-            android:id="@+id/choice1"
+            android:id="@+id/leftChoiceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -29,7 +30,7 @@
             android:textColor="#FFFFFF"/>
 
         <Button
-            android:id="@+id/choice2"
+            android:id="@+id/rightChoiceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
