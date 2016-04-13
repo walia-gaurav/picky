@@ -1,41 +1,55 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="edu.cmu.jsphdev.picky.fragment.UploadFragment"
-    android:gravity="center"
-    android:padding="40dp"
-    android:orientation="vertical">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="40dp"
+              tools:context="edu.cmu.jsphdev.picky.fragment.UploadFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
         android:text="@string/description"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textAlignment="center"
-        android:layout_gravity="center_horizontal|top" />
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/descriptionEditText"
-        android:hint="@string/description"
-        android:layout_gravity="center_horizontal|top" />
-
-    <ImageButton
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:id="@+id/addPhotoImageButton"
-        android:src="@drawable/add_photo_icon"
-        android:layout_gravity="center" />
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/upload"
-        android:id="@+id/uploadButton"
-        android:layout_gravity="center_horizontal|bottom" />
+        android:layout_gravity="center_horizontal|top"
+        android:hint="@string/description"/>
 
+    <LinearLayout
+        android:id="@+id/frame1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/choice1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/add_photo_icon"
+            android:scaleType="fitStart"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/choice2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/add_photo_icon"
+            android:scaleType="fitStart"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
 
 
 </LinearLayout>

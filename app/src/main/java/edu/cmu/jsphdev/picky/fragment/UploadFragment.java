@@ -1,6 +1,7 @@
 package edu.cmu.jsphdev.picky.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,16 +18,18 @@ public class UploadFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_upload, container, false);
-        Button uploadButton = (Button) view.findViewById(R.id.uploadButton);
 
-        uploadButton.setOnClickListener(new View.OnClickListener() {
+        Button choice1 = (Button) view.findViewById(R.id.choice1);
+
+        choice1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TabHost tabHost = (TabHost) getActivity().findViewById(R.id.homeTabHost);
-
-                tabHost.setCurrentTab(0);
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, 100);
             }
         });
+
         return view;
     }
 
