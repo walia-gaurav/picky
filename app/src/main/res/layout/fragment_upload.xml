@@ -8,6 +8,14 @@
               tools:context="edu.cmu.jsphdev.picky.fragment.UploadFragment">
 
     <TextView
+        android:id="@+id/selectedButtonForCapture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:textAlignment="center"
+        android:visibility="invisible"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|top"
@@ -29,7 +37,7 @@
         android:orientation="horizontal">
 
 
-        <Button
+        <ImageView
             android:id="@+id/choice1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +47,7 @@
             android:textAllCaps="false"
             android:textColor="#FFFFFF"/>
 
-        <Button
+        <ImageView
             android:id="@+id/choice2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
