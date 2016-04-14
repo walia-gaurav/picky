@@ -28,13 +28,13 @@ import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
 import edu.cmu.jsphdev.picky.ws.remote.PickyWebService;
-import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyWebServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyConsumerWebServiceInterface;
 
 public class PublicFragment extends Fragment {
 
     private static final int REQUEST_CODE_INTERNET = 1;
 
-    private PickyWebServiceInterface pickyService;
+    private PickyConsumerWebServiceInterface pickyService;
     private TextView titleTextView;
     private Button leftButton;
     private Button rightButton;
