@@ -1,4 +1,4 @@
-package edu.cmu.jsphdev.picky.entities;
+package org.cmu.picky.model;
 
 public class Picky {
 
