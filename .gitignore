@@ -12,3 +12,5 @@ build
 captures
 target
 .project
+*.jar
+gradle/wrapper
