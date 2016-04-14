@@ -3,7 +3,7 @@
 gradlew*
 *.iml
 .idea
-.setting
+.settings
 .classpath
 *.class
 local.properties
