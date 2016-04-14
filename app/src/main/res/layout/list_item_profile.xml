@@ -22,7 +22,6 @@
         android:layout_below="@id/profilePickyTitle"
         android:paddingBottom="10dp">
 
-
         <Button
             android:id="@+id/leftChoiceButton"
             android:layout_width="wrap_content"
@@ -53,12 +52,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="20%"/>
+            android:id="@+id/leftVotes"
+            android:text=""/>
         <TextView
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="80%"/>
+            android:id="@+id/rightVotes"
+            android:text=""/>
 
     </LinearLayout>
     <LinearLayout
