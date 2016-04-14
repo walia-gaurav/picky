@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:id="@+id/profilePickyTitle"
         android:textAlignment="center"
-        android:text="Which suit?"/>
+        android:text=""/>
 
 
     <LinearLayout
@@ -28,7 +28,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/choice_a"
             android:scaleType="fitStart"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"/>
@@ -38,7 +37,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/choice_b"
             android:scaleType="fitStart"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"/>
@@ -55,12 +53,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="20% Left"/>
+            android:text="20%"/>
         <TextView
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="80% Right"/>
+            android:text="80%"/>
 
     </LinearLayout>
     <LinearLayout

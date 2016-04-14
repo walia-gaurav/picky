@@ -55,7 +55,7 @@ public class PublicFragment extends Fragment {
 
         if (!checkPermissions()) return view;
 
-        setPicky();
+        loadPicky();
         return view;
     }
 
@@ -115,9 +115,9 @@ public class PublicFragment extends Fragment {
                     perms.put(permissions[i], grantResults[i]);
                 }
                 if (perms.get(Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED) {
-                    setPicky();
+                    loadPicky();
                 } else {
-                    Toast.makeText(getActivity(), "GPS Permission Denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Internet Permission Denied", Toast.LENGTH_SHORT).show();
                 }
             }
             break;
@@ -126,7 +126,7 @@ public class PublicFragment extends Fragment {
         }
     }
 
-    private void setPicky() {
+    private void loadPicky() {
 //TODO: Complete callback.
 //        pickyService.nextPicky(new JsonHttpResponseHandler() {
 //            @Override
@@ -136,15 +136,7 @@ public class PublicFragment extends Fragment {
 //        });
 
 //TODO: Remove wired data.
-        Picky picky = new Picky();
-        Photo leftPhoto = new Photo();
-        Photo rightPhoto = new Photo();
-
-        picky.setTitle("AWESOME PICKY");
-        leftPhoto.setUrl("http://g-ec2.images-amazon.com/images/G/31/img15/Shoes/CatNav/p._V293117552_.jpg");
-        rightPhoto.setUrl("http://www.vegetarian-shoes.co.uk/Portals/42/product/images/prd06da61c8-f8a9-402a-8590-fbec98bfbf1a.jpg");
-        picky.setLeftPhoto(leftPhoto);
-        picky.setRightPhoto(rightPhoto);
+        Picky picky = getPicky();
 
         ImageDownloaderButtonCallback leftButtonCallback = new ImageDownloaderButtonCallback(getResources(), leftButton);
         ImageDownloaderButtonCallback rightButtonCallback = new ImageDownloaderButtonCallback(getResources(), rightButton);
@@ -156,6 +148,20 @@ public class PublicFragment extends Fragment {
         titleTextView.setText(picky.getTitle());
         customTouchListener(leftButton);
         customTouchListener(rightButton);
+    }
+
+    @NonNull
+    private Picky getPicky() {
+        Picky picky = new Picky();
+        Photo leftPhoto = new Photo();
+        Photo rightPhoto = new Photo();
+
+        picky.setTitle("AWESOME PICKY");
+        leftPhoto.setUrl("http://g-ec2.images-amazon.com/images/G/31/img15/Shoes/CatNav/p._V293117552_.jpg");
+        rightPhoto.setUrl("http://www.vegetarian-shoes.co.uk/Portals/42/product/images/prd06da61c8-f8a9-402a-8590-fbec98bfbf1a.jpg");
+        picky.setLeftPhoto(leftPhoto);
+        picky.setRightPhoto(rightPhoto);
+        return picky;
     }
 
 }
