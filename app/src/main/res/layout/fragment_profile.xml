@@ -1,80 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical"
               android:padding="10dp"
               tools:context="edu.cmu.jsphdev.picky.fragment.ProfileFragment">
 
-    <TextView
+    <ListView
+        android:id="@+id/profilePickyList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Which suit?"/>
+        />
 
 
-    <LinearLayout
-        android:id="@+id/frame"
-        android:layout_width="200px"
-        android:layout_height="200px"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp">
-
-
-        <Button
-            android:id="@+id/leftChoiceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/choice_a"
-            android:scaleType="fitStart"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"/>
-
-        <Button
-            android:id="@+id/rightChoiceButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/choice_b"
-            android:scaleType="fitStart"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"/>
-
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Which shoes?"/>
-
-    <LinearLayout
-        android:id="@+id/frame2"
-        android:layout_width="200px"
-        android:layout_height="200px"
-        android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/choice3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/choice_c"
-            android:scaleType="fitStart"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"/>
-
-        <Button
-            android:id="@+id/choice4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/choice_d"
-            android:scaleType="fitStart"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"/>
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</RelativeLayout>
