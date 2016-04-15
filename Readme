@@ -1,15 +1,16 @@
 Files included:
 
 * app folder
-* ClassDiagram.png
 * Readme
-* screenshots folder
-* BusinessModel.png
-* ClassDiagram.png
-* DB-Schema.png
-* Documentation.pdf
-* ProjectRequirements.pdf
 * picky-rest-api folder
+* Documentation folder
+	** ClassDiagram.png
+	** screenshots folder
+	** BusinessModel.png
+	** ClassDiagram.png
+	** DB-Schema.png
+	** Documentation.pdf
+	** ProjectRequirements.pdf
 
 The code is organized in different packages:
 
