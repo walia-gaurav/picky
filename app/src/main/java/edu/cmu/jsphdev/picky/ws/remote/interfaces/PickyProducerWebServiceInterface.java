@@ -15,5 +15,4 @@ public interface PickyProducerWebServiceInterface {
 
     boolean deletePicky(int pickyId);
 
-
 }

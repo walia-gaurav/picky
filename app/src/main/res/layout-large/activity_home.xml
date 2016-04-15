@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="edu.cmu.jsphdev.picky.activity.HomeActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_red_dark"
+        android:elegantTextHeight="true"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text=".  p  .  i  .  c  .  k  .  y  ."
+        android:minHeight="120dp"
+        android:textSize="40dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="#FFFFFF"></TextView>
+
+    <TabHost
+        android:id="@+id/homeTabHost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/publicTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <fragment
+                        android:name="edu.cmu.jsphdev.picky.fragment.PublicFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></fragment>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/uploadTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <fragment
+                        android:name="edu.cmu.jsphdev.picky.fragment.UploadFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></fragment>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profileTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <fragment
+                        android:name="edu.cmu.jsphdev.picky.fragment.ProfileFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></fragment>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/accountTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <fragment
+                        android:name="edu.cmu.jsphdev.picky.fragment.AccountFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></fragment>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/logoutTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <fragment
+                        android:name="edu.cmu.jsphdev.picky.fragment.LogoutFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></fragment>
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+
+</LinearLayout>
