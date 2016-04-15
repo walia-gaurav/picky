@@ -1,0 +1,35 @@
+Files included:
+
+* src folder
+* tables.sql
+* Readme
+
+The code is organized in different packages:
+
+* db
+Classes to perform operations with the database (MySQL).
+
+* exceptions
+Different exceptions thrown by the API.
+
+* filters
+Will filter request and responses. In this case has an AuthFilter to perform user validations (if the user is logged).
+
+* model
+Differents models used in the server: Location, Photo, User and Picky. 
+
+* providers
+Are in charge of injecting parameters into the requests or responses.
+
+* resources
+Classes and method to handle different requests.
+
+* services
+Services that will perform different operations through the models.
+
+* util
+Different utility classes that are helpful in different parts of the code.
+
+How to run:
+
+Build the war file and add it in Tomcat. This is fair simple to do using Eclipse.
