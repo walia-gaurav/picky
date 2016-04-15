@@ -29,11 +29,8 @@ public class UploadFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_upload, container, false);
-
         selectImageOnClick(R.id.choice1);
         selectImageOnClick(R.id.choice2);
-
-
         return view;
     }
 
@@ -47,7 +44,7 @@ public class UploadFragment extends Fragment {
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((TextView) view.findViewById(R.id.selectedButtonForCapture)).setText(String.valueOf(imageId));
+                ((TextView) view.findViewById(R.id.selectedPicky)).setText(String.valueOf(imageId));
                 selectImage(imageId);
             }
         });
@@ -71,7 +68,7 @@ public class UploadFragment extends Fragment {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Take Photo")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "outputImage.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     getActivity().startActivityForResult(intent, 1);
                 } else if (options[item].equals("Choose from Gallery")) {
@@ -85,6 +82,5 @@ public class UploadFragment extends Fragment {
 
         builder.show();
     }
-
 
 }
