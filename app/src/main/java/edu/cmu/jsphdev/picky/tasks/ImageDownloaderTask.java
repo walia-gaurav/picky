@@ -47,7 +47,6 @@ public class ImageDownloaderTask<T> extends AsyncTask<String, Void, Bitmap> {
                 return BitmapFactory.decodeStream(inputStream);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             Log.w("ImageDownloader", "Error downloading image from " + url);
         } finally {
             if (urlConnection != null) {

@@ -1,0 +1,39 @@
+Files included:
+
+* app folder
+* ClassDiagram.png
+* Readme
+* screenshots folder
+* BusinessModel.png
+* ClassDiagram.png
+* DB-Schema.png
+* Documentation.pdf
+* ProjectRequirements.pdf
+* picky-rest-api folder
+
+The code is organized in different packages:
+
+* activity
+Contain the two main activities of the app: HomeActivity and MainActivity. The first one will contain all the operations an user can do when he is logged in. The second one is just the login and sign up screents.
+
+* entities
+Differents models used in the app: Location, Photo, User, Vote and Picky. 
+
+* fragment
+Fragments used in the activities: AccountFragment, LoginFragment, LogoutFragment, ProfileFragment, PublicFragment, SignUpFragment and UploadFragment.
+
+* tasks
+Classes that perform operations asynchronously: ImageDownloaderTask, ImageDownloaderButtonCallback and ImageDownloaderCallback.
+
+* ws
+Communication classes with web services (APIs). It has a remote package with three interfaces: PickyConsumerWebServiceInterface, PickyProducerWebServiceInterface and UserWebServiceInterface.
+
+* exceptions
+All custom exceptions and handles used in the code.
+
+* db
+Classes to perform DB operations using SQLite.
+
+How to run:
+
+Build the app and transfer it into an Android device. This is fair simple to do using Android Studio.
