@@ -11,25 +11,17 @@ import java.net.URL;
 
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderCallback;
 
+/**
+ * Async Task to download an image from server.
+ *
+ * @param <T>
+ */
 public class ImageDownloaderTask<T> extends AsyncTask<String, Void, Bitmap> {
 
     private final ImageDownloaderCallback<T> callback;
 
     public ImageDownloaderTask(ImageDownloaderCallback<T> callback) {
         this.callback = callback;
-    }
-
-    @Override
-    protected Bitmap doInBackground(String... params) {
-        return downloadBitmap(params[0]);
-    }
-
-    @Override
-    protected void onPostExecute(Bitmap bitmap) {
-        if (isCancelled()) {
-            bitmap = null;
-        }
-        callback.process(bitmap);
     }
 
     public static Bitmap downloadBitmap(String url) {
@@ -55,6 +47,19 @@ public class ImageDownloaderTask<T> extends AsyncTask<String, Void, Bitmap> {
             }
         }
         return null;
+    }
+
+    @Override
+    protected Bitmap doInBackground(String... params) {
+        return downloadBitmap(params[0]);
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap bitmap) {
+        if (isCancelled()) {
+            bitmap = null;
+        }
+        callback.process(bitmap);
     }
 
 }

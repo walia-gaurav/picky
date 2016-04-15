@@ -1,7 +1,7 @@
 package edu.cmu.jsphdev.picky.exception;
 
 /**
- * Created by walia-mac on 4/14/16.
+ * CustomException to be thrown when the user opts for a username that is already present in the system.
  */
-public class UsernameAlreadyPresentException {
+public class UsernameAlreadyPresentException extends Exception {
 }

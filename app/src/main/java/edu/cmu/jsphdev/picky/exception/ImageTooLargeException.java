@@ -1,7 +1,7 @@
 package edu.cmu.jsphdev.picky.exception;
 
 /**
- * Created by walia-mac on 4/14/16.
+ * CustomException to be thrown when the image uploaded is too large for the application.
  */
-public class ImageTooLargeException {
+public class ImageTooLargeException extends Exception {
 }

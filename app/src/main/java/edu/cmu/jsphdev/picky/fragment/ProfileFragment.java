@@ -24,6 +24,9 @@ import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
 
+/**
+ * TabFragment to display user's profile page.
+ */
 public class ProfileFragment extends Fragment {
 
     @Override
@@ -35,19 +38,36 @@ public class ProfileFragment extends Fragment {
 
         pickies.add(getPicky());
         pickies.add(getPicky());
-        PckiesAdapter pckiesAdapter = new PckiesAdapter(getActivity(), 0, pickies);
+        PickiesAdapter pickiesAdapter = new PickiesAdapter(getActivity(), 0, pickies);
         ListView listView = (ListView) view.findViewById(R.id.profilePickyList);
 
-        listView.setAdapter(pckiesAdapter);
+        listView.setAdapter(pickiesAdapter);
         return view;
     }
 
-    private class PckiesAdapter extends ArrayAdapter<Picky> {
+    @NonNull
+    private Picky getPicky() {
+        Picky picky = new Picky();
+        Photo leftPhoto = new Photo();
+        Photo rightPhoto = new Photo();
 
-        private static final String TAG = "PckiesAdapter";
+        picky.setTitle("AWESOME PICKY");
+        leftPhoto.setUrl("http://g-ec2.images-amazon.com/images/G/31/img15/Shoes/CatNav/p._V293117552_.jpg");
+        rightPhoto.setUrl("http://www.vegetarian-shoes.co" +
+                ".uk/Portals/42/product/images/prd06da61c8-f8a9-402a-8590-fbec98bfbf1a.jpg");
+        picky.setLeftPhoto(leftPhoto);
+        picky.setRightPhoto(rightPhoto);
+        picky.setLeftVotes(20);
+        picky.setRightVotes(80);
+        return picky;
+    }
+
+    private class PickiesAdapter extends ArrayAdapter<Picky> {
+
+        private static final String TAG = "PickiesAdapter";
         private LayoutInflater inflater = null;
 
-        public PckiesAdapter(Activity activity, int textViewResourceId, ArrayList<Picky> pickies) {
+        public PickiesAdapter(Activity activity, int textViewResourceId, ArrayList<Picky> pickies) {
             super(activity, textViewResourceId, pickies);
             try {
                 inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -69,8 +89,10 @@ public class ProfileFragment extends Fragment {
             TextView leftVotes = (TextView) convertView.findViewById(R.id.leftVotes);
             TextView rightVotes = (TextView) convertView.findViewById(R.id.rightVotes);
 
-            ImageDownloaderButtonCallback leftButtonCallback = new ImageDownloaderButtonCallback(getResources(), leftButton);
-            ImageDownloaderButtonCallback rightButtonCallback = new ImageDownloaderButtonCallback(getResources(), rightButton);
+            ImageDownloaderButtonCallback leftButtonCallback = new ImageDownloaderButtonCallback(getResources(),
+                    leftButton);
+            ImageDownloaderButtonCallback rightButtonCallback = new ImageDownloaderButtonCallback(getResources(),
+                    rightButton);
             ImageDownloaderTask<Button> leftImageDownloaderTask = new ImageDownloaderTask<>(leftButtonCallback);
             ImageDownloaderTask<Button> rightImageDownloaderTask = new ImageDownloaderTask<>(rightButtonCallback);
 
@@ -79,26 +101,12 @@ public class ProfileFragment extends Fragment {
             leftImageDownloaderTask.execute(picky.getLeftPhoto().getUrl());
             rightImageDownloaderTask.execute(picky.getRightPhoto().getUrl());
             title.setText(picky.getTitle());
-            leftVotes.setText(String.format(Locale.US, "%.2f %% (%d)", ((double) picky.getLeftVotes() * 100.0)/total, picky.getLeftVotes()));
-            rightVotes.setText(String.format(Locale.US, "%.2f %% (%d)", ((double) picky.getRightVotes() * 100.0)/total, picky.getRightVotes()));
+            leftVotes.setText(String.format(Locale.US, "%.2f %% (%d)", ((double) picky.getLeftVotes() * 100.0) /
+                    total, picky.getLeftVotes()));
+            rightVotes.setText(String.format(Locale.US, "%.2f %% (%d)", ((double) picky.getRightVotes() * 100.0) /
+                    total, picky.getRightVotes()));
             return convertView;
         }
-    }
-
-    @NonNull
-    private Picky getPicky() {
-        Picky picky = new Picky();
-        Photo leftPhoto = new Photo();
-        Photo rightPhoto = new Photo();
-
-        picky.setTitle("AWESOME PICKY");
-        leftPhoto.setUrl("http://g-ec2.images-amazon.com/images/G/31/img15/Shoes/CatNav/p._V293117552_.jpg");
-        rightPhoto.setUrl("http://www.vegetarian-shoes.co.uk/Portals/42/product/images/prd06da61c8-f8a9-402a-8590-fbec98bfbf1a.jpg");
-        picky.setLeftPhoto(leftPhoto);
-        picky.setRightPhoto(rightPhoto);
-        picky.setLeftVotes(20);
-        picky.setRightVotes(80);
-        return picky;
     }
 
 }

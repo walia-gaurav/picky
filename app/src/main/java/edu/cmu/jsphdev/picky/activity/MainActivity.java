@@ -6,6 +6,9 @@ import android.widget.TabHost;
 
 import edu.cmu.jsphdev.picky.R;
 
+/**
+ * Activity to create tabs for Login and Sign-Up.
+ */
 public class MainActivity extends AppCompatActivity {
 
     TabHost tabHost;

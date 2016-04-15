@@ -12,14 +12,15 @@ import android.widget.ImageButton;
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.activity.HomeActivity;
 
-
+/**
+ * TabFragment for signing up.
+ */
 public class SignUpFragment extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-
         final ImageButton signUpButton = (ImageButton) view.findViewById(R.id.signupButton);
 
         signUpButton.setOnClickListener(new View.OnClickListener() {

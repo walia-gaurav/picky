@@ -1,5 +1,8 @@
 package edu.cmu.jsphdev.picky.entities;
 
-public enum  Vote {
+/**
+ * Enumeration to keep dual voting (Left/Right)
+ */
+public enum Vote {
     LEFT, RIGHT;
 }

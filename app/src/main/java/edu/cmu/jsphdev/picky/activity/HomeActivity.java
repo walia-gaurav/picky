@@ -22,8 +22,12 @@ import java.io.OutputStream;
 
 import edu.cmu.jsphdev.picky.R;
 
+/**
+ * HomeActivity that initializes the tab widget in the app, for different menu.
+ */
 public class HomeActivity extends AppCompatActivity {
 
+    /* Maintaining the tab host widgets. */
     private TabHost tabHost;
 
     @Override
@@ -41,10 +45,15 @@ public class HomeActivity extends AppCompatActivity {
         addTabSpecs("Profile", R.id.profileTab, R.drawable.profile_icon);
         addTabSpecs("Account", R.id.accountTab, R.drawable.account_icon);
         addTabSpecs("Logout", R.id.logoutTab, R.drawable.logout_icon);
-
-
     }
 
+    /**
+     * Common method to apply specifications to each tab.
+     *
+     * @param tag
+     * @param contentId
+     * @param icon
+     */
     private void addTabSpecs(String tag, int contentId, int icon) {
         TabHost.TabSpec spec = tabHost.newTabSpec(tag);
 
@@ -58,6 +67,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
+        /*
+        Get hold of the button from which imageCapture was called.
+         */
         int buttonId = Integer.parseInt(((TextView) findViewById(R.id.selectedButtonForCapture)).getText().toString());
         ImageView viewImage = (ImageView) findViewById(buttonId);
 

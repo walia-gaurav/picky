@@ -1,5 +1,8 @@
 package edu.cmu.jsphdev.picky.entities;
 
+/**
+ * Entity to hold the actual PICKY fields.
+ */
 public class Picky {
 
     private int id;
@@ -11,7 +14,8 @@ public class Picky {
     private int leftVotes;
     private int rightVotes;
 
-    public Picky() {}
+    public Picky() {
+    }
 
     public String getTitle() {
         return title;
@@ -77,4 +81,18 @@ public class Picky {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Picky{");
+        sb.append("id=").append(id);
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", leftPhoto=").append(leftPhoto);
+        sb.append(", rightPhoto=").append(rightPhoto);
+        sb.append(", user=").append(user);
+        sb.append(", location=").append(location);
+        sb.append(", leftVotes=").append(leftVotes);
+        sb.append(", rightVotes=").append(rightVotes);
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -12,7 +12,9 @@ import android.widget.ImageButton;
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.activity.HomeActivity;
 
-
+/**
+ * TabFragment to handle user log-in.
+ */
 public class LoginFragment extends Fragment {
 
     @Override
@@ -22,6 +24,9 @@ public class LoginFragment extends Fragment {
 
         final ImageButton loginButton = (ImageButton) view.findViewById(R.id.loginButton);
 
+        /*
+        Takes the user to the HomeActivity on successful login.
+         */
         loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

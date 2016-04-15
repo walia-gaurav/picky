@@ -13,28 +13,33 @@ import android.widget.TabHost;
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.activity.MainActivity;
 
+/**
+ * LogoutFragment to handle loggin out of the user.
+ */
 public class LogoutFragment extends Fragment {
-
-    public LogoutFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_logout, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_logout, container, false);
         Button okButton = (Button) view.findViewById(R.id.okButton);
         Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
 
+        /*
+        Takes you the login page, after successful logout.
+         */
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
-
                 startActivity(intent);
             }
         });
+
+        /*
+        Takes you to the home page on cancel event.
+         */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +48,7 @@ public class LogoutFragment extends Fragment {
                 tabHost.setCurrentTab(0);
             }
         });
+
         return view;
     }
 

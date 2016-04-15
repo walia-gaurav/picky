@@ -11,17 +11,14 @@ import android.widget.TabHost;
 
 import edu.cmu.jsphdev.picky.R;
 
+/**
+ * TabFragment that takes care of the user account.
+ */
 public class AccountFragment extends Fragment {
-
-
-    public AccountFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         Button uploadButton = (Button) view.findViewById(R.id.saveButton);
 

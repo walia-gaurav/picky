@@ -18,6 +18,9 @@ import java.io.File;
 
 import edu.cmu.jsphdev.picky.R;
 
+/**
+ * TabFragment for Uploading pickies (two pictures and a title)
+ */
 public class UploadFragment extends Fragment {
 
     View view;
@@ -34,6 +37,11 @@ public class UploadFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Starting process of image capture.
+     *
+     * @param imageId
+     */
     private void selectImageOnClick(final int imageId) {
         ImageView image = (ImageView) view.findViewById(imageId);
         image.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +53,11 @@ public class UploadFragment extends Fragment {
         });
     }
 
+    /**
+     * Generating a dialog box for the user to select capture type of image.
+     *
+     * @param imageId
+     */
     private void selectImage(final int imageId) {
 
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};

@@ -25,11 +25,14 @@ import java.util.Map;
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.entities.Photo;
 import edu.cmu.jsphdev.picky.entities.Picky;
-import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
+import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
 import edu.cmu.jsphdev.picky.ws.remote.PickyWebService;
 import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyConsumerWebServiceInterface;
 
+/**
+ * TabFragment to display the picky wall.
+ */
 public class PublicFragment extends Fragment {
 
     private static final int REQUEST_CODE_INTERNET = 1;
@@ -59,40 +62,52 @@ public class PublicFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Checks for valid device permissions.
+     *
+     * @return
+     */
     private boolean checkPermissions() {
         List<String> permissionsNeeded = new ArrayList<String>();
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) != PackageManager
+                .PERMISSION_GRANTED) {
             permissionsNeeded.add(Manifest.permission.INTERNET);
         }
         if (!permissionsNeeded.isEmpty()) {
             String[] permissions = new String[permissionsNeeded.size()];
 
-            ActivityCompat.requestPermissions(getActivity(), permissionsNeeded.toArray(permissions), REQUEST_CODE_INTERNET);
+            ActivityCompat.requestPermissions(getActivity(), permissionsNeeded.toArray(permissions),
+                    REQUEST_CODE_INTERNET);
             return false;
         }
         return true;
     }
 
-    private void customTouchListener(final Button x) {
-        x.setOnTouchListener(new View.OnTouchListener() {
+    /**
+     * Custom TouchListener to visually represent selection of a picky.
+     *
+     * @param button
+     */
+    private void customTouchListener(final Button button) {
+        button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        x.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
-                        x.invalidate();
+                        button.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+                        button.invalidate();
                         break;
                     }
                     case MotionEvent.ACTION_UP: {
-                        x.setText("picked !");
+                        button.setText("picked !");
                         ((LinearLayout) getActivity().findViewById(R.id.frame)).setClickable(true);
                         leftButton.setEnabled(false);
                         rightButton.setEnabled(false);
                     }
                     case MotionEvent.ACTION_CANCEL: {
-                        x.getBackground().clearColorFilter();
-                        x.invalidate();
+                        button.getBackground().clearColorFilter();
+                        button.invalidate();
                         break;
                     }
                 }
@@ -102,10 +117,10 @@ public class PublicFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[]
+            grantResults) {
         switch (requestCode) {
-            case REQUEST_CODE_INTERNET:
-            {
+            case REQUEST_CODE_INTERNET: {
                 Map<String, Integer> perms = new HashMap<String, Integer>();
 
                 perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
@@ -138,8 +153,10 @@ public class PublicFragment extends Fragment {
 //TODO: Remove wired data.
         Picky picky = getPicky();
 
-        ImageDownloaderButtonCallback leftButtonCallback = new ImageDownloaderButtonCallback(getResources(), leftButton);
-        ImageDownloaderButtonCallback rightButtonCallback = new ImageDownloaderButtonCallback(getResources(), rightButton);
+        ImageDownloaderButtonCallback leftButtonCallback = new ImageDownloaderButtonCallback(getResources(),
+                leftButton);
+        ImageDownloaderButtonCallback rightButtonCallback = new ImageDownloaderButtonCallback(getResources(),
+                rightButton);
         ImageDownloaderTask<Button> leftImageDownloaderTask = new ImageDownloaderTask<>(leftButtonCallback);
         ImageDownloaderTask<Button> rightImageDownloaderTask = new ImageDownloaderTask<>(rightButtonCallback);
 
@@ -158,7 +175,8 @@ public class PublicFragment extends Fragment {
 
         picky.setTitle("AWESOME PICKY");
         leftPhoto.setUrl("http://g-ec2.images-amazon.com/images/G/31/img15/Shoes/CatNav/p._V293117552_.jpg");
-        rightPhoto.setUrl("http://www.vegetarian-shoes.co.uk/Portals/42/product/images/prd06da61c8-f8a9-402a-8590-fbec98bfbf1a.jpg");
+        rightPhoto.setUrl("http://www.vegetarian-shoes.co" +
+                ".uk/Portals/42/product/images/prd06da61c8-f8a9-402a-8590-fbec98bfbf1a.jpg");
         picky.setLeftPhoto(leftPhoto);
         picky.setRightPhoto(rightPhoto);
         return picky;
