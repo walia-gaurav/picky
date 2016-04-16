@@ -7,8 +7,14 @@ public class Photo {
 
     private int id;
     private String url;
+    private byte[] binaryImage;
+
+    public Photo(byte[] binaryImage) {
+        this.binaryImage = binaryImage;
+    }
 
     public Photo() {
+
     }
 
     public int getId() {

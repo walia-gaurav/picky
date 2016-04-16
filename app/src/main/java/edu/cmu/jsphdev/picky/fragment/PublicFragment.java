@@ -27,7 +27,7 @@ import edu.cmu.jsphdev.picky.entities.Photo;
 import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
-import edu.cmu.jsphdev.picky.ws.remote.PickyWebService;
+import edu.cmu.jsphdev.picky.ws.remote.service.ConsumerService;
 import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyConsumerWebServiceInterface;
 
 /**
@@ -43,7 +43,7 @@ public class PublicFragment extends Fragment {
     private Button rightButton;
 
     public PublicFragment() {
-        pickyService = new PickyWebService();
+        pickyService = new ConsumerService();
     }
 
     @Override

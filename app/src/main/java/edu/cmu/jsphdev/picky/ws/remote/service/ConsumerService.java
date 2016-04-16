@@ -1,4 +1,4 @@
-package edu.cmu.jsphdev.picky.ws.remote;
+package edu.cmu.jsphdev.picky.ws.remote.service;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -10,7 +10,7 @@ import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyConsumerWebServiceInterfa
 /**
  * Implementation to interact with the server.
  */
-public class PickyWebService extends BaseService implements PickyConsumerWebServiceInterface {
+public class ConsumerService extends BaseService implements PickyConsumerWebServiceInterface {
 
     @Override
     public void nextPicky(JsonHttpResponseHandler jsonHttpResponseHandler) {

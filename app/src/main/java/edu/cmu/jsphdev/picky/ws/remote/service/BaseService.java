@@ -1,4 +1,4 @@
-package edu.cmu.jsphdev.picky.ws.remote;
+package edu.cmu.jsphdev.picky.ws.remote.service;
 
 import com.loopj.android.http.AsyncHttpClient;
 
