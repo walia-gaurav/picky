@@ -1,58 +1,95 @@
 package edu.cmu.jsphdev.picky.activity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
 import edu.cmu.jsphdev.picky.R;
+import edu.cmu.jsphdev.picky.fragment.UploadHelper;
 
 /**
  * HomeActivity that initializes the tab widget in the app, for different menu.
  */
 public class HomeActivity extends AppCompatActivity {
 
-    /* Maintaining the tab host widgets. */
+    int selectedPicky;
+//    Bitmap leftPhoto;
+//    Bitmap rightPhoto;
+
     private TabHost tabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        Log.d("TESTING", "HomeActivity created!");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         tabHost = (TabHost) findViewById(R.id.homeTabHost);
         tabHost.setup();
 
-        /*
-        Initializing different tab holders.
-         */
+
+        /* Initializing different tab holders. */
         addTabSpecs("Group", R.id.publicTab, R.drawable.group_icon);
         addTabSpecs("Upload", R.id.uploadTab, R.drawable.upload_icon);
         addTabSpecs("Profile", R.id.profileTab, R.drawable.profile_icon);
         addTabSpecs("Account", R.id.accountTab, R.drawable.account_icon);
         addTabSpecs("Logout", R.id.logoutTab, R.drawable.logout_icon);
+
+        if (null != savedInstanceState) {
+            tabHost.setCurrentTab(1);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("TESTING", "Coming to result");
+
+        if (resultCode == RESULT_OK) {
+            /* Get hold of the button from which imageCapture was called. */
+
+            TextView test = (TextView) findViewById(R.id.selectedPicky);
+            try {
+                selectedPicky = Integer.parseInt(test.getText().toString());
+            } catch (NumberFormatException e) {
+                Log.d("TESTING", "" + e.getMessage());
+
+            }
+
+            ImageView pickyView = (ImageView) findViewById(selectedPicky);
+
+            Log.d("TESTING", "RequestCode: " + requestCode);
+            Bitmap image = null;
+            if (requestCode == 1) {
+                Log.d("TESTING", "Coming to result");
+                image = UploadHelper.retrieveImageFromCamera();
+                UploadHelper.updateImageView(pickyView, image);
+            } else if (requestCode == 2) {
+                image = UploadHelper.retrieveImageFromGallery(this, data);
+                UploadHelper.updateImageView(pickyView, image);
+            }
+//
+//            if (selectedPicky == R.id.choice1) {
+//                leftPhoto = image;
+//                UploadHelper.updateImageView((ImageView) findViewById(R.id.choice2), rightPhoto);
+//            } else if (selectedPicky == R.id.choice2) {
+//                rightPhoto = image;
+//                UploadHelper.updateImageView((ImageView) findViewById(R.id.choice1), leftPhoto);
+//            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     /**
      * Common method to apply specifications to each tab.
-     *
-     * @param tag
-     * @param contentId
-     * @param icon
      */
     private void addTabSpecs(String tag, int contentId, int icon) {
         TabHost.TabSpec spec = tabHost.newTabSpec(tag);
@@ -63,70 +100,23 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-        /*
-        Get hold of the button from which imageCapture was called.
-         */
-        int buttonId = Integer.parseInt(((TextView) findViewById(R.id.selectedButtonForCapture)).getText().toString());
-        ImageView viewImage = (ImageView) findViewById(buttonId);
-
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
-                File f = new File(Environment.getExternalStorageDirectory().toString());
-                for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
-                        f = temp;
-                        break;
-                    }
-                }
-                try {
-
-                    Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
-
-                    viewImage.setImageBitmap(bitmap);
-
-                    String path = android.os.Environment
-                            .getExternalStorageDirectory()
-                            + File.separator
-                            + "Phoenix" + File.separator + "default";
-                    f.delete();
-                    OutputStream outFile = null;
-                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-                    try {
-                        outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-                        outFile.flush();
-                        outFile.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (requestCode == 2) {
-
-                Uri selectedImage = data.getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                viewImage.setImageBitmap(thumbnail);
-            }
-        }
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("selectedPicky", Integer.parseInt(((TextView) findViewById(R.id.selectedPicky)).getText()
+                .toString()));
+//        outState.putParcelable("leftPhoto", leftPhoto);
+//        outState.putParcelable("rightPhoto", rightPhoto);
+        super.onSaveInstanceState(outState);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey("selectedPicky")) {
+                selectedPicky = savedInstanceState.getInt("selectedPicky");
+//                leftPhoto = savedInstanceState.getParcelable("leftPhoto");
+//                rightPhoto = savedInstanceState.getParcelable("rightPhoto");
+            }
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }
