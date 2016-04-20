@@ -9,22 +9,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.activity.MainActivity;
+import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
+import edu.cmu.jsphdev.picky.ws.remote.service.LogoutService;
 
 /**
  * LogoutFragment to handle loggin out of the user.
  */
 public class LogoutFragment extends Fragment {
 
+    private Button okButton;
+    private Button cancelButton;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_logout, container, false);
-        Button okButton = (Button) view.findViewById(R.id.okButton);
-        Button cancelButton = (Button) view.findViewById(R.id.cancelButton);
+        okButton = (Button) view.findViewById(R.id.okButton);
+        cancelButton = (Button) view.findViewById(R.id.cancelButton);
 
         /*
         Takes you the login page, after successful logout.
@@ -32,8 +38,21 @@ public class LogoutFragment extends Fragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                Callback<Boolean>  callback = new Callback<Boolean>() {
+                    @Override
+                    public void process(Boolean element) {
+                        if (!element) {
+                            Toast.makeText(getActivity().getApplicationContext(),
+                                    "Problem performing logout", Toast.LENGTH_LONG).show();
+                        }
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+
+                        startActivity(intent);
+                    }
+                };
+                LogoutService logoutService = new LogoutService(callback);
+
+                logoutService.execute();
             }
         });
 

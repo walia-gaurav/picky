@@ -10,6 +10,10 @@ public class CurrentSession {
         return activeUser;
     }
 
+    public static String getActiveUserToken() {
+        return activeUser.getToken();
+    }
+
     public static void setActiveUser(User activeUser) {
         CurrentSession.activeUser = activeUser;
     }
