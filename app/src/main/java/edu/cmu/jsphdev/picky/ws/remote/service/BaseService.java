@@ -1,16 +1,15 @@
 package edu.cmu.jsphdev.picky.ws.remote.service;
 
-import com.loopj.android.http.AsyncHttpClient;
-
 /**
  * Common webservice to interact with the server.
  */
 public class BaseService {
 
-    protected static final String HOST = "http://localhost:8080";
-    protected static AsyncHttpClient client = new AsyncHttpClient();
+    private static final String HOST = "http://localhost:8080/api";
+    public static final String UTF8 = "UTF-8";
+    public static final int OK_STATUS = 200;
 
-    protected String getAbsoluteUrl(String path) {
+    public static String getAbsoluteUrl(String path) {
         return HOST + path;
     }
 

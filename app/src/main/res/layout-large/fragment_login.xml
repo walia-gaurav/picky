@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
+                android:id="@+id/usernameEditText"
                 android:inputType="text"/>
 
         </LinearLayout>
@@ -46,8 +47,9 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/passwordEditText"
                 android:hint="@string/password"
-                android:inputType="text"/>
+                android:inputType="textPassword"/>
         </LinearLayout>
     </LinearLayout>
 

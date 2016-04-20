@@ -16,6 +16,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/usernameEditText"
         android:hint="@string/username"
         android:inputType="text"/>
 
@@ -28,8 +29,9 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/passwordEditText"
         android:hint="@string/password"
-        android:inputType="text"/>
+        android:inputType="textPassword" />
 
     <ImageButton
         android:id="@+id/loginButton"
