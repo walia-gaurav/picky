@@ -35,7 +35,7 @@ public class LoginService extends AsyncTask<String, Void, User>  {
         try {
             String username = params[0];
             String password = params[1];
-            String urlParameters = String.format("username=%sa&password=%s", username, password);
+            String urlParameters = String.format("username=%s&password=%s", username, password);
             byte[] postData = urlParameters.getBytes(BaseService.UTF8);
 
             urlConnection = (HttpURLConnection) url.openConnection();
