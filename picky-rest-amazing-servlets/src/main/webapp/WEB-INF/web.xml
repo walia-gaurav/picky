@@ -40,4 +40,15 @@
         <url-pattern>/api/logout</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Timeline</servlet-name>
+        <servlet-class>org.cmu.picky.servlets.TimelineServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Timeline</servlet-name>
+        <url-pattern>/api/timeline</url-pattern>
+    </servlet-mapping>
+
+
 </web-app>

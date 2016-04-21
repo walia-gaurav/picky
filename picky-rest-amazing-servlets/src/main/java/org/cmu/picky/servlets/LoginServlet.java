@@ -35,7 +35,6 @@ public class LoginServlet extends HttpServlet {
             if (user != null) {
                 Gson gson = new Gson();
 
-                request.getSession().setAttribute("user", user);
                 response.getOutputStream().print(gson.toJson(user));
                 response.getOutputStream().flush();
             } else {
