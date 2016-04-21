@@ -15,11 +15,14 @@ import java.net.URL;
 import edu.cmu.jsphdev.picky.entities.User;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 
-public class LoginService extends AsyncTask<String, Void, User> {
+/**
+ * Created by walia-mac on 4/21/16.
+ */
+public class SignUpService extends AsyncTask<String, Void, User> {
 
     private Callback<User> callback;
 
-    public LoginService(Callback<User> callback) {
+    public SignUpService(Callback<User> callback) {
         this.callback = callback;
     }
 
@@ -27,10 +30,11 @@ public class LoginService extends AsyncTask<String, Void, User> {
     protected User doInBackground(String... params) {
         URL url = null;
         try {
-            url = new URL(BaseService.getAbsoluteUrl("/login"));
+            url = new URL(BaseService.getAbsoluteUrl("/signup"));
         } catch (MalformedURLException e) {
             return null;
         }
+
         HttpURLConnection urlConnection = null;
         try {
             String username = params[0];

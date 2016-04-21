@@ -4,7 +4,6 @@ package edu.cmu.jsphdev.picky.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +43,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+
                 Callback<User> callback = new Callback<User>() {
                     @Override
                     public void process(User user) {
@@ -53,13 +53,10 @@ public class LoginFragment extends Fragment {
                             return;
                         }
                         CurrentSession.setActiveUser(user);
-                        Intent intent = new Intent(getActivity(), HomeActivity.class);
-
-                        startActivity(intent);
+                        startActivity(new Intent(getActivity(), HomeActivity.class));
                     }
                 };
                 LoginService loginService = new LoginService(callback);
-
                 loginService.execute(usernameEditText.getText().toString(), passwordEditText.getText().toString());
             }
         });
