@@ -15,7 +15,7 @@ import java.net.URL;
 import edu.cmu.jsphdev.picky.entities.User;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 
-public class LoginService extends AsyncTask<String, Void, User>  {
+public class LoginService extends AsyncTask<String, Void, User> {
 
     private Callback<User> callback;
 

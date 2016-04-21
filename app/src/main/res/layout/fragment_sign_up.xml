@@ -14,6 +14,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
+        android:id="@+id/newUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/username"
@@ -26,6 +27,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
+        android:id="@+id/newPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
@@ -38,6 +40,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
+        android:id="@+id/newPasswordConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/password"
