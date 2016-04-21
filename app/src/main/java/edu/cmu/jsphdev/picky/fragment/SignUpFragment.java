@@ -32,17 +32,20 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-        final ImageButton signUpButton = (ImageButton) view.findViewById(R.id.signupButton);
+
+        newUsername = (EditText) view.findViewById(R.id.newUsername);
+        newPassword = (EditText) view.findViewById(R.id.newPassword);
+        newPasswordConfirm = (EditText) view.findViewById(R.id.newPasswordConfirm);
+
+        ImageButton signUpButton = (ImageButton) view.findViewById(R.id.signupButton);
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                newUsername = (EditText) v.findViewById(R.id.newUsername);
-                newPassword = (EditText) v.findViewById(R.id.newPassword);
-                newPasswordConfirm = (EditText) v.findViewById(R.id.newPasswordConfirm);
 
-                if (newPassword.getText().equals(newPasswordConfirm.getText())) {
+                if (newPassword.getText().toString().equals(newPasswordConfirm.getText().toString())) {
 
                     Callback<User> callback = new Callback<User>() {
                         @Override
