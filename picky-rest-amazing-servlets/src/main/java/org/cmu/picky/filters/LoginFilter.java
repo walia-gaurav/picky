@@ -1,7 +1,6 @@
 package org.cmu.picky.filters;
 
 
-import org.cmu.picky.model.User;
 import org.cmu.picky.services.AuthService;
 import org.cmu.picky.servlets.LoginServlet;
 
@@ -27,8 +26,10 @@ public class LoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         String loginURI = request.getContextPath() + "/api/login";
+        String signUpURI = request.getContextPath() + "/api/signup";
 
-        if (request.getRequestURI().equals(loginURI) || authService.getUser(request) != null) {
+        if (request.getRequestURI().equals(loginURI) || request.getRequestURI().endsWith(signUpURI)
+                || authService.getUser(request) != null) {
             chain.doFilter(request, response);
         } else {
             response.setStatus(LoginServlet.UNAUTHORIZED_STATUS);

@@ -10,8 +10,7 @@ public class User {
     private String token;
     private String password;
 
-    public User() {
-    }
+    public User() {}
 
     public String getToken() {
         return token;
