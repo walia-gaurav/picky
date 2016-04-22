@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity {
             outState.putInt("selectedPicky", Integer.parseInt(((TextView) findViewById(R.id.selectedPicky)).getText()
                     .toString()));
         } catch (NumberFormatException e) {
-            
+
         }
 //        outState.putParcelable("leftPhoto", leftPhoto);
 //        outState.putParcelable("rightPhoto", rightPhoto);

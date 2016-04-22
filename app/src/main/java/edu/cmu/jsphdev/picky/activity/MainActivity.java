@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         String existingToken = PreferenceManager.getDefaultSharedPreferences(this).getString("existingUser", "");
-
         if (existingToken != null && !existingToken.isEmpty()) {
             CurrentSession.setActiveUser(new Gson().fromJson(existingToken, User.class));
             startActivity(new Intent(this, HomeActivity.class));
