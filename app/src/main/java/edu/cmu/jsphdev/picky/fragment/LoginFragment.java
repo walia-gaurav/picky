@@ -2,7 +2,9 @@ package edu.cmu.jsphdev.picky.fragment;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.activity.HomeActivity;
@@ -47,12 +51,19 @@ public class LoginFragment extends Fragment {
                 Callback<User> callback = new Callback<User>() {
                     @Override
                     public void process(User user) {
+
                         if (user == null) {
                             Toast.makeText(getActivity().getApplicationContext(),
                                     "Invalid username and/or password!", Toast.LENGTH_LONG).show();
                             return;
                         }
                         CurrentSession.setActiveUser(user);
+
+                        Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()
+                        ).edit();
+                        editor.putString("existingUser", (new Gson()).toJson(user));
+                        editor.commit();
+
                         startActivity(new Intent(getActivity(), HomeActivity.class));
                     }
                 };

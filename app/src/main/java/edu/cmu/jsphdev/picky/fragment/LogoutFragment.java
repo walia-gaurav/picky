@@ -2,7 +2,9 @@ package edu.cmu.jsphdev.picky.fragment;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,20 +40,24 @@ public class LogoutFragment extends Fragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Callback<Boolean>  callback = new Callback<Boolean>() {
+                Callback<Boolean> callback = new Callback<Boolean>() {
                     @Override
                     public void process(Boolean element) {
                         if (!element) {
                             Toast.makeText(getActivity().getApplicationContext(),
                                     "Problem performing logout", Toast.LENGTH_LONG).show();
                         }
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
 
+                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()
+                        ).edit();
+                        editor.remove("existingUser");
+                        editor.commit();
+
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
                     }
                 };
                 LogoutService logoutService = new LogoutService(callback);
-
                 logoutService.execute();
             }
         });

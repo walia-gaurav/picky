@@ -101,8 +101,13 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt("selectedPicky", Integer.parseInt(((TextView) findViewById(R.id.selectedPicky)).getText()
-                .toString()));
+
+        try {
+            outState.putInt("selectedPicky", Integer.parseInt(((TextView) findViewById(R.id.selectedPicky)).getText()
+                    .toString()));
+        } catch (NumberFormatException e) {
+            
+        }
 //        outState.putParcelable("leftPhoto", leftPhoto);
 //        outState.putParcelable("rightPhoto", rightPhoto);
         super.onSaveInstanceState(outState);

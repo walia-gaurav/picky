@@ -1,10 +1,16 @@
 package edu.cmu.jsphdev.picky.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TabHost;
 
+import com.google.gson.Gson;
+
 import edu.cmu.jsphdev.picky.R;
+import edu.cmu.jsphdev.picky.entities.User;
+import edu.cmu.jsphdev.picky.util.CurrentSession;
 
 /**
  * Activity to create tabs for Login and Sign-Up.
@@ -18,6 +24,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String existingToken = PreferenceManager.getDefaultSharedPreferences(this).getString("existingUser", "");
+
+        if (existingToken != null && !existingToken.isEmpty()) {
+            CurrentSession.setActiveUser(new Gson().fromJson(existingToken, User.class));
+            startActivity(new Intent(this, HomeActivity.class));
+        }
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
