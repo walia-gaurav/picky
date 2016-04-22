@@ -13,9 +13,7 @@ public class Photo {
         this.binaryImage = binaryImage;
     }
 
-    public Photo() {
-
-    }
+    public Photo() {}
 
     public int getId() {
         return id;
