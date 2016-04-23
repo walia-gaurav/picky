@@ -7,6 +7,7 @@ import org.cmu.picky.services.PickyService;
 import org.cmu.picky.services.UserService;
 import org.cmu.picky.servlets.LoginServlet;
 import org.cmu.picky.servlets.LogoutServlet;
+import org.cmu.picky.servlets.SignUpServlet;
 import org.cmu.picky.servlets.TimelineServlet;
 import org.cmu.picky.util.LoggingConfigurator;
 import org.slf4j.Logger;
@@ -41,6 +42,7 @@ public class PickyServerContext implements ServletContextListener {
         LoginFilter.init(authService);
         LoginServlet.init(userService);
         LogoutServlet.init(authService, userService);
+        SignUpServlet.init(userService);
         TimelineServlet.init(authService, pickyService);
         MySQLConnectionFactory.init(boneCPConfigProperties);
     }
