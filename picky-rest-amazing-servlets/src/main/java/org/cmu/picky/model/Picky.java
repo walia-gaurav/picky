@@ -8,6 +8,7 @@ public class Picky {
     private Photo rightPhoto;
     private User user;
     private Location location;
+    private String expirationDate;
     private int leftVotes;
     private int rightVotes;
 
@@ -77,4 +78,11 @@ public class Picky {
         this.id = id;
     }
 
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
 }

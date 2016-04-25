@@ -13,7 +13,7 @@ INSERT INTO `User`(username, token, password) VALUES ('user', NULL, 'password');
 
 CREATE TABLE IF NOT EXISTS Photo (
     id int(11) PRIMARY KEY AUTO_INCREMENT,
-    url varchar(1024) NOT NULL
+    url varchar(1024) NOT NULL UNIQUE
 ) ENGINE = MyISAM;
 
 CREATE TABLE IF NOT EXISTS Location (
@@ -30,5 +30,6 @@ CREATE TABLE IF NOT EXISTS Picky (
     rightPhotoId int(11) NOT NULL,
     locationId int(11) NOT NULL,
     leftVotes int(11),
-    rightVotes int(11)
+    rightVotes int(11),
+    expirationTime timestamp NOT NULL
 ) ENGINE = MyISAM;

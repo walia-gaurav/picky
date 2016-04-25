@@ -2,13 +2,9 @@ package org.cmu.picky;
 
 import org.cmu.picky.db.MySQLConnectionFactory;
 import org.cmu.picky.filters.LoginFilter;
-import org.cmu.picky.services.AuthService;
-import org.cmu.picky.services.PickyService;
-import org.cmu.picky.services.UserService;
-import org.cmu.picky.servlets.LoginServlet;
-import org.cmu.picky.servlets.LogoutServlet;
-import org.cmu.picky.servlets.SignUpServlet;
-import org.cmu.picky.servlets.TimelineServlet;
+import org.cmu.picky.model.Photo;
+import org.cmu.picky.services.*;
+import org.cmu.picky.servlets.*;
 import org.cmu.picky.util.LoggingConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +16,7 @@ import java.util.Properties;
 
 public class PickyServerContext implements ServletContextListener {
 
-    private final static Logger logger = LoggerFactory.getLogger(PickyServerContext.class);
+    private static final Logger logger = LoggerFactory.getLogger(PickyServerContext.class);
 
     public static String contextPath;
 
@@ -36,14 +32,18 @@ public class PickyServerContext implements ServletContextListener {
         } catch (IOException ex) {
             logger.error("Problem reading properties", ex);
         }
-        UserService userService = new UserService();
+        TokenService tokenService = new TokenService();
+        UserService userService = new UserService(tokenService);
+        PhotoService photoService = new PhotoService(tokenService);
         AuthService authService = new AuthService(userService);
         PickyService pickyService = new PickyService();
         LoginFilter.init(authService);
         LoginServlet.init(userService);
         LogoutServlet.init(authService, userService);
         SignUpServlet.init(userService);
-        TimelineServlet.init(authService, pickyService);
+        MyPickiesServlet.init(authService, pickyService);
+        TimelineServlet.init(pickyService);
+        UploadServlet.init(photoService);
         MySQLConnectionFactory.init(boneCPConfigProperties);
     }
 

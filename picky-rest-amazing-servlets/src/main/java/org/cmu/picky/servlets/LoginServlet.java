@@ -14,13 +14,13 @@ import java.util.Map;
 
 public class LoginServlet extends HttpServlet {
 
+    public static final int UNAUTHORIZED_STATUS = 401;
+
     private static UserService userService;
 
     public static void init(UserService _userService) {
         userService = _userService;
     }
-
-    public static final int UNAUTHORIZED_STATUS = 401;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

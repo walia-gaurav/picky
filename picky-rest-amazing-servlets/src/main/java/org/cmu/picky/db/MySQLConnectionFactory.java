@@ -14,7 +14,7 @@ import java.util.Properties;
  */
 public class MySQLConnectionFactory {
 
-    private final static Logger logger = LoggerFactory.getLogger(MySQLConnectionFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(MySQLConnectionFactory.class);
     private static BoneCP connectionPool = null;
 
     /**

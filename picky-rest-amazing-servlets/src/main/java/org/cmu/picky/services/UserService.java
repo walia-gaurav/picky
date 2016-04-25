@@ -17,6 +17,12 @@ public class UserService {
 
     private Logger logger = LoggerFactory.getLogger(UserService.class);
 
+    private TokenService tokenService = new TokenService();
+
+    public UserService(TokenService tokenService) {
+        this.tokenService = tokenService;
+    }
+
     public User getUserByToken(String token) {
         final String query = "SELECT id, username FROM User WHERE token = ?";
 
@@ -56,7 +62,7 @@ public class UserService {
 
                 user.setId(rs.getInt("id"));
                 user.setUsername(username);
-                user.setToken(generateRandomTokenValue());
+                user.setToken(tokenService.generateRandomTokenValue());
 
                 preparedStatement = connection.prepareStatement(updateQuery);
                 preparedStatement.setString(1, user.getToken());
@@ -121,23 +127,6 @@ public class UserService {
         return false;
     }
 
-    private String generateRandomTokenValue() {
-        String randomUUID = UUID.randomUUID().toString();
-        MessageDigest messageDigest = null;
 
-        try {
-            messageDigest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException ex) {
-            throw new RuntimeException(ex);
-        }
-        messageDigest.update(randomUUID.getBytes());
-        byte[] digest = messageDigest.digest();
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (byte b : digest) {
-            stringBuilder.append(String.format("%02x", b & 0xff));
-        }
-        return stringBuilder.toString();
-    }
 
 }

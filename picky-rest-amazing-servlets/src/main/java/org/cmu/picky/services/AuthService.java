@@ -8,10 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 
 public class AuthService  {
 
-    private final static Logger logger = LoggerFactory.getLogger(AuthService.class);
+    public static final String AUTH_HEADER = "X-Auth-Token";
+
+    private static final  Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     private UserService userService;
-    public static final String AUTH_HEADER = "X-Auth-Token";
 
     public AuthService(UserService userService) {
         this.userService = userService;

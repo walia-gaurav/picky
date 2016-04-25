@@ -13,21 +13,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class TimelineServlet extends HttpServlet {
+public class MyPickiesServlet extends HttpServlet {
 
+    private static AuthService authService;
     private static PickyService pickyService;
 
-    public static void init(PickyService _pickyService) {
+    public static void init(AuthService _authService, PickyService _pickyService) {
+        authService = _authService;
         pickyService = _pickyService;
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        List<Picky> timeline = pickyService.getTimeline();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = authService.getUser(request);
+        List<Picky> myPickies = pickyService.getMyPickies(user);
         Gson gson = new Gson();
 
-        response.getOutputStream().print(gson.toJson(timeline));
+        response.getOutputStream().print(gson.toJson(myPickies));
         response.getOutputStream().flush();
 
     }
