@@ -1,0 +1,14 @@
+Create following directory:
+
+/var/webapp/upload/
+
+sudo mdkir -p /var/webapp/upload/
+sudo chmod -R 777 /var/webapp/upload/
+
+In the TOMCAT home folder go to conf folder and edit server.xml:
+
+Add <Context docBase="/var/webapp/upload" path="/uploads" /> inside <Host> </Host> tags.
+
+When running TOMCAT make sure that same folder is the CATALINA_HOME variable.
+
+In Intellij you will need to edit the run/debug settings and add this enviroment variable in the startup.
