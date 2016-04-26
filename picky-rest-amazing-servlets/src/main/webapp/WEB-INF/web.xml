@@ -47,7 +47,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>My Pickies</servlet-name>
-        <url-pattern>/api/mypickies</url-pattern>
+        <url-pattern>/api/user/pickies</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -57,7 +57,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Timeline</servlet-name>
-        <url-pattern>/api/timeline</url-pattern>
+        <url-pattern>/api/picky/timeline</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -71,13 +71,33 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>UploadPicky</servlet-name>
+        <servlet-name>Upload</servlet-name>
         <servlet-class>org.cmu.picky.servlets.UploadServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UploadPicky</servlet-name>
-        <url-pattern>/api/upload</url-pattern>
+        <servlet-name>Upload</servlet-name>
+        <url-pattern>/api/picky/upload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Update Password</servlet-name>
+        <servlet-class>org.cmu.picky.servlets.UpdatePasswordServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Update Password</servlet-name>
+        <url-pattern>/api/user/password</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Delete Picky</servlet-name>
+        <servlet-class>org.cmu.picky.servlets.DeletePickyServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Delete Picky</servlet-name>
+        <url-pattern>/api/picky/delete</url-pattern>
     </servlet-mapping>
 
 </web-app>

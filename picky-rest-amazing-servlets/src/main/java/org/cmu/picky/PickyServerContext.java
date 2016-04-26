@@ -46,6 +46,8 @@ public class PickyServerContext implements ServletContextListener {
         MyPickiesServlet.init(authService, pickyService);
         TimelineServlet.init(pickyService);
         UploadServlet.init(authService, pickyService);
+        UpdatePasswordServlet.init(authService, userService);
+        DeletePickyServlet.init(authService, pickyService);
         MySQLConnectionFactory.init(boneCPConfigProperties);
     }
 

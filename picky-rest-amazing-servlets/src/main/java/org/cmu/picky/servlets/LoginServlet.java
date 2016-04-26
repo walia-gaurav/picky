@@ -3,6 +3,7 @@ package org.cmu.picky.servlets;
 import com.google.gson.Gson;
 import org.cmu.picky.model.User;
 import org.cmu.picky.services.UserService;
+import org.cmu.picky.util.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,8 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginServlet extends HttpServlet {
-
-    public static final int UNAUTHORIZED_STATUS = 401;
 
     private static UserService userService;
 
@@ -27,8 +26,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        response.setContentType("application/json");
-        response.setHeader("Content-Type", "text/plain; charset=UTF-8");
+        ServletUtils.addJSONSettings(response);
         if (username != null && !username.equals("") && password != null && !password.equals("")) {
             User user = userService.login(username, password);
 
@@ -38,10 +36,10 @@ public class LoginServlet extends HttpServlet {
                 response.getOutputStream().print(gson.toJson(user));
                 response.getOutputStream().flush();
             } else {
-                response.setStatus(UNAUTHORIZED_STATUS);
+                response.setStatus(ServletUtils.UNAUTHORIZED_STATUS);
             }
         } else {
-            response.setStatus(UNAUTHORIZED_STATUS);
+            response.setStatus(ServletUtils.UNAUTHORIZED_STATUS);
         }
 
     }
