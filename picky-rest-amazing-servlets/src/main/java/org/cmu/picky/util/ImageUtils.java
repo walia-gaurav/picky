@@ -15,7 +15,6 @@ public class ImageUtils {
     public static BufferedImage decodeToImage(String imageString) {
         BufferedImage image = null;
 
-		imageString = imageString.replace(" ", "+");
         try {
             BASE64Decoder decoder = new BASE64Decoder();
             byte[] imageByte = decoder.decodeBuffer(imageString);

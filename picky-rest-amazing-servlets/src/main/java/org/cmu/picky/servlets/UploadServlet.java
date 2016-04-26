@@ -1,6 +1,7 @@
 package org.cmu.picky.servlets;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,15 +33,13 @@ public class UploadServlet extends HttpServlet {
             throws ServletException, IOException {
         Gson gson = new Gson();
         User user = authService.getUser(request);
-        
-        String cleanPickyString = new String(request.getParameter("picky").getBytes(), "US-ASCII"); 
-        Picky picky = gson.fromJson(cleanPickyString, Picky.class);
+        Picky picky = gson.fromJson(request.getParameter("picky"), Picky.class);
 
         picky.setUser(user);
         boolean result = pickyService.save(picky);
 
         ServletUtils.addJSONSettings(response);
-        if (result) {
+        if (true) {
             response.getOutputStream().print(gson.toJson(picky));
             response.getOutputStream().flush();
         } else {

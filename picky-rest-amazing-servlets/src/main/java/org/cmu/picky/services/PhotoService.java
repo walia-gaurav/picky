@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 public class PhotoService {
 
-    private static final String FILE_PATH = "/Users/walia-mac/Downloads/apache-tomcat-7.0.68/upload";
+    private static final String FILE_PATH = "/var/webapp/upload/";
     private static final String UPLOAD_PATH = "/upload/";
     private static final String IMAGE_TYPE = "png";
 

@@ -2,15 +2,20 @@ package edu.cmu.jsphdev.picky.ws.remote.service;
 
 import android.os.AsyncTask;
 
+import com.google.gson.Gson;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
+import edu.cmu.jsphdev.picky.entities.Photo;
+import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 
-public class UploadPickyService extends AsyncTask<String, Void, Boolean> {
+public class UploadPickyService extends AsyncTask<Picky, Void, Boolean> {
 
     private Callback<Boolean> callback;
 
@@ -19,17 +24,24 @@ public class UploadPickyService extends AsyncTask<String, Void, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
+    protected Boolean doInBackground(Picky... pickies) {
         URL url = null;
         try {
-            url = new URL(BaseService.getAbsoluteUrl("/l"));
+            url = new URL(BaseService.getAbsoluteUrl("/picky/upload"));
         } catch (MalformedURLException e) {
             return null;
         }
 
         HttpURLConnection urlConnection = null;
         try {
-            String urlParameters = String.format("picky=%s", params[0]);
+            Picky picky = pickies[0];
+            Photo leftPhoto = picky.getLeftPhoto();
+            Photo rightPhoto = picky.getRightPhoto();
+            Gson gson = new Gson();
+
+            leftPhoto.setBase64Image(URLEncoder.encode(leftPhoto.getBase64Image(), "UTF-8"));
+            rightPhoto.setBase64Image(URLEncoder.encode(rightPhoto.getBase64Image(), "UTF-8"));
+            String urlParameters = String.format("picky=%s", gson.toJson(picky));
             byte[] postData = urlParameters.getBytes(BaseService.UTF8);
 
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -40,24 +52,15 @@ public class UploadPickyService extends AsyncTask<String, Void, Boolean> {
             urlConnection.setRequestProperty("charset", BaseService.UTF8);
             urlConnection.setRequestProperty("Content-Length", Integer.toString(postData.length));
             urlConnection.setUseCaches(false);
-
-            /* Setting User token */
             BaseService.setAuthHeader(urlConnection);
-
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
 
             wr.write(postData);
             wr.flush();
             wr.close();
-
-            if (urlConnection.getResponseCode() == BaseService.OK_STATUS) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return urlConnection.getResponseCode() == BaseService.OK_STATUS;
         } catch (IOException ex) {
-            return null;
+            return false;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -67,6 +70,7 @@ public class UploadPickyService extends AsyncTask<String, Void, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean isSuccess) {
-        super.onPostExecute(isSuccess);
+        callback.process(isSuccess);
     }
+
 }

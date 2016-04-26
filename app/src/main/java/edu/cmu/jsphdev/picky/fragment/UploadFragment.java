@@ -62,31 +62,23 @@ public class UploadFragment extends Fragment {
                 if (leftPicky.getBackground() == null && rightPicky.getBackground() == null) {
                     Toast.makeText(getActivity(), "Uploading", Toast.LENGTH_SHORT).show();
 
-                    /*
-                    Fetching LastKnownLocation
-                     */
-                    Location l = null;
-                    LocationManager locManager = (LocationManager) getActivity().getSystemService(getActivity()
-                            .LOCATION_SERVICE);
+                    //Fetching LastKnownLocation
+                    Location location = null;
+                    LocationManager locManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
                     try {
-                        l = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     } catch (SecurityException e) {
                         Log.d("WARN", "No location permissions");
                     }
 
-                    /*
-                    Prepareing Picky Data.
-                     */
+                    //Preparing Picky Data.
                     Picky picky = new Picky();
                     picky.setTitle(title);
                     picky.setLeftPhoto(new Photo(getBase64StringFromImageView(leftPicky)));
                     picky.setRightPhoto(new Photo(getBase64StringFromImageView(rightPicky)));
-                    if (null != l) {
-                        picky.setLocation(new edu.cmu.jsphdev.picky.entities.Location(l.getLatitude(), l.getLongitude
-                                ()));
+                    if (null != location) {
+                        picky.setLocation(new edu.cmu.jsphdev.picky.entities.Location(location.getLatitude(), location.getLongitude()));
                     }
-
-
                     Callback<Boolean> callback = new Callback<Boolean>() {
                         @Override
                         public void process(Boolean result) {
@@ -101,9 +93,7 @@ public class UploadFragment extends Fragment {
                     };
 
                     UploadPickyService uploadService = new UploadPickyService(callback);
-                    String json = (new Gson()).toJson(picky);
-                    uploadService.execute(json);
-
+                    uploadService.execute(picky);
                 } else {
                     Toast.makeText(getActivity(), "Upload Failed!", Toast.LENGTH_SHORT).show();
                 }
