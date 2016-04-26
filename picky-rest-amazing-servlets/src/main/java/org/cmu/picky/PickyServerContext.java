@@ -33,17 +33,19 @@ public class PickyServerContext implements ServletContextListener {
             logger.error("Problem reading properties", ex);
         }
         TokenService tokenService = new TokenService();
+        LocationService locationService = new LocationService();
         UserService userService = new UserService(tokenService);
         PhotoService photoService = new PhotoService(tokenService);
         AuthService authService = new AuthService(userService);
-        PickyService pickyService = new PickyService();
+        PickyService pickyService = new PickyService(photoService, locationService);
+
         LoginFilter.init(authService);
         LoginServlet.init(userService);
         LogoutServlet.init(authService, userService);
         SignUpServlet.init(userService);
         MyPickiesServlet.init(authService, pickyService);
         TimelineServlet.init(pickyService);
-        UploadServlet.init(photoService);
+        UploadServlet.init(authService, pickyService);
         MySQLConnectionFactory.init(boneCPConfigProperties);
     }
 

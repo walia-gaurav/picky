@@ -1,36 +1,42 @@
 package org.cmu.picky.servlets;
 
 import com.google.gson.Gson;
-import org.cmu.picky.model.Photo;
-import org.cmu.picky.services.PhotoService;
+import org.cmu.picky.model.Picky;
+import org.cmu.picky.model.User;
+import org.cmu.picky.services.AuthService;
+import org.cmu.picky.services.PickyService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class UploadServlet extends HttpServlet {
 
     public static final int BAD_STATUS = 400;
 
-    private static PhotoService photoService;
+    private static PickyService pickyService;
+    private static AuthService authService;
 
-    public static void init(PhotoService _photoService) {
-        photoService = _photoService;
-
+    public static void init(AuthService _authService, PickyService _pickyService) {
+        authService = _authService;
+        pickyService = _pickyService;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String imageBase64 = request.getParameter("picky");
+        Gson gson = new Gson();
+        User user = authService.getUser(request);
+        Picky picky = gson.fromJson(new InputStreamReader(request.getInputStream()), Picky.class);
 
-        Photo photo = photoService.savePhoto(imageBase64);
-        if (photo != null) {
-            Gson gson = new Gson();
+        picky.setUser(user);
+        boolean result = pickyService.save(picky);
 
-            response.getOutputStream().print(gson.toJson(photo));
+        if (result) {
+            response.getOutputStream().print(gson.toJson(picky));
             response.getOutputStream().flush();
         } else {
             response.setStatus(BAD_STATUS);

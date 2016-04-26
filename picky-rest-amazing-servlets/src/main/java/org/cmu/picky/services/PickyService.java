@@ -21,7 +21,13 @@ public class PickyService {
 
     private static final Logger logger = LoggerFactory.getLogger(PickyService.class);
 
-    public PickyService() {}
+    private PhotoService photoService;
+    private LocationService locationService;
+
+    public PickyService(PhotoService photoService, LocationService locationService) {
+        this.photoService = photoService;
+        this.locationService = locationService;
+    }
 
     public List<Picky> getMyPickies(User user) {
         final String query = "SELECT P.id, P.title, LP.id AS leftPhotoId, LP.url AS leftPhotoUrl, RP.id AS rightPhotoId, " +
@@ -125,6 +131,47 @@ public class PickyService {
         user.setUsername(rs.getString("username"));
     }
 
+    public boolean save(Picky picky) {
+        Photo leftPhoto = photoService.savePhoto(picky.getLeftPhoto().getBase64Image());
 
+        if (leftPhoto == null) return false;
+        picky.setLeftPhoto(leftPhoto);
+        Photo rightPhoto = photoService.savePhoto(picky.getRightPhoto().getBase64Image());
+
+        if (rightPhoto == null) return false;
+        picky.setRightPhoto(rightPhoto);
+        if (!locationService.save(picky.getLocation())) return false;
+
+        final String insertQuery = "INSERT INTO Picky(title, userId, leftPhotoId, rightPhotoId, locationId, leftVotes, rightVotes, expirationTime) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        final String selectQuery = "SELECT id FROM Picky WHERE userId = ? AND expirationTime = ?";
+
+        try (Connection connection = MySQLConnectionFactory.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+            Calendar calendar = Calendar.getInstance();
+
+            calendar.add(Calendar.DATE, 2);
+            preparedStatement.setString(1, picky.getTitle());
+            preparedStatement.setInt(2, picky.getUser().getId());
+            preparedStatement.setInt(3, picky.getLeftPhoto().getId());
+            preparedStatement.setInt(4, picky.getRightPhoto().getId());
+            preparedStatement.setInt(5, picky.getLocation().getId());
+            preparedStatement.setInt(6, 0);
+            preparedStatement.setInt(7, 0);
+            preparedStatement.setDate(8, new java.sql.Date(calendar.getTimeInMillis()));
+            preparedStatement.executeQuery();
+
+            preparedStatement = connection.prepareStatement(selectQuery);
+            preparedStatement.setInt(1, picky.getUser().getId());
+            preparedStatement.setDate(2, new java.sql.Date(calendar.getTimeInMillis()));
+            ResultSet rs = preparedStatement.executeQuery();
+
+            rs.next();
+            picky.setId(rs.getInt("id"));
+        } catch (SQLException ex) {
+            logger.error("Problem executing statement", ex);
+            return false;
+        }
+        return true;
+    }
 
 }

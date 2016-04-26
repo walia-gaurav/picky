@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS Photo (
 CREATE TABLE IF NOT EXISTS Location (
     id int(11) PRIMARY KEY AUTO_INCREMENT,
     latitude DOUBLE NOT NULL,
-    longitude DOUBLE NOT NULL
+    longitude DOUBLE NOT NULL,
+    UNIQUE(latitude, longitude)
 ) ENGINE = MyISAM;
 
 CREATE TABLE IF NOT EXISTS Picky (
