@@ -92,7 +92,7 @@ public class UserService {
         }
     }
 
-    public boolean usernameInUser(String username) {
+    public boolean usernameInUse(String username) {
         final String selectQuery = "SELECT id FROM User WHERE username = ?";
 
         try (Connection connection = MySQLConnectionFactory.getConnection()) {
@@ -127,6 +127,21 @@ public class UserService {
         return false;
     }
 
+    public boolean updatePassword(User user, String newPassword) {
+        final String updateQuery = "UPDATE User SET password = ?  WHERE id = ?";
 
+        try (Connection connection = MySQLConnectionFactory.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+
+            preparedStatement.setInt(1, user.getId());
+            preparedStatement.setString(2, newPassword);
+            preparedStatement.executeUpdate();
+
+            return true;
+        } catch (SQLException ex) {
+            logger.error("Problem executing statement", ex);
+        }
+        return false;
+    }
 
 }

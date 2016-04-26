@@ -114,7 +114,7 @@ public class PickyService {
             while (rs.next()) {
                 Picky picky = fillPicky(rs);
 
-                addUser(rs);
+                addUser(rs, picky);
                 pickies.add(picky);
             }
             return pickies;
@@ -124,11 +124,12 @@ public class PickyService {
         return null;
     }
 
-    private void addUser(ResultSet rs) throws SQLException {
+    private void addUser(ResultSet rs, Picky picky) throws SQLException {
         User user = new User();
 
         user.setId(rs.getInt("userId"));
         user.setUsername(rs.getString("username"));
+        picky.setUser(user);
     }
 
     public boolean save(Picky picky) {
@@ -172,6 +173,50 @@ public class PickyService {
             return false;
         }
         return true;
+    }
+
+    public Picky get(int id) {
+        final String query = "SELECT P.id, P.title, U.id AS userId, U.username, " +
+                "LP.id AS leftPhotoId, LP.url AS leftPhotoUrl, RP.id AS rightPhotoId, " +
+                "RP.url AS rightPhotoUrl, L.id AS locationId, L.latitude, L.longitude, P.leftVotes, P.rightVotes, \n" +
+                "P.expirationTime\n" +
+                "FROM Picky P\n" +
+                "INNER JOIN Photo LP ON P.leftPhotoId = LP.id\n" +
+                "INNER JOIN Photo RP ON P.leftPhotoId = LP.id\n" +
+                "INNER JOIN Location L ON P.locationId = L.id\n" +
+                "INNER JOIN User U ON P.userId = U.id\n" +
+                "WHERE expirationTime >= ?";
+
+        try (Connection connection = MySQLConnectionFactory.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            Picky picky = fillPicky(rs);
+
+            addUser(rs, picky);
+            return picky;
+        } catch (SQLException ex) {
+            logger.error("Problem executing statement", ex);
+        }
+        return null;
+    }
+
+    public boolean delete(Picky picky) {
+        final String deleteQuery = "DELETE FROM Picky WHERE id = ?";
+
+        try (Connection connection = MySQLConnectionFactory.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
+
+            preparedStatement.setInt(1, picky.getId());
+            preparedStatement.executeUpdate();
+
+            return true;
+        } catch (SQLException ex) {
+            logger.error("Problem executing statement", ex);
+        }
+        return false;
     }
 
 }

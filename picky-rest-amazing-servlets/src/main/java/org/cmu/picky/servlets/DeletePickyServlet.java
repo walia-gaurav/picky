@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class UploadServlet extends HttpServlet {
+public class DeletePickyServlet extends HttpServlet {
 
     public static final int BAD_STATUS = 400;
 
@@ -29,18 +29,23 @@ public class UploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Gson gson = new Gson();
+        int id = Integer.parseInt(request.getParameter("id"));
         User user = authService.getUser(request);
-        Picky picky = gson.fromJson(new InputStreamReader(request.getInputStream()), Picky.class);
-
-        picky.setUser(user);
-        boolean result = pickyService.save(picky);
+        Gson gson  = new Gson();
+        Picky picky = pickyService.get(id);
 
         ServletUtils.addJSONSettings(response);
+        if (picky.getUser().getId() != user.getId()) {
+            ServletUtils.addError(response, gson, "Invalid user");
+            response.setStatus(BAD_STATUS);
+        }
+        boolean result = pickyService.delete(picky);
+
         if (result) {
             response.getOutputStream().print(gson.toJson(picky));
             response.getOutputStream().flush();
         } else {
+            ServletUtils.addError(response, gson, "Could delete picky");
             response.setStatus(BAD_STATUS);
         }
     }

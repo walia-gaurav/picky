@@ -5,6 +5,7 @@ import org.cmu.picky.model.Picky;
 import org.cmu.picky.model.User;
 import org.cmu.picky.services.AuthService;
 import org.cmu.picky.services.PickyService;
+import org.cmu.picky.util.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,6 +30,7 @@ public class MyPickiesServlet extends HttpServlet {
         List<Picky> myPickies = pickyService.getMyPickies(user);
         Gson gson = new Gson();
 
+        ServletUtils.addJSONSettings(response);
         response.getOutputStream().print(gson.toJson(myPickies));
         response.getOutputStream().flush();
 

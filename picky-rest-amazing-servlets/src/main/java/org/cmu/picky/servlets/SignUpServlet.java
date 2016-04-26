@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.cmu.picky.model.Error;
 import org.cmu.picky.model.User;
 import org.cmu.picky.services.UserService;
+import org.cmu.picky.util.ServletUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,32 +20,27 @@ public class SignUpServlet extends HttpServlet {
 		userService = _userService;
 	}
 
-	public static final int BAD_STATUS = 400;
-
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 
-		response.setContentType("application/json");
-		response.setHeader("Content-Type", "text/plain; charset=UTF-8");
-
-		Error error = new Error();
-		User signUpUser = null;
+		ServletUtils.addJSONSettings(response);
 		Gson gson = new Gson();
 
 		if (username != null && !username.equals("") && password != null && !password.equals("")) {
-			if (userService.usernameInUser(username)) {
-				error.setMessage("Username in use");
-				response.getOutputStream().print(gson.toJson(error));
-				response.setStatus(BAD_STATUS);
+			if (userService.usernameInUse(username)) {
+				ServletUtils.addError(response, gson, "Username in use");
 			} else {
 				userService.signUp(username, password);
-				signUpUser = userService.login(username, password);
+				User signUpUser = userService.login(username, password);
 				response.getOutputStream().print(gson.toJson(signUpUser));
 			}
 		}
 		response.getOutputStream().flush();
 	}
+
+
+
 }
