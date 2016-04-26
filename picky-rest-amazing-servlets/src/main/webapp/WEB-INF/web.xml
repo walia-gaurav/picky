@@ -77,7 +77,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Test</servlet-name>
-        <url-pattern>/test</url-pattern>
+        <url-pattern>/api/test</url-pattern>
     </servlet-mapping>
 
 </web-app>

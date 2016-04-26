@@ -7,10 +7,10 @@ public class Photo {
 
     private int id;
     private String url;
-    private byte[] binaryImage;
+    private String base64Image;
 
-    public Photo(byte[] binaryImage) {
-        this.binaryImage = binaryImage;
+    public Photo(String base64Image) {
+        this.base64Image = base64Image;
     }
 
     public Photo() {}

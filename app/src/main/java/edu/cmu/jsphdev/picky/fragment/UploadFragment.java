@@ -1,42 +1,47 @@
 package edu.cmu.jsphdev.picky.fragment;
 
 
-import android.Manifest;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import edu.cmu.jsphdev.picky.R;
-import edu.cmu.jsphdev.picky.entities.Location;
 import edu.cmu.jsphdev.picky.entities.Photo;
 import edu.cmu.jsphdev.picky.entities.Picky;
-import edu.cmu.jsphdev.picky.ws.remote.service.ProducerService;
+import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
+import edu.cmu.jsphdev.picky.util.CurrentSession;
+import edu.cmu.jsphdev.picky.ws.remote.service.UploadPickyService;
 
 /**
  * TabFragment for Uploading pickies (two pictures and a title)
  */
 public class UploadFragment extends Fragment {
 
-    private static final String[] ALL = {
-            Manifest.permission.SEND_SMS, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
-            .WRITE_EXTERNAL_STORAGE
-    };
     View view;
 
     @Override
@@ -52,17 +57,53 @@ public class UploadFragment extends Fragment {
 
                 ImageView leftPicky = (ImageView) view.findViewById(R.id.choice1);
                 ImageView rightPicky = (ImageView) view.findViewById(R.id.choice2);
+                String title = ((EditText) view.findViewById(R.id.descriptionEditText)).getText().toString().trim();
 
                 if (leftPicky.getBackground() == null && rightPicky.getBackground() == null) {
                     Toast.makeText(getActivity(), "Uploading", Toast.LENGTH_SHORT).show();
 
-                    Picky picky = new Picky();
-                    picky.setTitle("My first picky");
-                    picky.setLocation(new Location(1d, 1d));
-                    picky.setLeftPhoto(new Photo(getBinaryStreamFromImageView(leftPicky)));
-                    picky.setRightPhoto(new Photo(getBinaryStreamFromImageView(rightPicky)));
+                    /*
+                    Fetching LastKnownLocation
+                     */
+                    Location l = null;
+                    LocationManager locManager = (LocationManager) getActivity().getSystemService(getActivity()
+                            .LOCATION_SERVICE);
+                    try {
+                        l = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    } catch (SecurityException e) {
+                        Log.d("WARN", "No location permissions");
+                    }
 
-                    new ProducerService().uploadPicky(picky);
+                    /*
+                    Prepareing Picky Data.
+                     */
+                    Picky picky = new Picky();
+                    picky.setUser(CurrentSession.getActiveUser());
+                    picky.setTitle(title);
+                    picky.setLeftPhoto(new Photo(getBase64StringFromImageView(leftPicky)));
+                    picky.setRightPhoto(new Photo(getBase64StringFromImageView(rightPicky)));
+                    if (null != l) {
+                        picky.setLocation(new edu.cmu.jsphdev.picky.entities.Location(l.getLatitude(), l.getLongitude
+                                ()));
+                    }
+
+
+                    Callback<Boolean> callback = new Callback<Boolean>() {
+                        @Override
+                        public void process(Boolean result) {
+                            if (result) {
+                                //Clear upload frame
+                                Toast.makeText(getActivity(), "Upload Successful!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getActivity(), "Upload Failed!", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    };
+
+                    UploadPickyService uploadService = new UploadPickyService(callback);
+                    String json = (new Gson()).toJson(picky);
+                    uploadService.execute(json);
 
                 } else {
                     Toast.makeText(getActivity(), "Upload Failed!", Toast.LENGTH_SHORT).show();
@@ -72,11 +113,10 @@ public class UploadFragment extends Fragment {
         return view;
     }
 
-    private byte[] getBinaryStreamFromImageView(ImageView leftPicky) {
+    private String getBase64StringFromImageView(ImageView leftPicky) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ((BitmapDrawable) leftPicky.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100,
-                stream);
-        return stream.toByteArray();
+        ((BitmapDrawable) leftPicky.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
     }
 
     /**
@@ -128,4 +168,13 @@ public class UploadFragment extends Fragment {
         builder.show();
     }
 
+    /**
+     * Using PackageManager to check for permission grants.
+     *
+     * @param perm
+     * @return
+     */
+    private boolean hasPermission(String perm) {
+        return (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(getActivity(), perm));
+    }
 }
