@@ -1,19 +1,21 @@
 package org.cmu.picky.util;
 
-import java.io.IOException;
-
-import sun.misc.BASE64Encoder;
-import sun.misc.BASE64Decoder;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 public class ImageUtils {
 
     public static BufferedImage decodeToImage(String imageString) {
         BufferedImage image = null;
 
+		imageString = imageString.replace(" ", "+");
         try {
             BASE64Decoder decoder = new BASE64Decoder();
             byte[] imageByte = decoder.decodeBuffer(imageString);

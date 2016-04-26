@@ -22,7 +22,7 @@ public class UploadPickyService extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... params) {
         URL url = null;
         try {
-            url = new URL(BaseService.getAbsoluteUrl("/upload"));
+            url = new URL(BaseService.getAbsoluteUrl("/l"));
         } catch (MalformedURLException e) {
             return null;
         }

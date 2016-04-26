@@ -71,12 +71,12 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>Test</servlet-name>
+        <servlet-name>UploadPicky</servlet-name>
         <servlet-class>org.cmu.picky.servlets.UploadServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Test</servlet-name>
+        <servlet-name>UploadPicky</servlet-name>
         <url-pattern>/api/upload</url-pattern>
     </servlet-mapping>
 

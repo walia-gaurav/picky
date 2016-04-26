@@ -1,13 +1,5 @@
 package org.cmu.picky.services;
 
-import org.cmu.picky.db.MySQLConnectionFactory;
-import org.cmu.picky.model.Location;
-import org.cmu.picky.model.Photo;
-import org.cmu.picky.model.Picky;
-import org.cmu.picky.model.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +8,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import org.cmu.picky.db.MySQLConnectionFactory;
+import org.cmu.picky.model.Location;
+import org.cmu.picky.model.Photo;
+import org.cmu.picky.model.Picky;
+import org.cmu.picky.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PickyService {
 
@@ -158,7 +158,7 @@ public class PickyService {
             preparedStatement.setInt(6, 0);
             preparedStatement.setInt(7, 0);
             preparedStatement.setDate(8, new java.sql.Date(calendar.getTimeInMillis()));
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
 
             preparedStatement = connection.prepareStatement(selectQuery);
             preparedStatement.setInt(1, picky.getUser().getId());

@@ -1,23 +1,25 @@
 package org.cmu.picky.services;
 
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.imageio.ImageIO;
+
 import org.cmu.picky.db.MySQLConnectionFactory;
 import org.cmu.picky.model.Photo;
 import org.cmu.picky.util.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class PhotoService {
 
-    private static final String FILE_PATH = "/var/webapp/upload/";
+    private static final String FILE_PATH = "/Users/walia-mac/Downloads/apache-tomcat-7.0.68/upload";
     private static final String UPLOAD_PATH = "/upload/";
     private static final String IMAGE_TYPE = "png";
 
@@ -50,6 +52,7 @@ public class PhotoService {
                         preparedStatement = connection.prepareStatement(insertQuery);
                         preparedStatement.setString(1, filename);
                         preparedStatement.executeUpdate();
+                        
                         preparedStatement = connection.prepareStatement(selectQuery);
                         preparedStatement.setString(1, filename);
                         rs = preparedStatement.executeQuery();

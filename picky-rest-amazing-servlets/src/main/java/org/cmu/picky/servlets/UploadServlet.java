@@ -1,17 +1,18 @@
 package org.cmu.picky.servlets;
 
-import com.google.gson.Gson;
-import org.cmu.picky.model.Picky;
-import org.cmu.picky.model.User;
-import org.cmu.picky.services.AuthService;
-import org.cmu.picky.services.PickyService;
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import org.cmu.picky.model.Picky;
+import org.cmu.picky.model.User;
+import org.cmu.picky.services.AuthService;
+import org.cmu.picky.services.PickyService;
+
+import com.google.gson.Gson;
 
 public class UploadServlet extends HttpServlet {
 
@@ -30,7 +31,9 @@ public class UploadServlet extends HttpServlet {
             throws ServletException, IOException {
         Gson gson = new Gson();
         User user = authService.getUser(request);
-        Picky picky = gson.fromJson(new InputStreamReader(request.getInputStream()), Picky.class);
+        
+        String cleanPickyString = new String(request.getParameter("picky").getBytes(), "US-ASCII"); 
+        Picky picky = gson.fromJson(cleanPickyString, Picky.class);
 
         picky.setUser(user);
         boolean result = pickyService.save(picky);
