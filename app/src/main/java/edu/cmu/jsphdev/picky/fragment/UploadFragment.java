@@ -78,7 +78,6 @@ public class UploadFragment extends Fragment {
                     Prepareing Picky Data.
                      */
                     Picky picky = new Picky();
-                    picky.setUser(CurrentSession.getActiveUser());
                     picky.setTitle(title);
                     picky.setLeftPhoto(new Photo(getBase64StringFromImageView(leftPicky)));
                     picky.setRightPhoto(new Photo(getBase64StringFromImageView(rightPicky)));
