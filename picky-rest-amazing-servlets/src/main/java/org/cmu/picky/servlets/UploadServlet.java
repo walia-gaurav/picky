@@ -24,7 +24,7 @@ public class UploadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String imageBase64 = request.getParameter("image");
+        String imageBase64 = request.getParameter("picky");
 
         Photo photo = photoService.savePhoto(imageBase64);
         if (photo != null) {

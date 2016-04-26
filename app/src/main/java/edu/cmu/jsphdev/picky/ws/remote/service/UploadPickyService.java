@@ -32,8 +32,7 @@ public class UploadPickyService extends AsyncTask<String, Void, Boolean> {
 
         HttpURLConnection urlConnection = null;
         try {
-            String image = params[0];
-            String urlParameters = String.format("image=%s", image);
+            String urlParameters = String.format("picky=%s", params[0]);
             byte[] postData = urlParameters.getBytes(BaseService.UTF8);
 
             urlConnection = (HttpURLConnection) url.openConnection();
