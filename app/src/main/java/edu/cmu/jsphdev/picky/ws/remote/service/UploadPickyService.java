@@ -10,9 +10,6 @@ import java.net.URL;
 
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 
-/**
- * Created by walia-mac on 4/25/16.
- */
 public class UploadPickyService extends AsyncTask<String, Void, Boolean> {
 
     private Callback<Boolean> callback;
@@ -25,7 +22,7 @@ public class UploadPickyService extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... params) {
         URL url = null;
         try {
-            url = new URL(BaseService.getAbsoluteUrl("/test"));
+            url = new URL(BaseService.getAbsoluteUrl("/upload"));
         } catch (MalformedURLException e) {
             return null;
         }

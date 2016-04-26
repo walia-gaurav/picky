@@ -15,9 +15,6 @@ import java.net.URL;
 import edu.cmu.jsphdev.picky.entities.User;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 
-/**
- * Created by walia-mac on 4/21/16.
- */
 public class SignUpService extends AsyncTask<String, Void, User> {
 
     private Callback<User> callback;
