@@ -1,8 +1,10 @@
 package edu.cmu.jsphdev.picky.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TabHost;
 
@@ -17,12 +19,23 @@ import edu.cmu.jsphdev.picky.util.CurrentSession;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String[] ALL = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission
+            .WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.INTERNET
+    };
+
     TabHost tabHost;
 
+    /*
+        <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActivityCompat.requestPermissions(this, ALL, 1);
 
         String existingToken = PreferenceManager.getDefaultSharedPreferences(this).getString("existingUser", "");
         if (existingToken != null && !existingToken.isEmpty()) {
