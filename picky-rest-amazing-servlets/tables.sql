@@ -34,3 +34,10 @@ CREATE TABLE IF NOT EXISTS Picky (
     rightVotes int(11),
     expirationTime timestamp NOT NULL
 ) ENGINE = MyISAM;
+
+CREATE TABLE IF NOT EXISTS UserVote (
+    id int(11) PRIMARY KEY AUTO_INCREMENT,
+    userId int(11) NOT NULL,
+    pickyId int(11) NOT NULL,
+    UNIQUE(userId, pickyId)
+) ENGINE = MyISAM;

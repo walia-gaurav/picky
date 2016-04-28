@@ -10,10 +10,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.cmu.picky.db.MySQLConnectionFactory;
-import org.cmu.picky.model.Location;
-import org.cmu.picky.model.Photo;
-import org.cmu.picky.model.Picky;
-import org.cmu.picky.model.User;
+import org.cmu.picky.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,7 +98,8 @@ public class PickyService {
                 "INNER JOIN Photo RP ON P.leftPhotoId = LP.id\n" +
                 "INNER JOIN Location L ON P.locationId = L.id\n" +
                 "INNER JOIN User U ON P.userId = U.id\n" +
-                "WHERE expirationTime >= ?";
+                "LEFT JOIN UserVote UV ON UV.pickyId = P.id AND UV.userId = P.userId\n" +
+                "WHERE P.expirationTime >= ? AND UV.id IS NOT NULL";
 
         try (Connection connection = MySQLConnectionFactory.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -185,7 +183,7 @@ public class PickyService {
                 "INNER JOIN Photo RP ON P.leftPhotoId = LP.id\n" +
                 "INNER JOIN Location L ON P.locationId = L.id\n" +
                 "INNER JOIN User U ON P.userId = U.id\n" +
-                "WHERE expirationTime >= ?";
+                "WHERE P.id = ?";
 
         try (Connection connection = MySQLConnectionFactory.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -203,15 +201,14 @@ public class PickyService {
         return null;
     }
 
-    public boolean delete(Picky picky) {
+    public boolean delete(int id) {
         final String deleteQuery = "DELETE FROM Picky WHERE id = ?";
 
         try (Connection connection = MySQLConnectionFactory.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery);
 
-            preparedStatement.setInt(1, picky.getId());
+            preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
-
             return true;
         } catch (SQLException ex) {
             logger.error("Problem executing statement", ex);
