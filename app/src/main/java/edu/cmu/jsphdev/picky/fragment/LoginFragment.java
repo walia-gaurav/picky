@@ -47,23 +47,19 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-
                 Callback<User> callback = new Callback<User>() {
                     @Override
                     public void process(User user) {
-
                         if (user == null) {
                             Toast.makeText(getActivity().getApplicationContext(),
                                     "Invalid username and/or password!", Toast.LENGTH_LONG).show();
                             return;
                         }
                         CurrentSession.setActiveUser(user);
+                        Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
 
-                        Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()
-                        ).edit();
                         editor.putString("existingUser", (new Gson()).toJson(user));
-                        editor.commit();
-
+                        editor.apply();
                         startActivity(new Intent(getActivity(), HomeActivity.class));
                     }
                 };

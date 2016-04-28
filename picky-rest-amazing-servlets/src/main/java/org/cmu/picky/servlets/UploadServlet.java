@@ -39,7 +39,7 @@ public class UploadServlet extends HttpServlet {
         boolean result = pickyService.save(picky);
 
         ServletUtils.addJSONSettings(response);
-        if (true) {
+        if (result) {
             response.getOutputStream().print(gson.toJson(picky));
             response.getOutputStream().flush();
         } else {
