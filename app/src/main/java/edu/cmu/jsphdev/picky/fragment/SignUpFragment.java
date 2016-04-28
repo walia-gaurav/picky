@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.activity.HomeActivity;
 import edu.cmu.jsphdev.picky.entities.User;
@@ -43,9 +46,26 @@ public class SignUpFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+                String username = newUsername.getText().toString();
+                String pass = newPassword.getText().toString();
+                String passConfirm = newPasswordConfirm.getText().toString();
 
+                // validate username
+                if (!isValidUsername(username)) {
+                    newUsername.setError("Username has to be at least 3 characters long");
+                }
+                // validate passwords
+                else if (!isValidPassword(pass)) {
+                    newPassword.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
+                }
 
-                if (newPassword.getText().toString().equals(newPasswordConfirm.getText().toString())) {
+                else if (!isValidPassword(passConfirm)) {
+                    newPasswordConfirm.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
+                }
+                else if (!passConfirm.equals(pass)) {
+                    newPasswordConfirm.setError("Password must match");
+                }
+                else {
 
                     Callback<User> callback = new Callback<User>() {
                         @Override
@@ -61,14 +81,31 @@ public class SignUpFragment extends Fragment {
                     };
                     SignUpService signUpService = new SignUpService(callback);
                     signUpService.execute(newUsername.getText().toString(), newPassword.getText().toString());
-
-                } else {
-                    Toast.makeText(getActivity().getApplicationContext(),
-                            "Passwords do not match!", Toast.LENGTH_LONG).show();
-                    newPasswordConfirm.setText("");
                 }
             }
         });
         return view;
+    }
+
+
+    // validating password with retype password
+    private boolean isValidUsername(String username) {
+        if (username != null && username.length() > 3) {
+            return true;
+        }
+        return false;
+    }
+
+    // validating password with retype password
+    private boolean isValidPassword(String pass) {
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(pass);
+
+        return matcher.matches();
     }
 }
