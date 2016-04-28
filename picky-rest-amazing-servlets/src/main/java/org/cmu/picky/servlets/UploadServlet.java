@@ -1,7 +1,6 @@
 package org.cmu.picky.servlets;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

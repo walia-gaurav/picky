@@ -34,7 +34,6 @@ import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.entities.Photo;
 import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
-import edu.cmu.jsphdev.picky.util.CurrentSession;
 import edu.cmu.jsphdev.picky.ws.remote.service.UploadPickyService;
 
 /**
@@ -43,6 +42,10 @@ import edu.cmu.jsphdev.picky.ws.remote.service.UploadPickyService;
 public class UploadFragment extends Fragment {
 
     View view;
+
+    ImageView leftPicky;
+    ImageView rightPicky;
+    EditText title;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,9 +58,9 @@ public class UploadFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                ImageView leftPicky = (ImageView) view.findViewById(R.id.choice1);
-                ImageView rightPicky = (ImageView) view.findViewById(R.id.choice2);
-                String title = ((EditText) view.findViewById(R.id.descriptionEditText)).getText().toString().trim();
+                leftPicky = (ImageView) view.findViewById(R.id.choice1);
+                rightPicky = (ImageView) view.findViewById(R.id.choice2);
+                title = (EditText) view.findViewById(R.id.descriptionEditText);
 
                 if (leftPicky.getBackground() == null && rightPicky.getBackground() == null) {
                     Toast.makeText(getActivity(), "Uploading", Toast.LENGTH_SHORT).show();
@@ -71,9 +74,11 @@ public class UploadFragment extends Fragment {
                         Log.d("WARN", "No location permissions");
                     }
 
-                    //Preparing Picky Data.
+                    /*
+                    Preparing Picky Data.
+                     */
                     Picky picky = new Picky();
-                    picky.setTitle(title);
+                    picky.setTitle(title.getText().toString().trim());
                     picky.setLeftPhoto(new Photo(getBase64StringFromImageView(leftPicky)));
                     picky.setRightPhoto(new Photo(getBase64StringFromImageView(rightPicky)));
                     if (null != location) {
@@ -83,8 +88,8 @@ public class UploadFragment extends Fragment {
                         @Override
                         public void process(Boolean result) {
                             if (result) {
-                                //Clear upload frame
                                 Toast.makeText(getActivity(), "Upload Successful!", Toast.LENGTH_SHORT).show();
+                                refreshUploadFragment();
                             } else {
                                 Toast.makeText(getActivity(), "Upload Failed!", Toast.LENGTH_SHORT).show();
 
@@ -100,6 +105,16 @@ public class UploadFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void refreshUploadFragment() {
+        leftPicky.setBackground(getResources().getDrawable(R.drawable.add_photo_icon));
+        leftPicky.setImageDrawable(null);
+
+        rightPicky.setBackground(getResources().getDrawable(R.drawable.add_photo_icon));
+        rightPicky.setImageDrawable(null);
+
+        title.setText("");
     }
 
     private String getBase64StringFromImageView(ImageView leftPicky) {
