@@ -1,4 +1,28 @@
-Files included:
+** Coding Progress **
+Client Side :
+- Login
+- Signup
+- Logout
+- Uploading Picky (2 images, 1 description, 1 GPSCoordinates)
+
+Server Side :
+- LoginServlet
+- LogoutServlet
+- SignUpServlet
+- UploadServlet
+- DeletePickyServlet
+- TimelineServlet
+- UpdatePasswordServlet
+- MyPickiesServlet
+
+** Coding left **
+- Fetching the pickies in client side.
+- Displaying historic pickies in ‘My Pickies’ section.
+- Managing ‘My account’
+- Marking pickies as complete.
+- Using Gyro to emulate voting for pickies.
+
+** Files included **
 
 * app folder
 * Readme
@@ -11,6 +35,7 @@ Files included:
 	** DB-Schema.png
 	** Documentation.pdf
 	** ProjectRequirements.pdf
+
 
 The code is organized in different packages:
 
