@@ -38,6 +38,7 @@ public class PickyServerContext implements ServletContextListener {
         PhotoService photoService = new PhotoService(tokenService);
         AuthService authService = new AuthService(userService);
         PickyService pickyService = new PickyService(photoService, locationService);
+        VoteService voteService = new VoteService();
 
         LoginFilter.init(authService);
         LoginServlet.init(userService);
@@ -48,6 +49,7 @@ public class PickyServerContext implements ServletContextListener {
         UploadServlet.init(authService, pickyService);
         UpdatePasswordServlet.init(authService, userService);
         DeletePickyServlet.init(authService, pickyService);
+        VotePickyServlet.init(authService, pickyService, voteService);
         MySQLConnectionFactory.init(boneCPConfigProperties);
     }
 

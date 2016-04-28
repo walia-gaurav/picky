@@ -25,18 +25,18 @@ public class SignUpServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-
-		ServletUtils.addJSONSettings(response);
 		Gson gson = new Gson();
 
+		ServletUtils.addJSONSettings(response);
 		if (username != null && !username.equals("") && password != null && !password.equals("")) {
 			if (userService.usernameInUse(username)) {
 				ServletUtils.addError(response, gson, "Username in use");
-			} else {
-				userService.signUp(username, password);
+			} else if (userService.signUp(username, password)) {
 				User signUpUser = userService.login(username, password);
 				response.getOutputStream().print(gson.toJson(signUpUser));
-			}
+			} else {
+                ServletUtils.addError(response, gson, "Problems creating the user");
+            }
 		}
 		response.getOutputStream().flush();
 	}

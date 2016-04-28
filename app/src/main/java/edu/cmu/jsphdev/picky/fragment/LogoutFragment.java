@@ -47,12 +47,10 @@ public class LogoutFragment extends Fragment {
                             Toast.makeText(getActivity().getApplicationContext(),
                                     "Problem performing logout", Toast.LENGTH_LONG).show();
                         }
+                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
 
-                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()
-                        ).edit();
                         editor.remove("existingUser");
-                        editor.commit();
-
+                        editor.apply();
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
                     }

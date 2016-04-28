@@ -100,4 +100,14 @@
         <url-pattern>/api/picky/delete</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Vote Picky</servlet-name>
+        <servlet-class>org.cmu.picky.servlets.VotePickyServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Vote Picky</servlet-name>
+        <url-pattern>/api/picky/vote</url-pattern>
+    </servlet-mapping>
+
 </web-app>

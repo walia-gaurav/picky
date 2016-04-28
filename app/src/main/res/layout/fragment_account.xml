@@ -10,18 +10,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/oldPassword"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint=""
-        android:inputType="text"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="@string/newPassword"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -29,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint=""
-        android:inputType="text"/>
+        android:inputType="text"
+        android:id="@+id/newPasswordEditText" />
 
     <TextView
         android:layout_width="match_parent"
@@ -41,7 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint=""
-        android:inputType="text"/>
+        android:inputType="text"
+        android:id="@+id/newPasswordConfirmationEditText" />
 
     <Button
         android:layout_width="wrap_content"

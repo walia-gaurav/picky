@@ -77,7 +77,7 @@ public class UserService {
         return null;
     }
 
-    public void signUp(String username, String password) {
+    public boolean signUp(String username, String password) {
         final String insertQuery = "INSERT INTO User(username, token, password) VALUES (?, NULL, ?);";
 
         try (Connection connection = MySQLConnectionFactory.getConnection()) {
@@ -87,16 +87,18 @@ public class UserService {
             preparedStatement.setString(2, password);
 
             preparedStatement.executeUpdate();
+            return true;
         } catch (SQLException ex) {
             logger.error("Problem executing statement", ex);
         }
+        return false;
     }
 
     public boolean usernameInUse(String username) {
-        final String selectQuery = "SELECT id FROM User WHERE username = ?";
+        final String query = "SELECT id FROM User WHERE username = ?";
 
         try (Connection connection = MySQLConnectionFactory.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             preparedStatement.setString(1, username);
             ResultSet rs = preparedStatement.executeQuery();

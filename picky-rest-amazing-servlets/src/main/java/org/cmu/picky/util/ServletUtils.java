@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class ServletUtils {
 
+    public static final int NOT_FOUND = 404;
     public static final int BAD_STATUS = 400;
     public static final int UNAUTHORIZED_STATUS = 401;
 
