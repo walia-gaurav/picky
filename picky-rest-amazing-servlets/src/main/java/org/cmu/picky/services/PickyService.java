@@ -68,8 +68,8 @@ public class PickyService {
         rightPhoto.setUrl(rs.getString("rightPhotoUrl"));
 
         location.setId(rs.getInt("locationId"));
-        location.setLatitude(rs.getDouble("locationLatitude"));
-        location.setLongitude(rs.getDouble("locationLongitude"));
+        location.setLatitude(rs.getDouble("latitude"));
+        location.setLongitude(rs.getDouble("longitude"));
 
         picky.setId(rs.getInt("id"));
         picky.setTitle(rs.getString("title"));

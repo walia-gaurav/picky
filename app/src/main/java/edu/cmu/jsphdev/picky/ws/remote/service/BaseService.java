@@ -6,13 +6,14 @@ import edu.cmu.jsphdev.picky.util.CurrentSession;
 
 public class BaseService {
 
-    private static final String HOST = "http://192.168.0.102:8080/api";
+    public static final String IP = "http://172.29.93.234:8080";
     public static final String AUTH_HEADER = "X-Auth-Token";
     public static final String UTF8 = "UTF-8";
     public static final int OK_STATUS = 200;
+    private static final String HOST_ENDPOINT = String.format("/picky-rest-amazing-servlets/api", IP);
 
     public static String getAbsoluteUrl(String path) {
-        return HOST + path;
+        return HOST_ENDPOINT + path;
     }
 
     public static void setAuthHeader(HttpURLConnection urlConnection) {
