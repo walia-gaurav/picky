@@ -35,8 +35,6 @@ import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyConsumerWebServiceInterfa
  */
 public class PublicFragment extends Fragment {
 
-    private static final int REQUEST_CODE_INTERNET = 1;
-
     private PickyConsumerWebServiceInterface pickyService;
     private TextView titleTextView;
     private Button leftButton;
@@ -56,32 +54,14 @@ public class PublicFragment extends Fragment {
         rightButton = (Button) view.findViewById(R.id.rightChoiceButton);
         titleTextView = (TextView) view.findViewById(R.id.titleTextView);
 
-        if (!checkPermissions()) return view;
-
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) !=
+                PackageManager.PERMISSION_GRANTED)  {
+            Toast.makeText(getActivity().getApplicationContext(),
+                    "Internet Permission is required", Toast.LENGTH_LONG).show();
+            return view;
+        }
         loadPicky();
         return view;
-    }
-
-    /**
-     * Checks for valid device permissions.
-     *
-     * @return
-     */
-    private boolean checkPermissions() {
-        List<String> permissionsNeeded = new ArrayList<String>();
-
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) != PackageManager
-                .PERMISSION_GRANTED) {
-            permissionsNeeded.add(Manifest.permission.INTERNET);
-        }
-        if (!permissionsNeeded.isEmpty()) {
-            String[] permissions = new String[permissionsNeeded.size()];
-
-            ActivityCompat.requestPermissions(getActivity(), permissionsNeeded.toArray(permissions),
-                    REQUEST_CODE_INTERNET);
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -114,31 +94,6 @@ public class PublicFragment extends Fragment {
                 return true;
             }
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[]
-            grantResults) {
-        switch (requestCode) {
-            case REQUEST_CODE_INTERNET: {
-                Map<String, Integer> perms = new HashMap<String, Integer>();
-
-                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
-                perms.put(Manifest.permission.SEND_SMS, PackageManager.PERMISSION_GRANTED);
-                // Fill with results
-                for (int i = 0; i < permissions.length; i++) {
-                    perms.put(permissions[i], grantResults[i]);
-                }
-                if (perms.get(Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED) {
-                    loadPicky();
-                } else {
-                    Toast.makeText(getActivity(), "Internet Permission Denied", Toast.LENGTH_SHORT).show();
-                }
-            }
-            break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
     }
 
     private void loadPicky() {
