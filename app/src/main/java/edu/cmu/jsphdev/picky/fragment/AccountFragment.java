@@ -9,10 +9,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
+import edu.cmu.jsphdev.picky.util.TextValidator;
 import edu.cmu.jsphdev.picky.ws.remote.service.UpdatePasswordService;
 
 /**
@@ -28,12 +33,34 @@ public class AccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         Button uploadButton = (Button) view.findViewById(R.id.saveButton);
-        newPasswordEditText = (EditText) view.findViewById(R.id.newPasswordConfirm);
+        newPasswordEditText = (EditText) view.findViewById(R.id.newPasswordEditText);
         newPasswordConfirmationEditText = (EditText) view.findViewById(R.id.newPasswordConfirmationEditText);
+
+        newPasswordEditText.addTextChangedListener(new TextValidator(newPasswordEditText) {
+            @Override
+            public void validate(TextView textView, String text) {
+                if (!isValidPassword(text)) {
+                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
+                }
+            }
+        });
+
+        newPasswordConfirmationEditText.addTextChangedListener(new TextValidator(newPasswordConfirmationEditText) {
+            @Override
+            public void validate(TextView textView, String text) {
+                if (!isValidPassword(text)) {
+                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
+                }
+                if(!text.equals(newPasswordEditText.getText().toString())) {
+                    textView.setError("Password must match!");
+                }
+            }
+        });
 
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Callback<Boolean> callback = new Callback<Boolean>() {
                     @Override
                     public void process(Boolean result) {
@@ -51,15 +78,32 @@ public class AccountFragment extends Fragment {
                 String password = newPasswordEditText.getText().toString();
                 String confirmation = newPasswordConfirmationEditText.getText().toString();
 
-                if (password.equals(confirmation)) {
-                    updatePasswordService.equals(password);
-                } else {
+                if (password.equals(null) || confirmation.equals(null)) {
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "Passwords cant be null", Toast.LENGTH_LONG).show();
+                } else if (!password.equals(confirmation)) {
                     Toast.makeText(getActivity().getApplicationContext(),
                             "Passwords does not match", Toast.LENGTH_LONG).show();
+                } else {
+                    updatePasswordService.equals(password);
                 }
             }
         });
         return view;
     }
 
+
+
+    // validating password with retype password
+    private boolean isValidPassword(String pass) {
+        Pattern pattern;
+        Matcher matcher;
+
+        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
+
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(pass);
+
+        return matcher.matches();
+    }
 }
