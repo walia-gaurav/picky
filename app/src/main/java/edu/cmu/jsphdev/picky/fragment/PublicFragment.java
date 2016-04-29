@@ -17,18 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.entities.Photo;
 import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
-import edu.cmu.jsphdev.picky.ws.remote.service.ConsumerService;
 import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyConsumerWebServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.service.ConsumerService;
 
 /**
  * TabFragment to display the picky wall.
@@ -108,15 +103,11 @@ public class PublicFragment extends Fragment {
 //TODO: Remove wired data.
         Picky picky = getPicky();
 
-        ImageDownloaderButtonCallback leftButtonCallback = new ImageDownloaderButtonCallback(getResources(),
-                leftButton);
-        ImageDownloaderButtonCallback rightButtonCallback = new ImageDownloaderButtonCallback(getResources(),
-                rightButton);
-        ImageDownloaderTask<Button> leftImageDownloaderTask = new ImageDownloaderTask<>(leftButtonCallback);
-        ImageDownloaderTask<Button> rightImageDownloaderTask = new ImageDownloaderTask<>(rightButtonCallback);
+        ImageDownloaderButtonCallback buttonCallback = new ImageDownloaderButtonCallback(getResources(),
+                leftButton, rightButton);
+        ImageDownloaderTask<Button> imageDownloaderTask = new ImageDownloaderTask<>(buttonCallback);
+        imageDownloaderTask.execute(picky.getLeftPhoto().getUrl(), picky.getRightPhoto().getUrl());
 
-        leftImageDownloaderTask.execute(picky.getLeftPhoto().getUrl());
-        rightImageDownloaderTask.execute(picky.getRightPhoto().getUrl());
         titleTextView.setText(picky.getTitle());
         customTouchListener(leftButton);
         customTouchListener(rightButton);

@@ -8,6 +8,8 @@ import android.util.Log;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderCallback;
 
@@ -16,7 +18,7 @@ import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderCallback;
  *
  * @param <T>
  */
-public class ImageDownloaderTask<T> extends AsyncTask<String, Void, Bitmap> {
+public class ImageDownloaderTask<T> extends AsyncTask<String, Void, List<Bitmap>> {
 
     private final ImageDownloaderCallback<T> callback;
 
@@ -25,6 +27,7 @@ public class ImageDownloaderTask<T> extends AsyncTask<String, Void, Bitmap> {
     }
 
     public static Bitmap downloadBitmap(String url) {
+
         HttpURLConnection urlConnection = null;
         try {
             URL uri = new URL(url);
@@ -49,16 +52,19 @@ public class ImageDownloaderTask<T> extends AsyncTask<String, Void, Bitmap> {
     }
 
     @Override
-    protected Bitmap doInBackground(String... params) {
-        return downloadBitmap(params[0]);
+    protected List<Bitmap> doInBackground(String... params) {
+        List<Bitmap> images = new ArrayList<>();
+        images.add(downloadBitmap(params[0]));
+        images.add(downloadBitmap(params[1]));
+        return images;
     }
 
     @Override
-    protected void onPostExecute(Bitmap bitmap) {
+    protected void onPostExecute(List<Bitmap> bitmaps) {
         if (isCancelled()) {
-            bitmap = null;
+            bitmaps = null;
         }
-        callback.process(bitmap);
+        callback.process(bitmaps);
     }
 
 }

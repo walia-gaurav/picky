@@ -78,20 +78,9 @@ public class ProfileFragment extends Fragment {
             TextView leftVotes = (TextView) convertView.findViewById(R.id.leftVotes);
             TextView rightVotes = (TextView) convertView.findViewById(R.id.rightVotes);
 
-            ImageDownloaderButtonCallback leftButtonCallback = new ImageDownloaderButtonCallback(getResources(),
-                    leftButton);
-            ImageDownloaderButtonCallback rightButtonCallback = new ImageDownloaderButtonCallback(getResources(),
-                    rightButton);
-            ImageDownloaderTask<Button> leftImageDownloaderTask = new ImageDownloaderTask<>(leftButtonCallback);
-            ImageDownloaderTask<Button> rightImageDownloaderTask = new ImageDownloaderTask<>(rightButtonCallback);
-
-            leftImageDownloaderTask.execute(picky.getLeftPhoto().getUrl());
-            rightImageDownloaderTask.execute(picky.getRightPhoto().getUrl());
-
             title.setText(picky.getTitle());
 
             float total = picky.getLeftVotes() + picky.getRightVotes();
-
             if (total == 0) {
                 leftVotes.setText(String.format(Locale.US, "0%% (Votes: %d)", picky.getLeftVotes()));
                 rightVotes.setText(String.format(Locale.US, "0%% (Votes: %d)", picky.getRightVotes()));
@@ -103,6 +92,12 @@ public class ProfileFragment extends Fragment {
                         100.0) /
                         total, picky.getRightVotes()));
             }
+
+            ImageDownloaderButtonCallback buttonCallback = new ImageDownloaderButtonCallback(getResources(),
+                    leftButton, rightButton);
+
+            ImageDownloaderTask<Button> imageDownloaderTask = new ImageDownloaderTask<>(buttonCallback);
+            imageDownloaderTask.execute(picky.getLeftPhoto().getUrl(), picky.getRightPhoto().getUrl());
 
             return convertView;
         }

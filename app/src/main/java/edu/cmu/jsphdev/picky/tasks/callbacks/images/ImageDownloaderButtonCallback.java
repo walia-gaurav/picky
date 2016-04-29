@@ -3,24 +3,30 @@ package edu.cmu.jsphdev.picky.tasks.callbacks.images;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.widget.Button;
+
+import java.util.List;
+
+import edu.cmu.jsphdev.picky.R;
 
 public class ImageDownloaderButtonCallback extends ImageDownloaderCallback<Button> {
 
-    public ImageDownloaderButtonCallback(Resources resources, Button reference) {
-        super(resources, reference);
+    public ImageDownloaderButtonCallback(Resources resources, Button leftButton, Button rightButton) {
+        super(resources, leftButton, rightButton);
     }
 
     @Override
-    public void process(Bitmap bitmap) {
-        if (element != null) {
-            if (bitmap != null) {
-                Drawable drawable = new BitmapDrawable(resources, bitmap);
+    public void process(List<Bitmap> bitmaps) {
+        setImageToElement(leftElement, bitmaps.get(0));
+        setImageToElement(rightElement, bitmaps.get(0));
+    }
 
-                element.setBackground(drawable);
+    private void setImageToElement(Button element, Bitmap image) {
+        if (element != null) {
+            if (image != null) {
+                element.setBackground(new BitmapDrawable(resources, image));
             } else {
-                //TODO: Set placeholder
+                element.setBackground(resources.getDrawable(R.drawable.broken_image));
             }
         }
     }
