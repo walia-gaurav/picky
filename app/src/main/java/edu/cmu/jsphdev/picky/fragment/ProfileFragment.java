@@ -4,7 +4,6 @@ package edu.cmu.jsphdev.picky.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,14 +14,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import edu.cmu.jsphdev.picky.R;
-import edu.cmu.jsphdev.picky.entities.Photo;
 import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
+import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
+import edu.cmu.jsphdev.picky.ws.remote.service.PickyHistoryService;
 
 /**
  * TabFragment to display user's profile page.
@@ -32,34 +32,23 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        //TODO: Get list from server
-        ArrayList<Picky> pickies = new ArrayList<Picky>();
+        final View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        pickies.add(getPicky());
-        pickies.add(getPicky());
-        PickiesAdapter pickiesAdapter = new PickiesAdapter(getActivity(), 0, pickies);
-        ListView listView = (ListView) view.findViewById(R.id.profilePickyList);
+        Callback<List<Picky>> callback = new Callback<List<Picky>>() {
+            @Override
+            public void process(List<Picky> pickies) {
+                if (pickies != null && !pickies.isEmpty()) {
 
-        listView.setAdapter(pickiesAdapter);
+                    PickiesAdapter pickiesAdapter = new PickiesAdapter(getActivity(), 0, pickies);
+                    ListView listView = (ListView) view.findViewById(R.id.profilePickyList);
+                    listView.setAdapter(pickiesAdapter);
+                }
+            }
+        };
+        PickyHistoryService pickyHistoryService = new PickyHistoryService(callback);
+        pickyHistoryService.execute();
+
         return view;
-    }
-
-    @NonNull
-    private Picky getPicky() {
-        Picky picky = new Picky();
-        Photo leftPhoto = new Photo();
-        Photo rightPhoto = new Photo();
-
-        picky.setTitle("AWESOME PICKY");
-        leftPhoto.setUrl("http://g-ec2.images-amazon.com/images/G/31/img15/Shoes/CatNav/p._V293117552_.jpg");
-        rightPhoto.setUrl("http://www.vegetarian-shoes.co" +
-                ".uk/Portals/42/product/images/prd06da61c8-f8a9-402a-8590-fbec98bfbf1a.jpg");
-        picky.setLeftPhoto(leftPhoto);
-        picky.setRightPhoto(rightPhoto);
-        picky.setLeftVotes(20);
-        picky.setRightVotes(80);
-        return picky;
     }
 
     private class PickiesAdapter extends ArrayAdapter<Picky> {
@@ -67,7 +56,7 @@ public class ProfileFragment extends Fragment {
         private static final String TAG = "PickiesAdapter";
         private LayoutInflater inflater = null;
 
-        public PickiesAdapter(Activity activity, int textViewResourceId, ArrayList<Picky> pickies) {
+        public PickiesAdapter(Activity activity, int textViewResourceId, List<Picky> pickies) {
             super(activity, textViewResourceId, pickies);
             try {
                 inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
