@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            // if we weren't given a view, inflate one
+
             if (null == convertView) {
                 convertView = inflater.inflate(R.layout.list_item_profile, null);
             }
@@ -85,15 +85,25 @@ public class ProfileFragment extends Fragment {
             ImageDownloaderTask<Button> leftImageDownloaderTask = new ImageDownloaderTask<>(leftButtonCallback);
             ImageDownloaderTask<Button> rightImageDownloaderTask = new ImageDownloaderTask<>(rightButtonCallback);
 
-            int total = picky.getLeftVotes() + picky.getRightVotes();
-
             leftImageDownloaderTask.execute(picky.getLeftPhoto().getUrl());
             rightImageDownloaderTask.execute(picky.getRightPhoto().getUrl());
+
             title.setText(picky.getTitle());
-            leftVotes.setText(String.format(Locale.US, "%.2f %% (%d)", ((double) picky.getLeftVotes() * 100.0) /
-                    total, picky.getLeftVotes()));
-            rightVotes.setText(String.format(Locale.US, "%.2f %% (%d)", ((double) picky.getRightVotes() * 100.0) /
-                    total, picky.getRightVotes()));
+
+            float total = picky.getLeftVotes() + picky.getRightVotes();
+
+            if (total == 0) {
+                leftVotes.setText(String.format(Locale.US, "0%% (Votes: %d)", picky.getLeftVotes()));
+                rightVotes.setText(String.format(Locale.US, "0%% (Votes: %d)", picky.getRightVotes()));
+            } else {
+                leftVotes.setText(String.format(Locale.US, "%.2f %% (Votes: %d)", ((double) picky.getLeftVotes() *
+                        100.0) /
+                        total, picky.getLeftVotes()));
+                rightVotes.setText(String.format(Locale.US, "%.2f%% (Votes: %d)", ((double) picky.getRightVotes() *
+                        100.0) /
+                        total, picky.getRightVotes()));
+            }
+
             return convertView;
         }
     }
