@@ -13,7 +13,7 @@ INSERT INTO `User`(username, token, password) VALUES ('user', NULL, 'password');
 
 CREATE TABLE IF NOT EXISTS Photo (
     id int(11) PRIMARY KEY AUTO_INCREMENT,
-    url varchar(1024) NOT NULL UNIQUE
+    url varchar(1000) NOT NULL UNIQUE
 ) ENGINE = MyISAM;
 
 CREATE TABLE IF NOT EXISTS Location (
