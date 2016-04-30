@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String[] ALL = {Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.INTERNET};
-
     private TabHost tabHost;
 
     @Override
@@ -39,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String[] permissionsMissing = missingPermissions();
-        ActivityCompat.requestPermissions(this, permissionsMissing, ALL_PERMISSIONS_REQUEST_CODE);
+        String[] permissionsNeeded = missingPermissions();
+        if (permissionsNeeded.length > 0) {
+            ActivityCompat.requestPermissions(this, permissionsNeeded, ALL_PERMISSIONS_REQUEST_CODE);
+        }
         String existingToken = PreferenceManager.getDefaultSharedPreferences(this).getString("existingUser", "");
         if (!existingToken.isEmpty()) {
             CurrentSession.setActiveUser(new Gson().fromJson(existingToken, User.class));
@@ -65,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-        return new String[permissionsNeeded.size()];
+        String[] permissions = new String[permissionsNeeded.size()];
+        return permissionsNeeded.toArray(permissions);
     }
 
     private void addTabSpecs(String tag, int contentId) {

@@ -49,7 +49,7 @@ public class VotePickyServlet extends HttpServlet {
         boolean result = voteService.vote(user.getId(), picky.getId(),vote);
 
         if (!result) {
-            ServletUtils.addError(response, gson, "Could vote for picky");
+            ServletUtils.addError(response, gson, "Could not vote for picky");
             response.setStatus(ServletUtils.BAD_STATUS);
         }
     }

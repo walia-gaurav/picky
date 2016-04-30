@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,10 +26,14 @@ import java.util.Map;
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.entities.Photo;
 import edu.cmu.jsphdev.picky.entities.Picky;
+import edu.cmu.jsphdev.picky.entities.Vote;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
+import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
 import edu.cmu.jsphdev.picky.ws.remote.service.ConsumerService;
 import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyConsumerWebServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.service.TimelineService;
+import edu.cmu.jsphdev.picky.ws.remote.service.VoteService;
 
 /**
  * TabFragment to display the picky wall.
@@ -36,6 +41,7 @@ import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyConsumerWebServiceInterfa
 public class PublicFragment extends Fragment {
 
     private PickyConsumerWebServiceInterface pickyService;
+    private Picky picky;
     private TextView titleTextView;
     private Button leftButton;
     private Button rightButton;
@@ -57,9 +63,11 @@ public class PublicFragment extends Fragment {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) !=
                 PackageManager.PERMISSION_GRANTED)  {
             Toast.makeText(getActivity().getApplicationContext(),
-                    "Internet Permission is required", Toast.LENGTH_LONG).show();
+                    "Internet permission is required", Toast.LENGTH_LONG).show();
             return view;
         }
+        customTouchListener(leftButton, Vote.LEFT);
+        customTouchListener(rightButton, Vote.RIGHT);
         loadPicky();
         return view;
     }
@@ -69,7 +77,7 @@ public class PublicFragment extends Fragment {
      *
      * @param button
      */
-    private void customTouchListener(final Button button) {
+    private void customTouchListener(final Button button, final Vote vote) {
         button.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -80,10 +88,15 @@ public class PublicFragment extends Fragment {
                         break;
                     }
                     case MotionEvent.ACTION_UP: {
-                        button.setText("picked !");
-                        ((LinearLayout) getActivity().findViewById(R.id.frame)).setClickable(true);
-                        leftButton.setEnabled(false);
-                        rightButton.setEnabled(false);
+                        button.setText(R.string.picked);
+                        Callback<Boolean> callback = new Callback<Boolean>() {
+                            @Override
+                            public void process(Boolean element) {
+                                loadPicky();
+                            }
+                        };
+                        VoteService voteService = new VoteService(callback);
+                        voteService.execute(String.format("%d", picky.getId()), vote.name());
                     }
                     case MotionEvent.ACTION_CANCEL: {
                         button.getBackground().clearColorFilter();
@@ -96,45 +109,35 @@ public class PublicFragment extends Fragment {
         });
     }
 
-    private void loadPicky() {
-//TODO: Complete callback.
-//        pickyService.nextPicky(new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//            }
-//
-//        });
-
-//TODO: Remove wired data.
-        Picky picky = getPicky();
-
-        ImageDownloaderButtonCallback leftButtonCallback = new ImageDownloaderButtonCallback(getResources(),
-                leftButton);
-        ImageDownloaderButtonCallback rightButtonCallback = new ImageDownloaderButtonCallback(getResources(),
-                rightButton);
-        ImageDownloaderTask<Button> leftImageDownloaderTask = new ImageDownloaderTask<>(leftButtonCallback);
-        ImageDownloaderTask<Button> rightImageDownloaderTask = new ImageDownloaderTask<>(rightButtonCallback);
-
-        leftImageDownloaderTask.execute(picky.getLeftPhoto().getUrl());
-        rightImageDownloaderTask.execute(picky.getRightPhoto().getUrl());
-        titleTextView.setText(picky.getTitle());
-        customTouchListener(leftButton);
-        customTouchListener(rightButton);
+    private void disableButtons() {
+        ((LinearLayout) getActivity().findViewById(R.id.frame)).setClickable(true);
+        leftButton.setEnabled(false);
+        rightButton.setEnabled(false);
     }
 
-    @NonNull
-    private Picky getPicky() {
-        Picky picky = new Picky();
-        Photo leftPhoto = new Photo();
-        Photo rightPhoto = new Photo();
+    private void loadPicky() {
+        Callback<Picky> callback = new Callback<Picky>() {
+            @Override
+            public void process(Picky pickyResult) {
+                picky = pickyResult;
+                if (pickyResult != null) {
+                    ImageDownloaderButtonCallback leftButtonCallback = new ImageDownloaderButtonCallback(getResources(),
+                            leftButton);
+                    ImageDownloaderButtonCallback rightButtonCallback = new ImageDownloaderButtonCallback(getResources(),
+                            rightButton);
+                    ImageDownloaderTask<Button> leftImageDownloaderTask = new ImageDownloaderTask<>(leftButtonCallback);
+                    ImageDownloaderTask<Button> rightImageDownloaderTask = new ImageDownloaderTask<>(rightButtonCallback);
 
-        picky.setTitle("AWESOME PICKY");
-        leftPhoto.setUrl("http://g-ec2.images-amazon.com/images/G/31/img15/Shoes/CatNav/p._V293117552_.jpg");
-        rightPhoto.setUrl("http://www.vegetarian-shoes.co" +
-                ".uk/Portals/42/product/images/prd06da61c8-f8a9-402a-8590-fbec98bfbf1a.jpg");
-        picky.setLeftPhoto(leftPhoto);
-        picky.setRightPhoto(rightPhoto);
-        return picky;
+                    leftImageDownloaderTask.execute(pickyResult.getLeftPhoto().getUrl());
+                    rightImageDownloaderTask.execute(pickyResult.getRightPhoto().getUrl());
+                    titleTextView.setText(pickyResult.getTitle());
+                } else {
+                    disableButtons();
+                }
+            }
+        };
+        TimelineService timelineService = new TimelineService(callback);
+        timelineService.execute();
     }
 
 }

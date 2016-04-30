@@ -2,25 +2,28 @@ package edu.cmu.jsphdev.picky.ws.remote.service;
 
 import android.os.AsyncTask;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 
-public class TimelineService extends AsyncTask<String, Void, List<Picky>>  {
+public class TimelineService extends AsyncTask<String, Void, Picky>  {
 
-    private Callback<List<Picky>> callback;
+    private Callback<Picky> callback;
 
-    public TimelineService(Callback<List<Picky>> callback) {
+    public TimelineService(Callback<Picky> callback) {
         this.callback = callback;
     }
 
     @Override
-    protected List<Picky> doInBackground(String... params) {
+    protected Picky doInBackground(String... params) {
         URL url = null;
         try {
             url = new URL(BaseService.getAbsoluteUrl("/picky/timeline"));
@@ -37,7 +40,13 @@ public class TimelineService extends AsyncTask<String, Void, List<Picky>>  {
             BaseService.setAuthHeader(urlConnection);
             int responseCode = urlConnection.getResponseCode();
 
-            return null;
+            if (responseCode != BaseService.OK_STATUS) {
+                return null;
+            }
+            BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            Gson gson = new Gson();
+
+            return gson.fromJson(in, Picky.class);
         } catch (IOException ex) {
             return null;
         } finally {
@@ -48,7 +57,7 @@ public class TimelineService extends AsyncTask<String, Void, List<Picky>>  {
     }
 
     @Override
-    protected void onPostExecute(List<Picky> result) {
+    protected void onPostExecute(Picky result) {
         callback.process(result);
     }
 
