@@ -39,6 +39,7 @@ public class VoteService extends AsyncTask<String, Void, Boolean> {
             byte[] postData = urlParameters.getBytes(BaseService.UTF8);
 
             urlConnection = (HttpURLConnection) url.openConnection();
+            BaseService.setAuthHeader(urlConnection);
             urlConnection.setDoOutput(true);
             urlConnection.setInstanceFollowRedirects(false);
             urlConnection.setRequestMethod("POST");

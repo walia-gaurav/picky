@@ -3,6 +3,8 @@ package edu.cmu.jsphdev.picky.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import edu.cmu.jsphdev.picky.R;
+import edu.cmu.jsphdev.picky.fragment.PublicFragment;
 import edu.cmu.jsphdev.picky.fragment.UploadHelper;
 
 /**
@@ -37,11 +40,24 @@ public class HomeActivity extends AppCompatActivity {
 
 
         /* Initializing different tab holders. */
-        addTabSpecs("Group", R.id.publicTab, R.drawable.group_icon);
+        addTabSpecs("Public", R.id.publicTab, R.drawable.group_icon);
         addTabSpecs("Upload", R.id.uploadTab, R.drawable.upload_icon);
         addTabSpecs("Profile", R.id.profileTab, R.drawable.profile_icon);
         addTabSpecs("Account", R.id.accountTab, R.drawable.account_icon);
         addTabSpecs("Logout", R.id.logoutTab, R.drawable.logout_icon);
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                if (tabId.equals("Public"))  {
+                    Fragment publicFragment = getSupportFragmentManager().findFragmentById(R.id.publicFragment);
+
+                    if (publicFragment != null) {
+                        ((PublicFragment)publicFragment).refresh();
+                    }
+                }
+
+            }
+        });
 
         if (null != savedInstanceState) {
             tabHost.setCurrentTab(1);

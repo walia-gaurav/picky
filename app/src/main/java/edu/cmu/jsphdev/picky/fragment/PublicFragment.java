@@ -28,7 +28,7 @@ import edu.cmu.jsphdev.picky.ws.remote.service.VoteService;
 /**
  * TabFragment to display the picky wall.
  */
-public class PublicFragment extends Fragment {
+public class PublicFragment extends Fragment  {
 
     private Picky picky;
     private TextView titleTextView;
@@ -40,7 +40,6 @@ public class PublicFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_public, container, false);
 
-
         leftButton = (Button) view.findViewById(R.id.leftChoiceButton);
         rightButton = (Button) view.findViewById(R.id.rightChoiceButton);
         titleTextView = (TextView) view.findViewById(R.id.titleTextView);
@@ -51,10 +50,13 @@ public class PublicFragment extends Fragment {
                     "Internet permission is required", Toast.LENGTH_LONG).show();
             return view;
         }
-        customTouchListener(leftButton, Vote.LEFT);
-        customTouchListener(rightButton, Vote.RIGHT);
         loadPicky();
+
         return view;
+    }
+
+    public void refresh() {
+        loadPicky();
     }
 
     /**
@@ -82,6 +84,7 @@ public class PublicFragment extends Fragment {
                         };
                         VoteService voteService = new VoteService(callback);
                         voteService.execute(String.format("%d", picky.getId()), vote.name());
+                        break;
                     }
                     case MotionEvent.ACTION_CANCEL: {
                         button.getBackground().clearColorFilter();
@@ -92,6 +95,14 @@ public class PublicFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    private void enableButtons() {
+        ((LinearLayout) getActivity().findViewById(R.id.frame)).setClickable(false);
+        leftButton.setText("");
+        leftButton.setEnabled(true);
+        rightButton.setEnabled(true);
+        rightButton.setText("");
     }
 
     private void disableButtons() {
@@ -112,8 +123,13 @@ public class PublicFragment extends Fragment {
 
                     buttonsDownloaderTask.execute(pickyResult.getLeftPhoto().getUrl(), pickyResult.getRightPhoto().getUrl());
                     titleTextView.setText(pickyResult.getTitle());
+                    enableButtons();
+                    customTouchListener(leftButton, Vote.LEFT);
+                    customTouchListener(rightButton, Vote.RIGHT);
                 } else {
                     disableButtons();
+                    Toast.makeText(getActivity().getApplicationContext(),
+                            "No more pickies", Toast.LENGTH_LONG).show();
                 }
             }
         };

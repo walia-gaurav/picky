@@ -191,10 +191,12 @@ public class PickyService {
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
 
-            Picky picky = fillPicky(rs);
+            if (rs.next()) {
+                Picky picky = fillPicky(rs);
 
-            addUser(rs, picky);
-            return picky;
+                addUser(rs, picky);
+                return picky;
+            }
         } catch (SQLException ex) {
             logger.error("Problem executing statement", ex);
         }
