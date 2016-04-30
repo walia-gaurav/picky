@@ -57,7 +57,7 @@ public class PickyDeleteService extends AsyncTask<String, Void, Picky> {
             wr.write(postData);
             wr.flush();
             wr.close();
-            
+
             if (urlConnection.getResponseCode() != BaseService.OK_STATUS) {
                 return null;
             }
