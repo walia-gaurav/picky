@@ -19,16 +19,11 @@ import edu.cmu.jsphdev.picky.fragment.UploadHelper;
 public class HomeActivity extends AppCompatActivity {
 
     int selectedPicky;
-//    Bitmap leftPhoto;
-//    Bitmap rightPhoto;
 
     private TabHost tabHost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-        Log.d("TESTING", "HomeActivity created!");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -50,39 +45,26 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("TESTING", "Coming to result");
 
         if (resultCode == RESULT_OK) {
-            /* Get hold of the button from which imageCapture was called. */
 
             TextView test = (TextView) findViewById(R.id.selectedPicky);
             try {
                 selectedPicky = Integer.parseInt(test.getText().toString());
             } catch (NumberFormatException e) {
                 Log.d("TESTING", "" + e.getMessage());
-
             }
 
             ImageView pickyView = (ImageView) findViewById(selectedPicky);
 
-            Log.d("TESTING", "RequestCode: " + requestCode);
             Bitmap image = null;
             if (requestCode == 1) {
-                Log.d("TESTING", "Coming to result");
                 image = UploadHelper.retrieveImageFromCamera();
                 UploadHelper.updateImageView(pickyView, image);
             } else if (requestCode == 2) {
                 image = UploadHelper.retrieveImageFromGallery(this, data);
                 UploadHelper.updateImageView(pickyView, image);
             }
-//
-//            if (selectedPicky == R.id.choice1) {
-//                leftPhoto = image;
-//                UploadHelper.updateImageView((ImageView) findViewById(R.id.choice2), rightPhoto);
-//            } else if (selectedPicky == R.id.choice2) {
-//                rightPhoto = image;
-//                UploadHelper.updateImageView((ImageView) findViewById(R.id.choice1), leftPhoto);
-//            }
         }
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -108,8 +90,6 @@ public class HomeActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
 
         }
-//        outState.putParcelable("leftPhoto", leftPhoto);
-//        outState.putParcelable("rightPhoto", rightPhoto);
         super.onSaveInstanceState(outState);
     }
 
@@ -118,8 +98,6 @@ public class HomeActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("selectedPicky")) {
                 selectedPicky = savedInstanceState.getInt("selectedPicky");
-//                leftPhoto = savedInstanceState.getParcelable("leftPhoto");
-//                rightPhoto = savedInstanceState.getParcelable("rightPhoto");
             }
         }
         super.onRestoreInstanceState(savedInstanceState);
