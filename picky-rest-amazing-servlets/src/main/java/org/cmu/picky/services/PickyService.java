@@ -41,7 +41,7 @@ public class PickyService {
             preparedStatement.setInt(1, user.getId());
 
             ResultSet rs = preparedStatement.executeQuery();
-            List<Picky> pickies = new ArrayList<Picky>();
+            List<Picky> pickies = new ArrayList<>();
 
             while (rs.next()) {
                 Picky picky = fillPicky(rs);

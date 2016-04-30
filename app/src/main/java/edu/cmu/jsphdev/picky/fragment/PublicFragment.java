@@ -5,10 +5,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,20 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import edu.cmu.jsphdev.picky.R;
-import edu.cmu.jsphdev.picky.entities.Photo;
 import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.entities.Vote;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
-import edu.cmu.jsphdev.picky.ws.remote.service.ConsumerService;
-import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyConsumerWebServiceInterface;
 import edu.cmu.jsphdev.picky.ws.remote.service.TimelineService;
 import edu.cmu.jsphdev.picky.ws.remote.service.VoteService;
 
@@ -40,15 +30,10 @@ import edu.cmu.jsphdev.picky.ws.remote.service.VoteService;
  */
 public class PublicFragment extends Fragment {
 
-    private PickyConsumerWebServiceInterface pickyService;
     private Picky picky;
     private TextView titleTextView;
     private Button leftButton;
     private Button rightButton;
-
-    public PublicFragment() {
-        pickyService = new ConsumerService();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,15 +106,11 @@ public class PublicFragment extends Fragment {
             public void process(Picky pickyResult) {
                 picky = pickyResult;
                 if (pickyResult != null) {
-                    ImageDownloaderButtonCallback leftButtonCallback = new ImageDownloaderButtonCallback(getResources(),
-                            leftButton);
-                    ImageDownloaderButtonCallback rightButtonCallback = new ImageDownloaderButtonCallback(getResources(),
-                            rightButton);
-                    ImageDownloaderTask<Button> leftImageDownloaderTask = new ImageDownloaderTask<>(leftButtonCallback);
-                    ImageDownloaderTask<Button> rightImageDownloaderTask = new ImageDownloaderTask<>(rightButtonCallback);
+                    ImageDownloaderButtonCallback buttonsCallback = new ImageDownloaderButtonCallback(getResources(),
+                            leftButton, rightButton);
+                    ImageDownloaderTask<Button> buttonsDownloaderTask = new ImageDownloaderTask<>(buttonsCallback);
 
-                    leftImageDownloaderTask.execute(pickyResult.getLeftPhoto().getUrl());
-                    rightImageDownloaderTask.execute(pickyResult.getRightPhoto().getUrl());
+                    buttonsDownloaderTask.execute(pickyResult.getLeftPhoto().getUrl(), pickyResult.getRightPhoto().getUrl());
                     titleTextView.setText(pickyResult.getTitle());
                 } else {
                     disableButtons();
