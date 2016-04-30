@@ -75,12 +75,13 @@ public class ProfileFragment extends Fragment {
                 convertView = inflater.inflate(R.layout.list_item_profile, null, false);
             }
 
-            Picky picky = getItem(position);
+            final Picky picky = getItem(position);
             Button leftButton = (Button) convertView.findViewById(R.id.leftChoiceButton);
             Button rightButton = (Button) convertView.findViewById(R.id.rightChoiceButton);
             TextView title = (TextView) convertView.findViewById(R.id.profilePickyTitle);
             TextView leftVotes = (TextView) convertView.findViewById(R.id.leftVotes);
             TextView rightVotes = (TextView) convertView.findViewById(R.id.rightVotes);
+            Button deleteButton = (Button) convertView.findViewById(R.id.detelePickyButton);
 
             title.setText(picky.getTitle());
 
@@ -102,6 +103,15 @@ public class ProfileFragment extends Fragment {
 
             ImageDownloaderTask<Button> imageDownloaderTask = new ImageDownloaderTask<>(buttonCallback);
             imageDownloaderTask.execute(picky.getLeftPhoto().getUrl(), picky.getRightPhoto().getUrl());
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    //TODO: Call the server to delete the picky. HERE!
+                    Toast.makeText(getActivity(), picky.getTitle(), Toast.LENGTH_LONG).show();
+                }
+            });
 
             return convertView;
         }

@@ -67,6 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/profilePickyVoting">
         <Button
+            android:id="@+id/detelePickyButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
