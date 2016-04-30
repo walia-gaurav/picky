@@ -103,4 +103,9 @@ public class Picky {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return this.id == ((Picky) o).getId();
+    }
 }

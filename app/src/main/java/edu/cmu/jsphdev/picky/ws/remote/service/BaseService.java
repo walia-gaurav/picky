@@ -6,7 +6,7 @@ import edu.cmu.jsphdev.picky.util.CurrentSession;
 
 public class BaseService {
 
-    public static final String IP = "http://192.168.0.102:8080";
+    public static final String IP = "http://172.29.93.234:8080";
     public static final String AUTH_HEADER = "X-Auth-Token";
     public static final String UTF8 = "UTF-8";
     public static final int OK_STATUS = 200;

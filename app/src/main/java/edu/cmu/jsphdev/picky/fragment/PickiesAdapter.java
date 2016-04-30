@@ -22,7 +22,6 @@ import edu.cmu.jsphdev.picky.ws.remote.service.PickyDeleteService;
 
 class PickiesAdapter extends BaseAdapter {
 
-    private static final String TAG = "PickiesAdapter";
     private LayoutInflater inflater = null;
     private Activity callerActivity;
     private List<Picky> pickies;
@@ -33,8 +32,12 @@ class PickiesAdapter extends BaseAdapter {
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public final PickiesAdapter getAdapter(){
+    public final PickiesAdapter getAdapter() {
         return this;
+    }
+
+    public List<Picky> getPickies() {
+        return pickies;
     }
 
     @Override

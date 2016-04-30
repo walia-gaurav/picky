@@ -72,9 +72,11 @@
                     android:orientation="vertical">
 
                     <fragment
+                        android:id="@+id/profileFragment"
                         android:name="edu.cmu.jsphdev.picky.fragment.ProfileFragment"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"></fragment>
+                        android:layout_height="match_parent"
+                        android:tag="profile_fragment_tag"></fragment>
                 </LinearLayout>
 
                 <LinearLayout

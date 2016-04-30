@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +12,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import edu.cmu.jsphdev.picky.R;
+import edu.cmu.jsphdev.picky.fragment.ProfileFragment;
 import edu.cmu.jsphdev.picky.fragment.PublicFragment;
 import edu.cmu.jsphdev.picky.fragment.UploadHelper;
 
@@ -40,14 +40,19 @@ public class HomeActivity extends AppCompatActivity {
         addTabSpecs("Profile", R.id.profileTab, R.drawable.profile_icon);
         addTabSpecs("Account", R.id.accountTab, R.drawable.account_icon);
         addTabSpecs("Logout", R.id.logoutTab, R.drawable.logout_icon);
+
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-                if (tabId.equals("Public"))  {
+                if (tabId.equals("Public")) {
                     Fragment publicFragment = getSupportFragmentManager().findFragmentById(R.id.publicFragment);
-
                     if (publicFragment != null) {
-                        ((PublicFragment)publicFragment).refresh();
+                        ((PublicFragment) publicFragment).refresh();
+                    }
+                } else if (tabId.equals("Profile")) {
+                    Fragment profileFragment = getSupportFragmentManager().findFragmentByTag("profile_fragment_tag");
+                    if (profileFragment != null) {
+                        ((ProfileFragment) profileFragment).loadPickyHistory();
                     }
                 }
 

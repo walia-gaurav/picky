@@ -12,14 +12,14 @@
         android:layout_height="wrap_content"
         android:background="@android:color/holo_red_dark"
         android:elegantTextHeight="true"
+        android:fontFamily="sans-serif-condensed"
         android:gravity="center"
+        android:minHeight="120dp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
         android:text=".  p  .  i  .  c  .  k  .  y  ."
-        android:minHeight="120dp"
-        android:textSize="40dp"
-        android:fontFamily="sans-serif-condensed"
-        android:textColor="#FFFFFF"></TextView>
+        android:textColor="#FFFFFF"
+        android:textSize="40dp"></TextView>
 
     <TabHost
         android:id="@+id/homeTabHost"
@@ -75,7 +75,8 @@
                     <fragment
                         android:name="edu.cmu.jsphdev.picky.fragment.ProfileFragment"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"></fragment>
+                        android:layout_height="match_parent"
+                        android:tag="profile_fragment_tag"></fragment>
                 </LinearLayout>
 
                 <LinearLayout
