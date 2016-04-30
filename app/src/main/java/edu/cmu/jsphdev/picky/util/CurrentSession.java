@@ -14,6 +14,10 @@ public class CurrentSession {
         return activeUser.getToken();
     }
 
+    public static boolean isTiltActive() {
+        return activeUser.isTiltActive();
+    }
+
     public static void setActiveUser(User activeUser) {
         CurrentSession.activeUser = activeUser;
     }

@@ -17,4 +17,5 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="picked">picked !</string>
+    <string name="tilt_to_vote">Tilt to Vote</string>
 </resources>

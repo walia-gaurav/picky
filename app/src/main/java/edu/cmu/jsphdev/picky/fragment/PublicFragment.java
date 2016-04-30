@@ -2,11 +2,17 @@ package edu.cmu.jsphdev.picky.fragment;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,23 +28,38 @@ import edu.cmu.jsphdev.picky.entities.Vote;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
+import edu.cmu.jsphdev.picky.util.CurrentSession;
 import edu.cmu.jsphdev.picky.ws.remote.service.TimelineService;
 import edu.cmu.jsphdev.picky.ws.remote.service.VoteService;
 
 /**
  * TabFragment to display the picky wall.
  */
-public class PublicFragment extends Fragment  {
+public class PublicFragment extends Fragment implements SensorEventListener {
 
-    private Picky picky;
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private float[] gravity;
+    private float currentX;
+    private float lastX;
+    private boolean registred;
+
     private TextView titleTextView;
     private Button leftButton;
     private Button rightButton;
+    private Picky picky;
+    private long lastUpdate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_public, container, false);
+
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        currentX = SensorManager.GRAVITY_EARTH;
+        lastX = SensorManager.GRAVITY_EARTH;
+        lastUpdate = 0;
 
         leftButton = (Button) view.findViewById(R.id.leftChoiceButton);
         rightButton = (Button) view.findViewById(R.id.rightChoiceButton);
@@ -75,15 +96,7 @@ public class PublicFragment extends Fragment  {
                         break;
                     }
                     case MotionEvent.ACTION_UP: {
-                        button.setText(R.string.picked);
-                        Callback<Boolean> callback = new Callback<Boolean>() {
-                            @Override
-                            public void process(Boolean element) {
-                                loadPicky();
-                            }
-                        };
-                        VoteService voteService = new VoteService(callback);
-                        voteService.execute(String.format("%d", picky.getId()), vote.name());
+                        vote(button, vote);
                         break;
                     }
                     case MotionEvent.ACTION_CANCEL: {
@@ -96,6 +109,72 @@ public class PublicFragment extends Fragment  {
             }
         });
     }
+
+    private void vote(Button button, Vote vote) {
+        button.setText(R.string.picked);
+        Callback<Boolean> callback = new Callback<Boolean>() {
+            @Override
+            public void process(Boolean element) {
+                loadPicky();
+            }
+        };
+        VoteService voteService = new VoteService(callback);
+        voteService.execute(String.format("%d", picky.getId()), vote.name());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerSensor();
+    }
+
+    private void registerSensor() {
+        if (CurrentSession.isTiltActive()) {
+            registred = true;
+            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterSensor();
+    }
+
+    private void unregisterSensor() {
+        if (registred) {
+            registred = false;
+            sensorManager.unregisterListener(this);
+        }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            long actualTime = System.currentTimeMillis();
+
+            if ((actualTime - lastUpdate) > 100) {
+                gravity = event.values.clone();
+                // Shake detection
+                float x = gravity[0];
+                lastUpdate = actualTime;
+                lastX = currentX;
+                currentX = x;
+                float delta = Math.abs(currentX - lastX);
+                if (delta > 3 && Math.abs(currentX) > 3) {
+                    if (currentX <= 0) {
+                        vote(rightButton, Vote.RIGHT);
+                    } else {
+                        vote(leftButton, Vote.LEFT);
+                    }
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     private void enableButtons() {
         ((LinearLayout) getActivity().findViewById(R.id.frame)).setClickable(false);
@@ -126,15 +205,22 @@ public class PublicFragment extends Fragment  {
                     enableButtons();
                     customTouchListener(leftButton, Vote.LEFT);
                     customTouchListener(rightButton, Vote.RIGHT);
+                    registerSensor();
                 } else {
                     disableButtons();
                     Toast.makeText(getActivity().getApplicationContext(),
                             "No more pickies", Toast.LENGTH_LONG).show();
+                    unregisterSensor();
+
                 }
             }
         };
         TimelineService timelineService = new TimelineService(callback);
         timelineService.execute();
+    }
+
+    public boolean isRegistred() {
+        return registred;
     }
 
 }

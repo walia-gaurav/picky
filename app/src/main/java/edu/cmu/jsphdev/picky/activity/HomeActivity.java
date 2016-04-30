@@ -44,10 +44,11 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onTabChanged(String tabId) {
                 if (tabId.equals("Public"))  {
-                    Fragment publicFragment = getSupportFragmentManager().findFragmentById(R.id.publicFragment);
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.publicFragment);
 
-                    if (publicFragment != null) {
-                        ((PublicFragment)publicFragment).refresh();
+                    if (fragment != null) {
+                        PublicFragment publicFragment = (PublicFragment) fragment;
+                        publicFragment.refresh();
                     }
                 }
 

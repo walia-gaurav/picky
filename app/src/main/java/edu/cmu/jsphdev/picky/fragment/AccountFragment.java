@@ -1,22 +1,30 @@
 package edu.cmu.jsphdev.picky.fragment;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import edu.cmu.jsphdev.picky.R;
+import edu.cmu.jsphdev.picky.entities.User;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
+import edu.cmu.jsphdev.picky.util.CurrentSession;
 import edu.cmu.jsphdev.picky.util.TextValidator;
 import edu.cmu.jsphdev.picky.ws.remote.service.UpdatePasswordService;
 
@@ -27,6 +35,7 @@ public class AccountFragment extends Fragment {
 
     private EditText newPasswordEditText;
     private EditText newPasswordConfirmationEditText;
+    private CheckBox tiltCheckbox;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,6 +44,20 @@ public class AccountFragment extends Fragment {
         Button uploadButton = (Button) view.findViewById(R.id.saveButton);
         newPasswordEditText = (EditText) view.findViewById(R.id.newPasswordEditText);
         newPasswordConfirmationEditText = (EditText) view.findViewById(R.id.newPasswordConfirmationEditText);
+        tiltCheckbox = (CheckBox) view.findViewById(R.id.tiltCheckBox);
+
+        tiltCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                User user = CurrentSession.getActiveUser();
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+
+                user.setTiltActive(isChecked);
+                editor.putString("existingUser", (new Gson()).toJson(user));
+                editor.apply();
+            }
+        });
+        tiltCheckbox.setChecked(CurrentSession.isTiltActive());
 
         newPasswordEditText.addTextChangedListener(new TextValidator(newPasswordEditText) {
             @Override
@@ -92,8 +115,6 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
-
-
     // validating password with retype password
     private boolean isValidPassword(String pass) {
         Pattern pattern;
@@ -106,4 +127,5 @@ public class AccountFragment extends Fragment {
 
         return matcher.matches();
     }
+
 }
