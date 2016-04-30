@@ -9,6 +9,7 @@ public class User {
     private String username;
     private String token;
     private String password;
+    private boolean tiltActive = false;
 
     public User() {}
 
@@ -44,6 +45,14 @@ public class User {
         this.id = id;
     }
 
+    public boolean isTiltActive() {
+        return tiltActive;
+    }
+
+    public void setTiltActive(boolean tiltActive) {
+        this.tiltActive = tiltActive;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
@@ -51,7 +60,9 @@ public class User {
         sb.append(", username='").append(username).append('\'');
         sb.append(", token='").append(token).append('\'');
         sb.append(", password='").append(password).append('\'');
+        sb.append(", tiltActive='").append(tiltActive).append('\'');
         sb.append('}');
         return sb.toString();
     }
+
 }
