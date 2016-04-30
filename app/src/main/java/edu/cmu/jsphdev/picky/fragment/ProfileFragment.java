@@ -23,6 +23,7 @@ import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
+import edu.cmu.jsphdev.picky.ws.remote.service.PickyDeleteService;
 import edu.cmu.jsphdev.picky.ws.remote.service.PickyHistoryService;
 
 /**
@@ -47,8 +48,7 @@ public class ProfileFragment extends Fragment {
                 }
             }
         };
-        PickyHistoryService pickyHistoryService = new PickyHistoryService(callback);
-        pickyHistoryService.execute();
+        new PickyHistoryService(callback).execute();
 
         return view;
     }
@@ -75,7 +75,6 @@ public class ProfileFragment extends Fragment {
                 convertView = inflater.inflate(R.layout.list_item_profile, null, false);
             }
 
-            final Picky picky = getItem(position);
             Button leftButton = (Button) convertView.findViewById(R.id.leftChoiceButton);
             Button rightButton = (Button) convertView.findViewById(R.id.rightChoiceButton);
             TextView title = (TextView) convertView.findViewById(R.id.profilePickyTitle);
@@ -83,8 +82,12 @@ public class ProfileFragment extends Fragment {
             TextView rightVotes = (TextView) convertView.findViewById(R.id.rightVotes);
             Button deleteButton = (Button) convertView.findViewById(R.id.detelePickyButton);
 
+            final Picky picky = getItem(position);
             title.setText(picky.getTitle());
 
+            /*
+            Calculating voting percentages.
+             */
             float total = picky.getLeftVotes() + picky.getRightVotes();
             if (total == 0) {
                 leftVotes.setText(String.format(Locale.US, "0%% (Votes: %d)", picky.getLeftVotes()));
@@ -98,18 +101,29 @@ public class ProfileFragment extends Fragment {
                         total, picky.getRightVotes()));
             }
 
+            /*
+            Downloading picky images.
+             */
             ImageDownloaderButtonCallback buttonCallback = new ImageDownloaderButtonCallback(getResources(),
                     leftButton, rightButton);
-
             ImageDownloaderTask<Button> imageDownloaderTask = new ImageDownloaderTask<>(buttonCallback);
             imageDownloaderTask.execute(picky.getLeftPhoto().getUrl(), picky.getRightPhoto().getUrl());
 
+            /*
+            Deletes a picky!
+             */
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    //TODO: Call the server to delete the picky. HERE!
-                    Toast.makeText(getActivity(), picky.getTitle(), Toast.LENGTH_LONG).show();
+                    Callback<Boolean> callback = new Callback<Boolean>() {
+                        @Override
+                        public void process(Boolean isSuccess) {
+                            Toast.makeText(getActivity().getApplicationContext(), (isSuccess ? "Picky deleted " +
+                                    "successfully!" : "Could not delete picky!"), Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    };
+                    new PickyDeleteService(callback).execute(String.valueOf(picky.getId()));
                 }
             });
 

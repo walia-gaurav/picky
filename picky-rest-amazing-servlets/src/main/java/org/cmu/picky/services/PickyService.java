@@ -180,7 +180,7 @@ public class PickyService {
                 "P.expirationTime\n" +
                 "FROM Picky P\n" +
                 "INNER JOIN Photo LP ON P.leftPhotoId = LP.id\n" +
-                "INNER JOIN Photo RP ON P.leftPhotoId = LP.id\n" +
+                "INNER JOIN Photo RP ON P.rightPhotoId = RP.id\n" +
                 "INNER JOIN Location L ON P.locationId = L.id\n" +
                 "INNER JOIN User U ON P.userId = U.id\n" +
                 "WHERE P.id = ?";
@@ -190,10 +190,11 @@ public class PickyService {
 
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
-
+            rs.next();
+            
             Picky picky = fillPicky(rs);
-
             addUser(rs, picky);
+            
             return picky;
         } catch (SQLException ex) {
             logger.error("Problem executing statement", ex);
