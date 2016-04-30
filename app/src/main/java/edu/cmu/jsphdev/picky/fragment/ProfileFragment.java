@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
@@ -29,16 +30,17 @@ import edu.cmu.jsphdev.picky.ws.remote.service.PickyHistoryService;
  */
 public class ProfileFragment extends Fragment {
 
+    View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         Callback<List<Picky>> callback = new Callback<List<Picky>>() {
             @Override
             public void process(List<Picky> pickies) {
                 if (pickies != null && !pickies.isEmpty()) {
-
                     PickiesAdapter pickiesAdapter = new PickiesAdapter(getActivity(), 0, pickies);
                     ListView listView = (ListView) view.findViewById(R.id.profilePickyList);
                     listView.setAdapter(pickiesAdapter);
@@ -50,6 +52,7 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
+
 
     private class PickiesAdapter extends ArrayAdapter<Picky> {
 
@@ -69,8 +72,9 @@ public class ProfileFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
 
             if (null == convertView) {
-                convertView = inflater.inflate(R.layout.list_item_profile, null);
+                convertView = inflater.inflate(R.layout.list_item_profile, null, false);
             }
+
             Picky picky = getItem(position);
             Button leftButton = (Button) convertView.findViewById(R.id.leftChoiceButton);
             Button rightButton = (Button) convertView.findViewById(R.id.rightChoiceButton);

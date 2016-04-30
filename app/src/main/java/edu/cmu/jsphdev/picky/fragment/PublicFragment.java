@@ -103,10 +103,10 @@ public class PublicFragment extends Fragment {
 //TODO: Remove wired data.
         Picky picky = getPicky();
 
-        ImageDownloaderButtonCallback buttonCallback = new ImageDownloaderButtonCallback(getResources(),
-                leftButton, rightButton);
-        ImageDownloaderTask<Button> imageDownloaderTask = new ImageDownloaderTask<>(buttonCallback);
-        imageDownloaderTask.execute(picky.getLeftPhoto().getUrl(), picky.getRightPhoto().getUrl());
+//        ImageDownloaderButtonCallback buttonCallback = new ImageDownloaderButtonCallback(getResources(),
+//                leftButton, rightButton);
+//        ImageDownloaderTask<Button> imageDownloaderTask = new ImageDownloaderTask<>(buttonCallback);
+//        imageDownloaderTask.execute(picky.getLeftPhoto().getUrl(), picky.getRightPhoto().getUrl());
 
         titleTextView.setText(picky.getTitle());
         customTouchListener(leftButton);

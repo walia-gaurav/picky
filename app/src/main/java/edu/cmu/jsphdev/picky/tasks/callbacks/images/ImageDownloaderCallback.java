@@ -2,6 +2,7 @@ package edu.cmu.jsphdev.picky.tasks.callbacks.images;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.view.View;
 
 import java.util.List;
 

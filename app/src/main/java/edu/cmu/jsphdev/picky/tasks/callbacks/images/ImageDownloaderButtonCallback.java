@@ -3,6 +3,7 @@ package edu.cmu.jsphdev.picky.tasks.callbacks.images;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.View;
 import android.widget.Button;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class ImageDownloaderButtonCallback extends ImageDownloaderCallback<Butto
     @Override
     public void process(List<Bitmap> bitmaps) {
         setImageToElement(leftElement, bitmaps.get(0));
-        setImageToElement(rightElement, bitmaps.get(0));
+        setImageToElement(rightElement, bitmaps.get(1));
     }
 
     private void setImageToElement(Button element, Bitmap image) {
