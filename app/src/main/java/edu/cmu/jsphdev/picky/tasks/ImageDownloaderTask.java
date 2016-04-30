@@ -26,7 +26,7 @@ public class ImageDownloaderTask<T> extends AsyncTask<String, Void, List<Bitmap>
         this.callback = callback;
     }
 
-    public static Bitmap downloadBitmap(String url) {
+    private static Bitmap downloadBitmap(String url) {
 
         HttpURLConnection urlConnection = null;
         try {

@@ -88,34 +88,34 @@ public class PickyService {
         return picky;
     }
 
-    public List<Picky> getTimeline() {
+    public Picky nextPick(User user) {
         final String query = "SELECT P.id, P.title, U.id AS userId, U.username, " +
                 "LP.id AS leftPhotoId, LP.url AS leftPhotoUrl, RP.id AS rightPhotoId, " +
                 "RP.url AS rightPhotoUrl, L.id AS locationId, L.latitude, L.longitude, P.leftVotes, P.rightVotes, \n" +
                 "P.expirationTime\n" +
                 "FROM Picky P\n" +
                 "INNER JOIN Photo LP ON P.leftPhotoId = LP.id\n" +
-                "INNER JOIN Photo RP ON P.leftPhotoId = LP.id\n" +
+                "INNER JOIN Photo RP ON P.rightPhotoId = RP.id\n" +
                 "INNER JOIN Location L ON P.locationId = L.id\n" +
                 "INNER JOIN User U ON P.userId = U.id\n" +
                 "LEFT JOIN UserVote UV ON UV.pickyId = P.id AND UV.userId = P.userId\n" +
-                "WHERE P.expirationTime >= ? AND UV.id IS NOT NULL";
+                "WHERE P.expirationTime >= ? AND UV.id IS NULL AND U.id = ?\n" +
+                "LIMIT 1";
 
         try (Connection connection = MySQLConnectionFactory.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             Calendar calendar = Calendar.getInstance();
 
             preparedStatement.setDate(1, new java.sql.Date(calendar.getTimeInMillis()));
+            preparedStatement.setInt(2, user.getId());
             ResultSet rs = preparedStatement.executeQuery();
-            List<Picky> pickies = new ArrayList<Picky>();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 Picky picky = fillPicky(rs);
 
                 addUser(rs, picky);
-                pickies.add(picky);
+                return picky;
             }
-            return pickies;
         } catch (SQLException ex) {
             logger.error("Problem executing statement", ex);
         }

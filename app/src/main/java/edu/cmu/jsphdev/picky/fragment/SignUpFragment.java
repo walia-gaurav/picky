@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -19,6 +20,7 @@ import edu.cmu.jsphdev.picky.activity.HomeActivity;
 import edu.cmu.jsphdev.picky.entities.User;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.util.CurrentSession;
+import edu.cmu.jsphdev.picky.util.TextValidator;
 import edu.cmu.jsphdev.picky.ws.remote.service.SignUpService;
 
 /**
@@ -42,30 +44,44 @@ public class SignUpFragment extends Fragment {
 
         ImageButton signUpButton = (ImageButton) view.findViewById(R.id.signupButton);
 
+        newUsername.addTextChangedListener(new TextValidator(newUsername) {
+            @Override
+            public void validate(TextView textView, String text) {
+                // validate username
+                if (!isValidUsername(text)) {
+                    textView.setError("Username has to be at least 3 characters long");
+                }
+            }
+        });
+
+        newPassword.addTextChangedListener(new TextValidator(newPassword) {
+            @Override
+            public void validate(TextView textView, String text) {
+                // validate passwords
+                if (!isValidPassword(text)) {
+                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
+                }
+            }
+        });
+
+        newPasswordConfirm.addTextChangedListener(new TextValidator(newPasswordConfirm) {
+            @Override
+            public void validate(TextView textView, String text) {
+                // validate passwords confirmation
+                if (!isValidPassword(text)) {
+                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
+                }
+            }
+        });
         signUpButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                String username = newUsername.getText().toString();
                 String pass = newPassword.getText().toString();
                 String passConfirm = newPasswordConfirm.getText().toString();
 
-                // validate username
-                if (!isValidUsername(username)) {
-                    newUsername.setError("Username has to be at least 3 characters long");
-                }
-                // validate passwords
-                else if (!isValidPassword(pass)) {
-                    newPassword.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
-                }
 
-                else if (!isValidPassword(passConfirm)) {
-                    newPasswordConfirm.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
-                }
-                else if (!passConfirm.equals(pass)) {
-                    newPasswordConfirm.setError("Password must match");
-                }
-                else {
+                if (passConfirm.equals(pass)) {
 
                     Callback<User> callback = new Callback<User>() {
                         @Override
@@ -81,6 +97,9 @@ public class SignUpFragment extends Fragment {
                     };
                     SignUpService signUpService = new SignUpService(callback);
                     signUpService.execute(newUsername.getText().toString(), newPassword.getText().toString());
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Password must match!",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -45,7 +45,7 @@ public class PickyServerContext implements ServletContextListener {
         LogoutServlet.init(authService, userService);
         SignUpServlet.init(userService);
         MyPickiesServlet.init(authService, pickyService);
-        TimelineServlet.init(pickyService);
+        TimelineServlet.init(authService, pickyService);
         UploadServlet.init(authService, pickyService);
         UpdatePasswordServlet.init(authService, userService);
         DeletePickyServlet.init(authService, pickyService);

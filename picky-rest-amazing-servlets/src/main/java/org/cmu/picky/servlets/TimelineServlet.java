@@ -16,22 +16,28 @@ import java.util.List;
 
 public class TimelineServlet extends HttpServlet {
 
+    private static AuthService authService;
     private static PickyService pickyService;
 
-    public static void init(PickyService _pickyService) {
+    public static void init(AuthService _authService, PickyService _pickyService) {
+        authService = _authService;
         pickyService = _pickyService;
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Picky> timeline = pickyService.getTimeline();
+        User user = authService.getUser(request);
+        Picky picky = pickyService.nextPick(user);
         Gson gson = new Gson();
 
         ServletUtils.addJSONSettings(response);
-        response.getOutputStream().print(gson.toJson(timeline));
-        response.getOutputStream().flush();
-
+        if (picky == null) {
+            response.setStatus(ServletUtils.NOT_FOUND);
+        } else {
+            response.getOutputStream().print(gson.toJson(picky));
+            response.getOutputStream().flush();
+        }
     }
 
 

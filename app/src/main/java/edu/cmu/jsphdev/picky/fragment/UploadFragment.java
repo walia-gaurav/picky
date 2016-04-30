@@ -1,7 +1,9 @@
 package edu.cmu.jsphdev.picky.fragment;
 
 
+import android.Manifest;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,6 +31,7 @@ import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.List;
 
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.entities.Photo;
@@ -41,19 +44,30 @@ import edu.cmu.jsphdev.picky.ws.remote.service.UploadPickyService;
  */
 public class UploadFragment extends Fragment {
 
-    View view;
-
-    ImageView leftPicky;
-    ImageView rightPicky;
-    EditText title;
+    private View view;
+    private ImageView leftPicky;
+    private ImageView rightPicky;
+    private EditText title;
+    private LocationManager locationManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_upload, container, false);
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED ||
+            ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) !=
+                    PackageManager.PERMISSION_GRANTED)  {
+            Toast.makeText(getActivity().getApplicationContext(),
+                    "Write to external source, gps and internet permissions are required", Toast.LENGTH_LONG).show();
+            return view;
+        }
         selectImageOnClick(R.id.choice1);
         selectImageOnClick(R.id.choice2);
-
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         ((Button) view.findViewById(R.id.uploadPicky)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,18 +80,10 @@ public class UploadFragment extends Fragment {
                     Toast.makeText(getActivity(), "Uploading", Toast.LENGTH_SHORT).show();
 
                     //Fetching LastKnownLocation
-                    Location location = null;
-                    LocationManager locManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-                    try {
-                        location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    } catch (SecurityException e) {
-                        Log.d("WARN", "No location permissions");
-                    }
-
-                    /*
-                    Preparing Picky Data.
-                     */
+                    Location location = getLastKnownLocation();
+                    //Preparing Picky Data.
                     Picky picky = new Picky();
+
                     picky.setTitle(title.getText().toString().trim());
                     picky.setLeftPhoto(new Photo(getBase64StringFromImageView(leftPicky)));
                     picky.setRightPhoto(new Photo(getBase64StringFromImageView(rightPicky)));
@@ -105,6 +111,27 @@ public class UploadFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    /**
+     * Check different providers and returns the best location. If location is null
+     * throws an exception.
+     */
+    private Location getLastKnownLocation() {
+        List<String> providers = locationManager.getProviders(true);
+        Location bestLocation = null;
+
+        for (String provider : providers) {
+            Location location = locationManager.getLastKnownLocation(provider);
+
+            if (location == null) {
+                continue;
+            }
+            if (bestLocation == null || location.getAccuracy() < bestLocation.getAccuracy()) {
+                bestLocation = location;
+            }
+        }
+        return bestLocation;
     }
 
     private void refreshUploadFragment() {
@@ -172,13 +199,4 @@ public class UploadFragment extends Fragment {
         builder.show();
     }
 
-    /**
-     * Using PackageManager to check for permission grants.
-     *
-     * @param perm
-     * @return
-     */
-    private boolean hasPermission(String perm) {
-        return (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(getActivity(), perm));
-    }
 }
