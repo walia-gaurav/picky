@@ -1,27 +1,19 @@
 package edu.cmu.jsphdev.picky.fragment;
 
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
-import java.util.Locale;
 
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.entities.Picky;
-import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
-import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
 import edu.cmu.jsphdev.picky.ws.remote.service.PickyHistoryService;
 
 /**
@@ -29,78 +21,32 @@ import edu.cmu.jsphdev.picky.ws.remote.service.PickyHistoryService;
  */
 public class ProfileFragment extends Fragment {
 
+    View view;
+    private PickiesAdapter pickiesAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         Callback<List<Picky>> callback = new Callback<List<Picky>>() {
             @Override
             public void process(List<Picky> pickies) {
                 if (pickies != null && !pickies.isEmpty()) {
-
-                    PickiesAdapter pickiesAdapter = new PickiesAdapter(getActivity(), 0, pickies);
+                    pickiesAdapter = new PickiesAdapter(getActivity(), pickies);
                     ListView listView = (ListView) view.findViewById(R.id.profilePickyList);
                     listView.setAdapter(pickiesAdapter);
                 }
             }
         };
-        PickyHistoryService pickyHistoryService = new PickyHistoryService(callback);
-        pickyHistoryService.execute();
+        new PickyHistoryService(callback).execute();
 
         return view;
     }
 
-    private class PickiesAdapter extends ArrayAdapter<Picky> {
-
-        private static final String TAG = "PickiesAdapter";
-        private LayoutInflater inflater = null;
-
-        public PickiesAdapter(Activity activity, int textViewResourceId, List<Picky> pickies) {
-            super(activity, textViewResourceId, pickies);
-            try {
-                inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            } catch (Exception ex) {
-                Log.e(TAG, "Problem getting LayoutInflater", ex);
-            }
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            if (null == convertView) {
-                convertView = inflater.inflate(R.layout.list_item_profile, null);
-            }
-            Picky picky = getItem(position);
-            Button leftButton = (Button) convertView.findViewById(R.id.leftChoiceButton);
-            Button rightButton = (Button) convertView.findViewById(R.id.rightChoiceButton);
-            TextView title = (TextView) convertView.findViewById(R.id.profilePickyTitle);
-            TextView leftVotes = (TextView) convertView.findViewById(R.id.leftVotes);
-            TextView rightVotes = (TextView) convertView.findViewById(R.id.rightVotes);
-
-            title.setText(picky.getTitle());
-
-            float total = picky.getLeftVotes() + picky.getRightVotes();
-            if (total == 0) {
-                leftVotes.setText(String.format(Locale.US, "0%% (Votes: %d)", picky.getLeftVotes()));
-                rightVotes.setText(String.format(Locale.US, "0%% (Votes: %d)", picky.getRightVotes()));
-            } else {
-                leftVotes.setText(String.format(Locale.US, "%.2f %% (Votes: %d)", ((double) picky.getLeftVotes() *
-                        100.0) /
-                        total, picky.getLeftVotes()));
-                rightVotes.setText(String.format(Locale.US, "%.2f%% (Votes: %d)", ((double) picky.getRightVotes() *
-                        100.0) /
-                        total, picky.getRightVotes()));
-            }
-
-            ImageDownloaderButtonCallback buttonCallback = new ImageDownloaderButtonCallback(getResources(),
-                    leftButton, rightButton);
-
-            ImageDownloaderTask<Button> imageDownloaderTask = new ImageDownloaderTask<>(buttonCallback);
-            imageDownloaderTask.execute(picky.getLeftPhoto().getUrl(), picky.getRightPhoto().getUrl());
-
-            return convertView;
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Toast.makeText(getActivity(), "YAYAYAY", Toast.LENGTH_LONG).show();
     }
-
 }
