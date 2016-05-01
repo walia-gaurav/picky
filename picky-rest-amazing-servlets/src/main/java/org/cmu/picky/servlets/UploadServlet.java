@@ -15,6 +15,9 @@ import org.cmu.picky.util.ServletUtils;
 
 import com.google.gson.Gson;
 
+/**
+ * Handles Picky upload.
+ */
 public class UploadServlet extends HttpServlet {
 
     public static final int BAD_STATUS = 400;
@@ -27,6 +30,9 @@ public class UploadServlet extends HttpServlet {
         pickyService = _pickyService;
     }
 
+    /**
+     * Read picky form parameter and generate a Picky from it.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -14,6 +14,9 @@ import javax.servlet.ServletContextListener;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * Initialize all Services and Servlets.
+ */
 public class PickyServerContext implements ServletContextListener {
 
     private static final Logger logger = LoggerFactory.getLogger(PickyServerContext.class);

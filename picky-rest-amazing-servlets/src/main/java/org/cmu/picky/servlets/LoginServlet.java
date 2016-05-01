@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles login.
+ */
 public class LoginServlet extends HttpServlet {
 
     private static UserService userService;
@@ -21,6 +24,9 @@ public class LoginServlet extends HttpServlet {
         userService = _userService;
     }
 
+    /**
+     * Read username and password form parameters and check if they are correct.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");

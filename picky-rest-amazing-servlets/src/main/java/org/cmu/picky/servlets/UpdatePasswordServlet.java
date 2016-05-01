@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Handles password update.
+ */
 public class UpdatePasswordServlet extends HttpServlet {
 
     private static AuthService authService;
@@ -21,6 +24,9 @@ public class UpdatePasswordServlet extends HttpServlet {
         userService = _userService;
     }
 
+    /**
+     * Read password form parameter and update logged User.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = authService.getUser(request);

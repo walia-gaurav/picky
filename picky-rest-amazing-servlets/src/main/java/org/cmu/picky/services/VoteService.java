@@ -13,12 +13,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Handles all operation about voting for a Picky.
+ */
 public class VoteService {
 
     private static final  Logger logger = LoggerFactory.getLogger(VoteService.class);
 
     public VoteService() {}
 
+    /**
+     * Check if the given User voted for the given Picky.
+     */
     public boolean userVoted(int userId, int pickyId) {
         final String query = "SELECT id FROM UserVote WHERE userId = ? AND pickyId = ?";
 
@@ -39,6 +45,9 @@ public class VoteService {
 
     }
 
+    /**
+     * Generates a vote from the given User for the given Picky. Returns true if everything went well else false.
+     */
     public boolean vote(int userId, int pickyId, Vote vote) {
         final String insertQuery = "INSERT INTO UserVote(userId, pickyId) VALUES(?, ?)";
         final String updateQuery = (vote == Vote.RIGHT ?

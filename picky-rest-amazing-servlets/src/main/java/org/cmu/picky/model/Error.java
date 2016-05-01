@@ -1,5 +1,8 @@
 package org.cmu.picky.model;
 
+/**
+ * Represents an error. At the moment only contains a message.
+ */
 public class Error {
 
     private String message = "";

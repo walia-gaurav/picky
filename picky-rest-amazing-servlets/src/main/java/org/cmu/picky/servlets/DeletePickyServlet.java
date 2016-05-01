@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Handles deleting a Picky.
+ */
 public class DeletePickyServlet extends HttpServlet {
 
     private static PickyService pickyService;
@@ -24,6 +27,9 @@ public class DeletePickyServlet extends HttpServlet {
         pickyService = _pickyService;
     }
 
+    /**
+     * Expects the form parameter id and will delete the Picky with the given id after some validations.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

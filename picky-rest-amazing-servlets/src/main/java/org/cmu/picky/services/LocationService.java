@@ -10,10 +10,16 @@ import org.cmu.picky.model.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Operations with Location model.
+ */
 public class LocationService {
 
     private static final Logger logger = LoggerFactory.getLogger(LocationService.class);
 
+    /**
+     * Save the given Location in the database. Returns true if everything went well else false.
+     */
     public boolean save(Location location) {
         final String selectQuery = "SELECT id, latitude, longitude FROM Location WHERE latitude = ? and longitude = ?";
         final String insertQuery = "INSERT INTO Location(latitude, longitude) VALUES(?, ?)";

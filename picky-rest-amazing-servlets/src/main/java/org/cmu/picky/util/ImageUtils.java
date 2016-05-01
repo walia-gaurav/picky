@@ -10,8 +10,14 @@ import javax.imageio.ImageIO;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+/**
+ * Util class to handle images.
+ */
 public class ImageUtils {
 
+    /**
+     * Decodes base 64 String and creates a BufferedImage from it.
+     */
     public static BufferedImage decodeToImage(String imageString) {
         BufferedImage image = null;
 
@@ -23,21 +29,6 @@ public class ImageUtils {
             bis.close();
         } catch (Exception ex) {}
         return image;
-    }
-
-    public static String encodeToString(BufferedImage image, String type) {
-        String imageString = null;
-
-        try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ImageIO.write(image, type, byteArrayOutputStream);
-            byte[] imageBytes = byteArrayOutputStream.toByteArray();
-
-            BASE64Encoder encoder = new BASE64Encoder();
-            imageString = encoder.encode(imageBytes);
-            byteArrayOutputStream.close();
-        } catch (IOException e) {}
-        return imageString;
     }
 
 }
