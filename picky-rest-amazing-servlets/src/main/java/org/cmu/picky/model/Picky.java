@@ -1,5 +1,8 @@
 package org.cmu.picky.model;
 
+/**
+ * Represents a Picky.
+ */
 public class Picky {
 
     private int id;

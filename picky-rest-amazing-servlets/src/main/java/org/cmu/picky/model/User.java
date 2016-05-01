@@ -1,5 +1,8 @@
 package org.cmu.picky.model;
 
+/**
+ * Represents a user.
+ */
 public class User {
 
     private int id;

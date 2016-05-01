@@ -1,5 +1,8 @@
 package org.cmu.picky.model;
 
+/**
+ * Represents a photo.
+ */
 public class Photo {
 
     private int id;

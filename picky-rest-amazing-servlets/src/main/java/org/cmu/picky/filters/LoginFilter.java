@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Filter all request in /api and check the token is present and valid for all paths except /login and /signup.
+ */
 public class LoginFilter implements Filter {
 
     private static AuthService authService;

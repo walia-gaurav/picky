@@ -14,6 +14,9 @@ import org.cmu.picky.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Operations with Picky model.
+ */
 public class PickyService {
 
     private static final Logger logger = LoggerFactory.getLogger(PickyService.class);
@@ -26,6 +29,9 @@ public class PickyService {
         this.locationService = locationService;
     }
 
+    /**
+     * Returns all pickies that belongs to the given user.
+     */
     public List<Picky> getMyPickies(User user) {
         final String query = "SELECT P.id, P.title, LP.id AS leftPhotoId, LP.url AS leftPhotoUrl, RP.id AS rightPhotoId, " +
                              "RP.url AS rightPhotoUrl, L.id AS locationId, L.latitude, L.longitude, P.leftVotes, P.rightVotes, \n" +
@@ -55,6 +61,9 @@ public class PickyService {
         return null;
     }
 
+    /**
+     * Fetch data from ResultSet and creates a Picky with it.
+     */
     private Picky fillPicky(ResultSet rs) throws SQLException {
         Picky picky = new Picky();
         Photo leftPhoto = new Photo();
@@ -88,6 +97,9 @@ public class PickyService {
         return picky;
     }
 
+    /**
+     * Returns next user Picky so he can watch it and vote.
+     */
     public Picky nextPick(User user) {
         final String query = "SELECT P.id, P.title, U.id AS userId, U.username, " +
                 "LP.id AS leftPhotoId, LP.url AS leftPhotoUrl, RP.id AS rightPhotoId, " +
@@ -122,6 +134,9 @@ public class PickyService {
         return null;
     }
 
+    /**
+     * Fetch user data from the ResultSet and adds it to the Picky.
+     */
     private void addUser(ResultSet rs, Picky picky) throws SQLException {
         User user = new User();
 
@@ -130,6 +145,9 @@ public class PickyService {
         picky.setUser(user);
     }
 
+    /**
+     * Save picky in the database. Returns true if everything went well else false.
+     */
     public boolean save(Picky picky) {
         Photo leftPhoto = photoService.savePhoto(picky.getLeftPhoto().getBase64Image());
 
@@ -141,7 +159,8 @@ public class PickyService {
         picky.setRightPhoto(rightPhoto);
         if (!locationService.save(picky.getLocation())) return false;
 
-        final String insertQuery = "INSERT INTO Picky(title, userId, leftPhotoId, rightPhotoId, locationId, leftVotes, rightVotes, expirationTime) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        final String insertQuery = "INSERT INTO Picky(title, userId, leftPhotoId, rightPhotoId, locationId, " +
+                                   "leftVotes, rightVotes, expirationTime) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
         final String selectQuery = "SELECT id FROM Picky WHERE userId = ? AND expirationTime = ?";
 
         try (Connection connection = MySQLConnectionFactory.getConnection()) {
@@ -173,6 +192,9 @@ public class PickyService {
         return true;
     }
 
+    /**
+     * Get Picky with the given id.
+     */
     public Picky get(int id) {
         final String query = "SELECT P.id, P.title, U.id AS userId, U.username, " +
                 "LP.id AS leftPhotoId, LP.url AS leftPhotoUrl, RP.id AS rightPhotoId, " +
@@ -203,6 +225,9 @@ public class PickyService {
         return null;
     }
 
+    /**
+     * Delete Picky with the given id. Returns true if everything went well else false.
+     */
     public boolean delete(int id) {
         final String deleteQuery = "DELETE FROM Picky WHERE id = ?";
 

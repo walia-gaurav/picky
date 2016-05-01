@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Handles my pickies request.
+ */
 public class MyPickiesServlet extends HttpServlet {
 
     private static AuthService authService;
@@ -24,6 +27,9 @@ public class MyPickiesServlet extends HttpServlet {
         pickyService = _pickyService;
     }
 
+    /**
+     * Return user pickies.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = authService.getUser(request);

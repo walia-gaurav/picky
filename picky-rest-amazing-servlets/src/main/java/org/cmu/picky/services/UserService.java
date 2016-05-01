@@ -13,6 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+/**
+ * Operations with User model.
+ */
 public class UserService {
 
     private Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -23,6 +26,9 @@ public class UserService {
         this.tokenService = tokenService;
     }
 
+    /**
+     * Returns the User with the given token.
+     */
     public User getUserByToken(String token) {
         final String query = "SELECT id, username FROM User WHERE token = ?";
 
@@ -45,6 +51,9 @@ public class UserService {
         return null;
     }
 
+    /**
+     * Logs the User in the system: checks password is correct and generates a token.
+     */
     public User login(String username, String password) {
         final String selectQuery = "SELECT id FROM User WHERE username = ? and password = ?";
         final String updateQuery = "UPDATE User SET token = ?  WHERE username = ?";
@@ -77,6 +86,9 @@ public class UserService {
         return null;
     }
 
+    /**
+     * Creates a new user with the given username and password.
+     */
     public boolean signUp(String username, String password) {
         final String insertQuery = "INSERT INTO User(username, token, password) VALUES (?, NULL, ?);";
 
@@ -94,6 +106,9 @@ public class UserService {
         return false;
     }
 
+    /**
+     * Checks if the username is already taken.
+     */
     public boolean usernameInUse(String username) {
         final String query = "SELECT id FROM User WHERE username = ?";
 
@@ -112,6 +127,9 @@ public class UserService {
         return false;
     }
 
+    /**
+     * Logout the User with the given username from the system: it invalidates the token.
+     */
     public boolean logout(String username) {
         final String updateQuery = "UPDATE User SET token = ?  WHERE username = ?";
 
@@ -129,6 +147,9 @@ public class UserService {
         return false;
     }
 
+    /**
+     * Updates password from the given User.
+     */
     public boolean updatePassword(User user, String newPassword) {
         final String updateQuery = "UPDATE User SET password = ?  WHERE id = ?";
 

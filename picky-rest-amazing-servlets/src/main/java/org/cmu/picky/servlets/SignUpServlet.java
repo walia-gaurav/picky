@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Handles sign up.
+ */
 public class SignUpServlet extends HttpServlet {
 
 	private static UserService userService;
@@ -20,6 +23,9 @@ public class SignUpServlet extends HttpServlet {
 		userService = _userService;
 	}
 
+    /**
+     * Read username and password and then creates an User with them.
+     */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

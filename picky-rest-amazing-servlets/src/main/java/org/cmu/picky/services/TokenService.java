@@ -11,6 +11,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
+/**
+ * Operations to generate tokens.
+ */
 public class TokenService {
 
     private static final String MD5 = "MD5";
@@ -18,6 +21,9 @@ public class TokenService {
     private static final Logger logger = LoggerFactory.getLogger(TokenService.class);
 
 
+    /**
+     * Generates a random token value.
+     */
     public String generateRandomTokenValue() {
         String randomUUID = UUID.randomUUID().toString();
         MessageDigest messageDigest = null;
@@ -37,6 +43,9 @@ public class TokenService {
         return stringBuilder.toString();
     }
 
+    /**
+     * Computes MD5 checksum of an image and returns the value.
+     */
     public String getImageMD5(BufferedImage bufferedImage, String imageType) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
@@ -59,6 +68,9 @@ public class TokenService {
         return returnHex(hash) + "." + imageType;
     }
 
+    /**
+     * Convert byte array into hex string.
+     */
     private String returnHex(byte[] inBytes) {
         String hexString = "";
         for (int i=0; i < inBytes.length; i++) {

@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Handles vote request.
+ */
 public class VotePickyServlet extends HttpServlet {
 
     private static PickyService pickyService;
@@ -27,6 +30,9 @@ public class VotePickyServlet extends HttpServlet {
         voteService = _voteService;
     }
 
+    /**
+     * Read id and vote form parameters and performs the vote operation with them..
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
