@@ -12,7 +12,6 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import edu.cmu.jsphdev.picky.R;
-import edu.cmu.jsphdev.picky.fragment.ProfileFragment;
 import edu.cmu.jsphdev.picky.fragment.PublicFragment;
 import edu.cmu.jsphdev.picky.fragment.UploadHelper;
 
@@ -44,18 +43,24 @@ public class HomeActivity extends AppCompatActivity {
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-                if (tabId.equals("Public")) {
-                    Fragment publicFragment = getSupportFragmentManager().findFragmentById(R.id.publicFragment);
-                    if (publicFragment != null) {
-                        ((PublicFragment) publicFragment).refresh();
+                switch (tabId) {
+                    case "Public": {
+                        Fragment publicFragment = getSupportFragmentManager().findFragmentById(R.id.publicFragment);
+                        if (publicFragment != null) {
+                            ((PublicFragment) publicFragment).refresh();
+                        }
+                        break;
                     }
-                } else if (tabId.equals("Profile")) {
-                    Fragment profileFragment = getSupportFragmentManager().findFragmentByTag("profile_fragment_tag");
-                    if (profileFragment != null) {
-                        ((ProfileFragment) profileFragment).loadPickyHistory();
+                    case "Profile": {
+                        Fragment publicFragment = getSupportFragmentManager().findFragmentById(R.id.publicFragment);
+                        if (publicFragment != null) {
+                            ((PublicFragment) publicFragment).refresh();
+                        }
+                        break;
                     }
+                    default:
+                        break;
                 }
-
             }
         });
 
