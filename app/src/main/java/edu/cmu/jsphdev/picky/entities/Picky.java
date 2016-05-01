@@ -15,7 +15,8 @@ public class Picky {
     private int leftVotes;
     private int rightVotes;
 
-    public Picky() {}
+    public Picky() {
+    }
 
     public String getTitle() {
         return title;

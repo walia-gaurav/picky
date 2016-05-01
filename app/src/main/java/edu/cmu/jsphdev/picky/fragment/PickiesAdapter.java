@@ -26,6 +26,12 @@ class PickiesAdapter extends BaseAdapter {
     private Activity callerActivity;
     private List<Picky> pickies;
 
+    /**
+     * Constructing the adapter fields.
+     *
+     * @param activity
+     * @param pickies
+     */
     public PickiesAdapter(Activity activity, List<Picky> pickies) {
         this.pickies = pickies;
         this.callerActivity = activity;
@@ -62,6 +68,9 @@ class PickiesAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.list_item_profile, null, false);
         }
 
+        /*
+        Referencing view tags.
+         */
         Button leftButton = (Button) convertView.findViewById(R.id.leftChoiceButton);
         Button rightButton = (Button) convertView.findViewById(R.id.rightChoiceButton);
         TextView title = (TextView) convertView.findViewById(R.id.profilePickyTitle);
@@ -72,9 +81,9 @@ class PickiesAdapter extends BaseAdapter {
         final Picky picky = (Picky) getItem(position);
         title.setText(picky.getTitle());
 
-            /*
-            Calculating voting percentages.
-             */
+        /*
+        Calculating voting percentages.
+         */
         float total = picky.getLeftVotes() + picky.getRightVotes();
         if (total == 0) {
             leftVotes.setText(String.format(Locale.US, "0%% (Votes: %d)", picky.getLeftVotes()));
@@ -88,17 +97,17 @@ class PickiesAdapter extends BaseAdapter {
                     total, picky.getRightVotes()));
         }
 
-            /*
-            Downloading picky images.
-             */
+        /*
+        Downloading picky images.
+         */
         ImageDownloaderButtonCallback buttonCallback = new ImageDownloaderButtonCallback(callerActivity.getResources(),
                 leftButton, rightButton);
         ImageDownloaderTask<Button> imageDownloaderTask = new ImageDownloaderTask<>(buttonCallback);
         imageDownloaderTask.execute(picky.getLeftPhoto().getUrl(), picky.getRightPhoto().getUrl());
 
-            /*
-            Deletes a picky!
-             */
+        /*
+        Deletes a picky!
+         */
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

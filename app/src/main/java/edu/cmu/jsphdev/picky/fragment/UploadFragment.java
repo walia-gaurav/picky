@@ -17,7 +17,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +25,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -55,19 +52,29 @@ public class UploadFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_upload, container, false);
 
+        /* Initializing location manager. */
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        /*
+        Permissions check.
+         */
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED ||
-            ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED ||
-            ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) !=
-                    PackageManager.PERMISSION_GRANTED)  {
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) !=
+                        PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getActivity().getApplicationContext(),
                     "Write to external source, gps and internet permissions are required", Toast.LENGTH_LONG).show();
             return view;
         }
+
         selectImageOnClick(R.id.choice1);
         selectImageOnClick(R.id.choice2);
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        /*
+        Event handling for OnClick of the upload buttons.
+         */
         ((Button) view.findViewById(R.id.uploadPicky)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,17 +86,22 @@ public class UploadFragment extends Fragment {
                 if (leftPicky.getBackground() == null && rightPicky.getBackground() == null) {
                     Toast.makeText(getActivity(), "Uploading", Toast.LENGTH_SHORT).show();
 
-                    //Fetching LastKnownLocation
+                    /* Fetching LastKnownLocation */
                     Location location = getLastKnownLocation();
-                    //Preparing Picky Data.
-                    Picky picky = new Picky();
 
+                    /* Preparing Picky Data. */
+                    Picky picky = new Picky();
                     picky.setTitle(title.getText().toString().trim());
                     picky.setLeftPhoto(new Photo(getBase64StringFromImageView(leftPicky)));
                     picky.setRightPhoto(new Photo(getBase64StringFromImageView(rightPicky)));
                     if (null != location) {
-                        picky.setLocation(new edu.cmu.jsphdev.picky.entities.Location(location.getLatitude(), location.getLongitude()));
+                        picky.setLocation(new edu.cmu.jsphdev.picky.entities.Location(location.getLatitude(),
+                                location.getLongitude()));
                     }
+
+                    /*
+                    Calling server-side to upload.
+                     */
                     Callback<Boolean> callback = new Callback<Boolean>() {
                         @Override
                         public void process(Boolean result) {
@@ -102,9 +114,8 @@ public class UploadFragment extends Fragment {
                             }
                         }
                     };
+                    new UploadPickyService(callback).execute(picky);
 
-                    UploadPickyService uploadService = new UploadPickyService(callback);
-                    uploadService.execute(picky);
                 } else {
                     Toast.makeText(getActivity(), "Upload Failed!", Toast.LENGTH_SHORT).show();
                 }
@@ -123,7 +134,6 @@ public class UploadFragment extends Fragment {
 
         for (String provider : providers) {
             Location location = locationManager.getLastKnownLocation(provider);
-
             if (location == null) {
                 continue;
             }
@@ -134,16 +144,23 @@ public class UploadFragment extends Fragment {
         return bestLocation;
     }
 
+    /**
+     * Refreshes upload view after a successful server-upload.
+     */
     private void refreshUploadFragment() {
         leftPicky.setBackground(getResources().getDrawable(R.drawable.add_photo_icon));
-        leftPicky.setImageDrawable(null);
-
         rightPicky.setBackground(getResources().getDrawable(R.drawable.add_photo_icon));
+        leftPicky.setImageDrawable(null);
         rightPicky.setImageDrawable(null);
-
         title.setText("");
     }
 
+    /**
+     * Returns a Base-64 encoded string for an ImageView.
+     *
+     * @param leftPicky
+     * @return
+     */
     private String getBase64StringFromImageView(ImageView leftPicky) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         ((BitmapDrawable) leftPicky.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -179,24 +196,24 @@ public class UploadFragment extends Fragment {
         builder.setTitle("Add a picky!");
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int item) {
+
                 if (options[item].equals("Take Photo")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "outputImage.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     getActivity().startActivityForResult(intent, 1);
+
                 } else if (options[item].equals("Choose from Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     getActivity().startActivityForResult(intent, 2);
+
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
-        });
-
-        builder.show();
+        }).show();
     }
 
 }

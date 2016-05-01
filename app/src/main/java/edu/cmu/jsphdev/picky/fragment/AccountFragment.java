@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import edu.cmu.jsphdev.picky.R;
@@ -63,7 +62,8 @@ public class AccountFragment extends Fragment {
             @Override
             public void validate(TextView textView, String text) {
                 if (!isValidPassword(text)) {
-                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
+                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1" +
+                            " symbol");
                 }
             }
         });
@@ -72,9 +72,10 @@ public class AccountFragment extends Fragment {
             @Override
             public void validate(TextView textView, String text) {
                 if (!isValidPassword(text)) {
-                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
+                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1" +
+                            " symbol");
                 }
-                if(!text.equals(newPasswordEditText.getText().toString())) {
+                if (!text.equals(newPasswordEditText.getText().toString())) {
                     textView.setError("Password must match!");
                 }
             }
@@ -88,9 +89,7 @@ public class AccountFragment extends Fragment {
                     @Override
                     public void process(Boolean result) {
                         if (result) {
-                            TabHost tabHost = (TabHost) getActivity().findViewById(R.id.homeTabHost);
-
-                            tabHost.setCurrentTab(0);
+                            ((TabHost) getActivity().findViewById(R.id.homeTabHost)).setCurrentTab(0);
                         } else {
                             Toast.makeText(getActivity().getApplicationContext(),
                                     "Problem updating password", Toast.LENGTH_LONG).show();
@@ -101,7 +100,7 @@ public class AccountFragment extends Fragment {
                 String password = newPasswordEditText.getText().toString();
                 String confirmation = newPasswordConfirmationEditText.getText().toString();
 
-                if (password.equals(null) || confirmation.equals(null)) {
+                if (password.isEmpty() || confirmation.isEmpty()) {
                     Toast.makeText(getActivity().getApplicationContext(),
                             "Passwords cant be null", Toast.LENGTH_LONG).show();
                 } else if (!password.equals(confirmation)) {
@@ -115,17 +114,16 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
-    // validating password with retype password
-    private boolean isValidPassword(String pass) {
-        Pattern pattern;
-        Matcher matcher;
-
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
-
-        pattern = Pattern.compile(PASSWORD_PATTERN);
-        matcher = pattern.matcher(pass);
-
-        return matcher.matches();
+    /**
+     * Returns true if the password is valid.
+     *
+     * @param password
+     * @return
+     */
+    private boolean isValidPassword(String password) {
+        final String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
+        Pattern pattern = Pattern.compile(passwordPattern);
+        return pattern.matcher(password).matches();
     }
 
 }

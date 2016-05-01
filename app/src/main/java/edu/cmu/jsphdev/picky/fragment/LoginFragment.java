@@ -55,9 +55,11 @@ public class LoginFragment extends Fragment {
                                     "Invalid username and/or password!", Toast.LENGTH_LONG).show();
                             return;
                         }
+                        /*
+                        Persisting session in SharedPreferences.
+                         */
                         CurrentSession.setActiveUser(user);
                         Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-
                         editor.putString("existingUser", (new Gson()).toJson(user));
                         editor.apply();
                         startActivity(new Intent(getActivity(), HomeActivity.class));

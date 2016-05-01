@@ -1,6 +1,7 @@
 package edu.cmu.jsphdev.picky.ws.remote.service;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -25,12 +26,14 @@ public class LoginService extends AsyncTask<String, Void, User> {
 
     @Override
     protected User doInBackground(String... params) {
+
         URL url = null;
         try {
             url = new URL(BaseService.getAbsoluteUrl("/login"));
         } catch (MalformedURLException e) {
             return null;
         }
+
         HttpURLConnection urlConnection = null;
         try {
             String username = params[0];
@@ -41,27 +44,25 @@ public class LoginService extends AsyncTask<String, Void, User> {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
             urlConnection.setInstanceFollowRedirects(false);
+            urlConnection.setUseCaches(false);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             urlConnection.setRequestProperty("charset", BaseService.UTF8);
             urlConnection.setRequestProperty("Content-Length", Integer.toString(postData.length));
-            urlConnection.setUseCaches(false);
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-
             wr.write(postData);
             wr.flush();
             wr.close();
-            int responseCode = urlConnection.getResponseCode();
 
-            if (responseCode != BaseService.OK_STATUS) {
+            if (urlConnection.getResponseCode() != BaseService.OK_STATUS) {
                 return null;
             }
-            BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-            Gson gson = new Gson();
 
-            return gson.fromJson(in, User.class);
+            BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            return new Gson().fromJson(in, User.class);
         } catch (IOException ex) {
+            Log.e("ERROR", ex.getMessage());
             return null;
         } finally {
             if (urlConnection != null) {

@@ -28,9 +28,12 @@ import edu.cmu.jsphdev.picky.util.CurrentSession;
 public class MainActivity extends AppCompatActivity {
 
     private static final int ALL_PERMISSIONS_REQUEST_CODE = 1;
+
+    /* Static array of all permissions needed. */
     private static final String[] ALL = {Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.INTERNET};
+
     private TabHost tabHost;
 
     @Override
@@ -38,33 +41,35 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /* Request for missing/new permissions. */
         String[] permissionsNeeded = missingPermissions();
         if (permissionsNeeded.length > 0) {
             ActivityCompat.requestPermissions(this, permissionsNeeded, ALL_PERMISSIONS_REQUEST_CODE);
         }
+
+        /* Storing USER in device's shared preferences for persistent session. */
         String existingToken = PreferenceManager.getDefaultSharedPreferences(this).getString("existingUser", "");
         if (!existingToken.isEmpty()) {
             CurrentSession.setActiveUser(new Gson().fromJson(existingToken, User.class));
             startActivity(new Intent(this, HomeActivity.class));
         }
 
+        /* Initializing different tab holders. */
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
-        /*
-        Initializing different tab holders.
-         */
         addTabSpecs("Log In", R.id.loginContent);
         addTabSpecs("Sign Up", R.id.signUpContent);
     }
 
+    /**
+     * Finding missing permissions.
+     */
     private String[] missingPermissions() {
-        List<String> permissionsNeeded = new ArrayList<String>();
-
-        for (String permission: ALL) {
+        List<String> permissionsNeeded = new ArrayList<>();
+        for (String permission : ALL) {
             if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 permissionsNeeded.add(permission);
             }
-
         }
         String[] permissions = new String[permissionsNeeded.size()];
         return permissionsNeeded.toArray(permissions);
@@ -79,19 +84,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[]grantResults) {
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case ALL_PERMISSIONS_REQUEST_CODE: {
-                Map<String, Integer> perms = new HashMap<String, Integer>();
-
-                for (String permission: ALL) {
+                Map<String, Integer> perms = new HashMap<>();
+                for (String permission : ALL) {
                     perms.put(permission, PackageManager.PERMISSION_GRANTED);
                 }
-                // Fill with results
+                /* Fill with results */
                 for (int i = 0; i < permissions.length; i++) {
                     perms.put(permissions[i], grantResults[i]);
                 }
-                for (String permission: ALL) {
+                for (String permission : ALL) {
                     if (perms.get(permission) != PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this,
                                 String.format("%s permission is denied, some functions might malfunction", permission),

@@ -11,7 +11,8 @@ public class User {
     private String password;
     private boolean tiltActive = false;
 
-    public User() {}
+    public User() {
+    }
 
     public String getToken() {
         return token;

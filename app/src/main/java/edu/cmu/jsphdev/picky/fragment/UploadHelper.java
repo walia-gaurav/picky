@@ -12,6 +12,9 @@ import android.widget.ImageView;
 
 import java.io.File;
 
+/**
+ * Helper class to process images from the device.
+ */
 public class UploadHelper {
 
     /**
@@ -49,7 +52,7 @@ public class UploadHelper {
         if (bitmap == null) {
             return;
         }
-        Log.d("GAURAV", bitmap.toString());
+        Log.d("TESTING", bitmap.toString());
         imageView.setImageBitmap(getScaledDownImage(bitmap));
         imageView.setBackground(null);
     }

@@ -34,17 +34,17 @@ public class PickyHistoryService extends AsyncTask<String, Void, List<Picky>> {
         } catch (MalformedURLException e) {
             return null;
         }
+
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setInstanceFollowRedirects(false);
-            urlConnection.setRequestMethod("GET");
             urlConnection.setUseCaches(false);
+            urlConnection.setRequestMethod("GET");
 
             BaseService.setAuthHeader(urlConnection);
 
-            int responseCode = urlConnection.getResponseCode();
-            if (responseCode != BaseService.OK_STATUS) {
+            if (urlConnection.getResponseCode() != BaseService.OK_STATUS) {
                 return null;
             }
 
@@ -53,7 +53,7 @@ public class PickyHistoryService extends AsyncTask<String, Void, List<Picky>> {
             }.getType());
 
         } catch (IOException ex) {
-            Log.d("DEBUG", ex.getMessage());
+            Log.e("ERROR", ex.getMessage());
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

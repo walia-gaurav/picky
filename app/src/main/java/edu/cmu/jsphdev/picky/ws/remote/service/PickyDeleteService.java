@@ -34,14 +34,13 @@ public class PickyDeleteService extends AsyncTask<String, Void, Picky> {
         } catch (MalformedURLException e) {
             return null;
         }
+
         HttpURLConnection urlConnection = null;
         try {
-            String pickyId = params[0];
-            String urlParameters = String.format("id=%s", pickyId);
+            String urlParameters = String.format("id=%s", params[0]);
             byte[] postData = urlParameters.getBytes(BaseService.UTF8);
 
             urlConnection = (HttpURLConnection) url.openConnection();
-
             urlConnection.setDoOutput(true);
             urlConnection.setInstanceFollowRedirects(false);
             urlConnection.setUseCaches(false);
@@ -53,7 +52,6 @@ public class PickyDeleteService extends AsyncTask<String, Void, Picky> {
             BaseService.setAuthHeader(urlConnection);
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
-
             wr.write(postData);
             wr.flush();
             wr.close();
@@ -66,7 +64,7 @@ public class PickyDeleteService extends AsyncTask<String, Void, Picky> {
             return new Gson().fromJson(in, Picky.class);
 
         } catch (IOException ex) {
-            Log.d("DEBUG", ex.getMessage());
+            Log.e("ERROR", ex.getMessage());
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

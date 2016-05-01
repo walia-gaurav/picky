@@ -20,8 +20,10 @@ import edu.cmu.jsphdev.picky.fragment.UploadHelper;
  */
 public class HomeActivity extends AppCompatActivity {
 
-    int selectedPicky;
+    private static final String TAG = "HOME_ACTIVITY_LOGGER";
 
+    /* Resource Id for the selected picky (to identify between left/right buttons */
+    private int selectedPicky;
     private TabHost tabHost;
 
     @Override
@@ -29,9 +31,9 @@ public class HomeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         tabHost = (TabHost) findViewById(R.id.homeTabHost);
         tabHost.setup();
-
 
         /* Initializing different tab holders. */
         addTabSpecs("Public", R.id.publicTab, R.drawable.group_icon);
@@ -40,6 +42,9 @@ public class HomeActivity extends AppCompatActivity {
         addTabSpecs("Account", R.id.accountTab, R.drawable.account_icon);
         addTabSpecs("Logout", R.id.logoutTab, R.drawable.logout_icon);
 
+        /*
+        Refreshing fragments on tabChangeEvent.
+         */
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
@@ -69,31 +74,43 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This is called when the UploadFragment completes fetching the images either from the camera or gallery.
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode == RESULT_OK) {
 
-            TextView test = (TextView) findViewById(R.id.selectedPicky);
+            TextView selectedPickyHiddenField = (TextView) findViewById(R.id.selectedPicky);
             try {
-                selectedPicky = Integer.parseInt(test.getText().toString());
+                selectedPicky = Integer.parseInt(selectedPickyHiddenField.getText().toString());
             } catch (NumberFormatException e) {
-                Log.d("TESTING", "" + e.getMessage());
+                Log.e(TAG, e.getMessage());
             }
 
             ImageView pickyView = (ImageView) findViewById(selectedPicky);
 
             Bitmap image = null;
             if (requestCode == 1) {
+                /*
+                For retrieval from Camera.
+                 */
                 image = UploadHelper.retrieveImageFromCamera();
                 UploadHelper.updateImageView(pickyView, image);
             } else if (requestCode == 2) {
+                /*
+                For retrieval from Gallery.
+                 */
                 image = UploadHelper.retrieveImageFromGallery(this, data);
                 UploadHelper.updateImageView(pickyView, image);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     /**
@@ -101,24 +118,34 @@ public class HomeActivity extends AppCompatActivity {
      */
     private void addTabSpecs(String tag, int contentId, int icon) {
         TabHost.TabSpec spec = tabHost.newTabSpec(tag);
-
         spec.setContent(contentId);
         spec.setIndicator("", ContextCompat.getDrawable(this, icon));
         tabHost.addTab(spec);
     }
 
+    /**
+     * Gets called just before this activity gets destroyed. Saving picky side to refresh the activity at a later
+     * point. In low-memory devices, the camera activity switches off the app's activity, and only then clicks a
+     * picture. Once the picture is taken, the activity is restored again. The state has been manually handled.
+     *
+     * @param outState
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
         try {
             outState.putInt("selectedPicky", Integer.parseInt(((TextView) findViewById(R.id.selectedPicky)).getText()
                     .toString()));
         } catch (NumberFormatException e) {
-
+            Log.e(TAG, e.getMessage());
         }
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Gets called when the activity restarts, and fetchs the saved instance.
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {

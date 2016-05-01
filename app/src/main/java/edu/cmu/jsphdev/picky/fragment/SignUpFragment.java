@@ -2,7 +2,9 @@ package edu.cmu.jsphdev.picky.fragment;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.regex.Matcher;
+import com.google.gson.Gson;
+
 import java.util.regex.Pattern;
 
 import edu.cmu.jsphdev.picky.R;
@@ -59,7 +62,8 @@ public class SignUpFragment extends Fragment {
             public void validate(TextView textView, String text) {
                 // validate passwords
                 if (!isValidPassword(text)) {
-                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
+                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1" +
+                            " symbol");
                 }
             }
         });
@@ -69,7 +73,8 @@ public class SignUpFragment extends Fragment {
             public void validate(TextView textView, String text) {
                 // validate passwords confirmation
                 if (!isValidPassword(text)) {
-                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1 symbol");
+                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1" +
+                            " symbol");
                 }
             }
         });
@@ -91,7 +96,14 @@ public class SignUpFragment extends Fragment {
                                         Toast.LENGTH_LONG).show();
                                 return;
                             }
+                            /*
+                            Session persistence in SharedPreferences.
+                             */
                             CurrentSession.setActiveUser(user);
+                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences
+                                    (getActivity()).edit();
+                            editor.putString("existingUser", (new Gson()).toJson(user));
+                            editor.apply();
                             startActivity(new Intent(getActivity(), HomeActivity.class));
                         }
                     };
@@ -107,7 +119,9 @@ public class SignUpFragment extends Fragment {
     }
 
 
-    // validating password with retype password
+    /**
+     * Validates the username.
+     */
     private boolean isValidUsername(String username) {
         if (username != null && username.length() > 3) {
             return true;
@@ -115,16 +129,12 @@ public class SignUpFragment extends Fragment {
         return false;
     }
 
-    // validating password with retype password
-    private boolean isValidPassword(String pass) {
-        Pattern pattern;
-        Matcher matcher;
-
-        final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
-
-        pattern = Pattern.compile(PASSWORD_PATTERN);
-        matcher = pattern.matcher(pass);
-
-        return matcher.matches();
+    /**
+     * Validates the password.
+     */
+    private boolean isValidPassword(String password) {
+        final String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";
+        Pattern pattern = Pattern.compile(passwordPattern);
+        return pattern.matcher(password).matches();
     }
 }

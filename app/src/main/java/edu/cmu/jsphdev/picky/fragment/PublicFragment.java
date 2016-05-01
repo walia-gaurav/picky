@@ -12,7 +12,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,13 +41,13 @@ public class PublicFragment extends Fragment implements SensorEventListener {
     private float[] gravity;
     private float currentX;
     private float lastX;
-    private boolean registred;
+    private boolean isRegistered;
+    private long lastUpdate;
 
     private TextView titleTextView;
     private Button leftButton;
     private Button rightButton;
     private Picky picky;
-    private long lastUpdate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +65,7 @@ public class PublicFragment extends Fragment implements SensorEventListener {
         titleTextView = (TextView) view.findViewById(R.id.titleTextView);
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) !=
-                PackageManager.PERMISSION_GRANTED)  {
+                PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getActivity().getApplicationContext(),
                     "Internet permission is required", Toast.LENGTH_LONG).show();
             return view;
@@ -76,6 +75,9 @@ public class PublicFragment extends Fragment implements SensorEventListener {
         return view;
     }
 
+    /**
+     * Refreshes this fragment.
+     */
     public void refresh() {
         loadPicky();
     }
@@ -110,6 +112,12 @@ public class PublicFragment extends Fragment implements SensorEventListener {
         });
     }
 
+    /**
+     * This methods casts the vote on the server-side.
+     *
+     * @param button
+     * @param vote
+     */
     private void vote(Button button, Vote vote) {
         button.setText(R.string.picked);
         Callback<Boolean> callback = new Callback<Boolean>() {
@@ -128,9 +136,12 @@ public class PublicFragment extends Fragment implements SensorEventListener {
         registerSensor();
     }
 
+    /**
+     * Registering accelerometer sensor.
+     */
     private void registerSensor() {
         if (CurrentSession.isTiltActive()) {
-            registred = true;
+            isRegistered = true;
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
         }
     }
@@ -141,16 +152,19 @@ public class PublicFragment extends Fragment implements SensorEventListener {
         unregisterSensor();
     }
 
+    /**
+     * Evicting registration of accelerometer.
+     */
     private void unregisterSensor() {
-        if (registred) {
-            registred = false;
+        if (isRegistered) {
+            isRegistered = false;
             sensorManager.unregisterListener(this);
         }
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             long actualTime = System.currentTimeMillis();
 
             if ((actualTime - lastUpdate) > 100) {
@@ -174,7 +188,8 @@ public class PublicFragment extends Fragment implements SensorEventListener {
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
 
     private void enableButtons() {
         ((LinearLayout) getActivity().findViewById(R.id.frame)).setClickable(false);
@@ -190,6 +205,9 @@ public class PublicFragment extends Fragment implements SensorEventListener {
         rightButton.setEnabled(false);
     }
 
+    /**
+     * Helper method to fetch more pickies.
+     */
     private void loadPicky() {
         Callback<Picky> callback = new Callback<Picky>() {
             @Override
@@ -200,7 +218,8 @@ public class PublicFragment extends Fragment implements SensorEventListener {
                             leftButton, rightButton);
                     ImageDownloaderTask<Button> buttonsDownloaderTask = new ImageDownloaderTask<>(buttonsCallback);
 
-                    buttonsDownloaderTask.execute(pickyResult.getLeftPhoto().getUrl(), pickyResult.getRightPhoto().getUrl());
+                    buttonsDownloaderTask.execute(pickyResult.getLeftPhoto().getUrl(), pickyResult.getRightPhoto()
+                            .getUrl());
                     titleTextView.setText(pickyResult.getTitle());
                     enableButtons();
                     customTouchListener(leftButton, Vote.LEFT);
@@ -215,12 +234,6 @@ public class PublicFragment extends Fragment implements SensorEventListener {
                 }
             }
         };
-        TimelineService timelineService = new TimelineService(callback);
-        timelineService.execute();
+        new TimelineService(callback).execute();
     }
-
-    public boolean isRegistred() {
-        return registred;
-    }
-
 }

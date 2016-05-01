@@ -47,16 +47,18 @@ public class LogoutFragment extends Fragment {
                             Toast.makeText(getActivity().getApplicationContext(),
                                     "Problem performing logout", Toast.LENGTH_LONG).show();
                         }
-                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-
+                        /*
+                        Evicting session from SharedPreferences.
+                         */
+                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()
+                        ).edit();
                         editor.remove("existingUser");
                         editor.apply();
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         startActivity(intent);
                     }
                 };
-                LogoutService logoutService = new LogoutService(callback);
-                logoutService.execute();
+                new LogoutService(callback).execute();
             }
         });
 
@@ -66,9 +68,7 @@ public class LogoutFragment extends Fragment {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TabHost tabHost = (TabHost) getActivity().findViewById(R.id.homeTabHost);
-
-                tabHost.setCurrentTab(0);
+                ((TabHost) getActivity().findViewById(R.id.homeTabHost)).setCurrentTab(0);
             }
         });
 
