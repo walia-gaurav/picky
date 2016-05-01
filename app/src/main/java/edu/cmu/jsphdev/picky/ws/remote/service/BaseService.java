@@ -13,7 +13,7 @@ public class BaseService {
     public static final String AUTH_HEADER = "X-Auth-Token";
     public static final String UTF8 = "UTF-8";
     public static final int OK_STATUS = 200;
-    private static final String HOST_ENDPOINT = String.format("%s/picky-rest-amazing-servlets/api", IP);
+    private static final String HOST_ENDPOINT = String.format("%s/picky-engine/api", IP);
 
     /**
      * Returns the server-endpoint for the context passed.

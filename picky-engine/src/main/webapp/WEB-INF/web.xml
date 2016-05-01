@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <display-name>Picky Server API</display-name>
+  <listener>
+    <listener-class>org.cmu.picky.PickyServerContext</listener-class>
+  </listener>
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <filter-name>Login Filter</filter-name>
+    <filter-class>org.cmu.picky.filters.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Login Filter</filter-name>
+    <url-pattern>/api/*</url-pattern>
+  </filter-mapping>
+  <servlet>
+    <servlet-name>Login</servlet-name>
+    <servlet-class>org.cmu.picky.servlets.LoginServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Login</servlet-name>
+    <url-pattern>/api/login</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Logout</servlet-name>
+    <servlet-class>org.cmu.picky.servlets.LogoutServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Logout</servlet-name>
+    <url-pattern>/api/logout</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>My Pickies</servlet-name>
+    <servlet-class>org.cmu.picky.servlets.MyPickiesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>My Pickies</servlet-name>
+    <url-pattern>/api/user/pickies</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Timeline</servlet-name>
+    <servlet-class>org.cmu.picky.servlets.TimelineServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Timeline</servlet-name>
+    <url-pattern>/api/picky/timeline</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>SignUp</servlet-name>
+    <servlet-class>org.cmu.picky.servlets.SignUpServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SignUp</servlet-name>
+    <url-pattern>/api/signup</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Upload</servlet-name>
+    <servlet-class>org.cmu.picky.servlets.UploadServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Upload</servlet-name>
+    <url-pattern>/api/picky/upload</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Update Password</servlet-name>
+    <servlet-class>org.cmu.picky.servlets.UpdatePasswordServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Update Password</servlet-name>
+    <url-pattern>/api/user/password</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Delete Picky</servlet-name>
+    <servlet-class>org.cmu.picky.servlets.DeletePickyServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Delete Picky</servlet-name>
+    <url-pattern>/api/picky/delete</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Vote Picky</servlet-name>
+    <servlet-class>org.cmu.picky.servlets.VotePickyServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Vote Picky</servlet-name>
+    <url-pattern>/api/picky/vote</url-pattern>
+  </servlet-mapping>
+</web-app>
