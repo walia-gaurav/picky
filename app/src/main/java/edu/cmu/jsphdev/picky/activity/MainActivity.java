@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         tabHost.setup();
         addTabSpecs("Log In", R.id.loginContent);
         addTabSpecs("Sign Up", R.id.signUpContent);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
     }
 
     /**
