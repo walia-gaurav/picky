@@ -17,7 +17,6 @@
         android:id="@+id/newUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/username"
         android:inputType="text"/>
 
     <LinearLayout
@@ -44,8 +43,8 @@
                 android:id="@+id/newPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:nextFocusDown="@id/newPasswordConfirm"/>
         </LinearLayout>
 
         <LinearLayout
@@ -65,7 +64,6 @@
                 android:id="@+id/newPasswordConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
                 android:inputType="textPassword"/>
         </LinearLayout>
     </LinearLayout>

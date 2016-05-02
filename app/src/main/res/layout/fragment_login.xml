@@ -5,6 +5,7 @@
               android:gravity="center"
               android:orientation="vertical"
               android:padding="40dp"
+              android:windowSoftInputMode="stateHidden"
               tools:context=".fragment.LoginFragment">
 
     <TextView
@@ -14,10 +15,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
+        android:id="@+id/usernameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/usernameEditText"
-        android:hint="@string/username"
         android:inputType="text"/>
 
     <TextView
@@ -27,11 +27,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <EditText
+        android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/passwordEditText"
-        android:hint="@string/password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"/>
 
     <ImageButton
         android:id="@+id/loginButton"
