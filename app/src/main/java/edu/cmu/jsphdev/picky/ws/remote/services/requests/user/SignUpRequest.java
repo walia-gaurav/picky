@@ -63,7 +63,7 @@ public class SignUpRequest extends AsyncTask<String, Void, User> {
             BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
             return new Gson().fromJson(in, User.class);
         } catch (IOException ex) {
-            Log.e("ERROR", ex.getMessage());
+            Log.e(TAG, "Problem making the request", ex);
             return null;
         } finally {
             if (urlConnection != null) {

@@ -66,7 +66,7 @@ public class UploadRequest extends AsyncTask<Picky, Void, Boolean> {
             return urlConnection.getResponseCode() == BaseRequest.OK_STATUS;
 
         } catch (IOException ex) {
-            Log.e("ERROR", ex.getMessage());
+            Log.e(TAG, "Problem making the request", ex);
             return false;
         } finally {
             if (urlConnection != null) {

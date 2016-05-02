@@ -161,9 +161,6 @@ public class UploadFragment extends Fragment {
 
     /**
      * Returns a Base-64 encoded string for an ImageView.
-     *
-     * @param leftPicky
-     * @return
      */
     private String getBase64StringFromImageView(ImageView leftPicky) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -173,8 +170,6 @@ public class UploadFragment extends Fragment {
 
     /**
      * Starting process of image capture.
-     *
-     * @param imageId
      */
     private void selectImageOnClick(final int imageId) {
         ImageView image = (ImageView) view.findViewById(imageId);
@@ -189,8 +184,6 @@ public class UploadFragment extends Fragment {
 
     /**
      * Generating a dialog box for the user to select capture type of image.
-     *
-     * @param imageId
      */
     private void selectImage(final int imageId) {
 

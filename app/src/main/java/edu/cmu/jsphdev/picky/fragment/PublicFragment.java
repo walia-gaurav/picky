@@ -90,8 +90,6 @@ public class PublicFragment extends Fragment implements SensorEventListener {
 
     /**
      * Custom TouchListener to visually represent selection of a picky.
-     *
-     * @param button
      */
     private void customTouchListener(final Button button, final Vote vote) {
         button.setOnTouchListener(new View.OnTouchListener() {
@@ -120,9 +118,6 @@ public class PublicFragment extends Fragment implements SensorEventListener {
 
     /**
      * This methods casts the vote on the server-side.
-     *
-     * @param button
-     * @param vote
      */
     private void vote(Button button, Vote vote) {
         button.setText(R.string.picked);

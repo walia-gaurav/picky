@@ -120,9 +120,6 @@ public class AccountFragment extends Fragment {
 
     /**
      * Returns true if the password is valid.
-     *
-     * @param password
-     * @return
      */
     private boolean isValidPassword(String password) {
         final String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$";

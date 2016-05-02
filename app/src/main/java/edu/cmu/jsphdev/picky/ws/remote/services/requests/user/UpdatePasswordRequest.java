@@ -54,7 +54,7 @@ public class UpdatePasswordRequest extends AsyncTask<String, Void, Boolean> {
             return urlConnection.getResponseCode() != BaseRequest.OK_STATUS;
 
         } catch (IOException ex) {
-            Log.e("ERROR", ex.getMessage());
+            Log.e(TAG, "Problem making the request", ex);
             return null;
         } finally {
             if (urlConnection != null) {

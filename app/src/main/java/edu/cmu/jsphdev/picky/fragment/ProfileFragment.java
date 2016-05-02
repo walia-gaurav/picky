@@ -52,6 +52,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         };
-        pickyService.getHistory(callback);
+        pickyService.history(callback);
     }
 }

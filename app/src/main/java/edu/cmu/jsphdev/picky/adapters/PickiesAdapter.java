@@ -33,9 +33,6 @@ public class PickiesAdapter extends BaseAdapter {
 
     /**
      * Constructing the adapter fields.
-     *
-     * @param activity
-     * @param pickies
      */
     public PickiesAdapter(Activity activity, List<Picky> pickies) {
         this.pickies = pickies;

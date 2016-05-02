@@ -52,7 +52,7 @@ public class TimelineRequest extends AsyncTask<String, Void, Picky> {
             return new Gson().fromJson(in, Picky.class);
 
         } catch (IOException ex) {
-            Log.e("ERROR", ex.getMessage());
+            Log.e(TAG, "Problem making the request", ex);
             return null;
         } finally {
             if (urlConnection != null) {

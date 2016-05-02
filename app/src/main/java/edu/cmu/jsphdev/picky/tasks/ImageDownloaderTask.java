@@ -15,8 +15,6 @@ import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderCallback;
 
 /**
  * Async Task to download an image from server.
- *
- * @param <T>
  */
 public class ImageDownloaderTask<T> extends AsyncTask<String, Void, List<Bitmap>> {
 
@@ -29,8 +27,8 @@ public class ImageDownloaderTask<T> extends AsyncTask<String, Void, List<Bitmap>
     }
 
     private static Bitmap downloadBitmap(String url) {
-
         HttpURLConnection urlConnection = null;
+
         try {
             URL uri = new URL(url);
             urlConnection = (HttpURLConnection) uri.openConnection();
@@ -43,8 +41,8 @@ public class ImageDownloaderTask<T> extends AsyncTask<String, Void, List<Bitmap>
             if (inputStream != null) {
                 return BitmapFactory.decodeStream(inputStream);
             }
-        } catch (Exception e) {
-            Log.w(TAG, "Error downloading image from " + url);
+        } catch (Exception ex) {
+            Log.e(TAG, "Error downloading image from " + url, ex);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

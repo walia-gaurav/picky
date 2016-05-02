@@ -52,7 +52,6 @@ public class UploadHelper {
         if (bitmap == null) {
             return;
         }
-        Log.d("TESTING", bitmap.toString());
         imageView.setImageBitmap(getScaledDownImage(bitmap));
         imageView.setBackground(null);
     }
@@ -64,4 +63,5 @@ public class UploadHelper {
         int newHeight = (int) (originalImage.getHeight() * (512.0 / originalImage.getWidth()));
         return Bitmap.createScaledBitmap(originalImage, 512, newHeight, true);
     }
+
 }

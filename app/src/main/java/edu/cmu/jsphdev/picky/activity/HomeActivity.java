@@ -78,10 +78,6 @@ public class HomeActivity extends AppCompatActivity {
 
     /**
      * This is called when the UploadFragment completes fetching the images either from the camera or gallery.
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -91,8 +87,8 @@ public class HomeActivity extends AppCompatActivity {
             TextView selectedPickyHiddenField = (TextView) findViewById(R.id.selectedPicky);
             try {
                 selectedPicky = Integer.parseInt(selectedPickyHiddenField.getText().toString());
-            } catch (NumberFormatException e) {
-                Log.e(TAG, e.getMessage());
+            } catch (NumberFormatException ex) {
+                Log.e(TAG, "Problem parsing number", ex);
             }
 
             ImageView pickyView = (ImageView) findViewById(selectedPicky);
@@ -129,24 +125,20 @@ public class HomeActivity extends AppCompatActivity {
      * Gets called just before this activity gets destroyed. Saving picky side to refresh the activity at a later
      * point. In low-memory devices, the camera activity switches off the app's activity, and only then clicks a
      * picture. Once the picture is taken, the activity is restored again. The state has been manually handled.
-     *
-     * @param outState
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         try {
             outState.putInt("selectedPicky", Integer.parseInt(((TextView) findViewById(R.id.selectedPicky)).getText()
                     .toString()));
-        } catch (NumberFormatException e) {
-            Log.e(TAG, e.getMessage());
+        } catch (NumberFormatException ex) {
+            Log.e(TAG, "Problem parsing number", ex);
         }
         super.onSaveInstanceState(outState);
     }
 
     /**
      * Gets called when the activity restarts, and fetchs the saved instance.
-     *
-     * @param savedInstanceState
      */
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {

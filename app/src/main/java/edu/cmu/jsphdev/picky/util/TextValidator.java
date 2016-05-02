@@ -5,6 +5,7 @@ import android.text.TextWatcher;
 import android.widget.TextView;
 
 public abstract class TextValidator implements TextWatcher {
+
     private final TextView textView;
 
     public TextValidator(TextView textView) {
@@ -27,4 +28,5 @@ public abstract class TextValidator implements TextWatcher {
         String text = textView.getText().toString();
         validate(textView, text);
     }
+    
 }

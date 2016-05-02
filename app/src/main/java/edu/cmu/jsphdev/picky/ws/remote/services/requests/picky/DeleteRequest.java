@@ -65,7 +65,7 @@ public class DeleteRequest extends AsyncTask<String, Void, Picky> {
             return new Gson().fromJson(in, Picky.class);
 
         } catch (IOException ex) {
-            Log.e("ERROR", ex.getMessage());
+            Log.e(TAG, "Problem making the request", ex);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

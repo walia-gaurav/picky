@@ -55,7 +55,7 @@ public class HistoryRequest extends AsyncTask<String, Void, List<Picky>> {
             }.getType());
 
         } catch (IOException ex) {
-            Log.e("ERROR", ex.getMessage());
+            Log.e(TAG, "Problem making the request", ex);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

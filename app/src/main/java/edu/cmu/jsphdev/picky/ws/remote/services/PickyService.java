@@ -22,7 +22,7 @@ public class PickyService implements PickyServiceInterface {
     }
 
     @Override
-    public void getHistory(Callback<List<Picky>> callback) {
+    public void history(Callback<List<Picky>> callback) {
         HistoryRequest historyRequest = new HistoryRequest(callback);
 
         historyRequest.execute();
