@@ -12,6 +12,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import edu.cmu.jsphdev.picky.R;
+import edu.cmu.jsphdev.picky.fragment.ProfileFragment;
 import edu.cmu.jsphdev.picky.fragment.PublicFragment;
 import edu.cmu.jsphdev.picky.fragment.UploadHelper;
 
@@ -57,9 +58,10 @@ public class HomeActivity extends AppCompatActivity {
                         break;
                     }
                     case "Profile": {
-                        Fragment publicFragment = getSupportFragmentManager().findFragmentById(R.id.publicFragment);
-                        if (publicFragment != null) {
-                            ((PublicFragment) publicFragment).refresh();
+                        Fragment profileFragment = getSupportFragmentManager().findFragmentByTag
+                                ("profile_fragment_tag");
+                        if (profileFragment != null) {
+                            ((ProfileFragment) profileFragment).loadPickyHistory();
                         }
                         break;
                     }
