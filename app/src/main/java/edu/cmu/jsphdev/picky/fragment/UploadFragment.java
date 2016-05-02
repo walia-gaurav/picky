@@ -34,7 +34,8 @@ import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.entities.Photo;
 import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
-import edu.cmu.jsphdev.picky.ws.remote.service.UploadPickyService;
+import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.services.PickyService;
 
 /**
  * TabFragment for Uploading pickies (two pictures and a title)
@@ -46,6 +47,7 @@ public class UploadFragment extends Fragment {
     private ImageView rightPicky;
     private EditText title;
     private LocationManager locationManager;
+    private PickyServiceInterface pickyService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +56,7 @@ public class UploadFragment extends Fragment {
 
         /* Initializing location manager. */
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        pickyService = new PickyService();
 
         /*
         Permissions check.
@@ -114,8 +117,7 @@ public class UploadFragment extends Fragment {
                             }
                         }
                     };
-                    new UploadPickyService(callback).execute(picky);
-
+                    pickyService.upload(picky, callback);
                 } else {
                     Toast.makeText(getActivity(), "Upload Failed!", Toast.LENGTH_SHORT).show();
                 }

@@ -1,38 +1,44 @@
-package edu.cmu.jsphdev.picky.ws.remote.service;
+package edu.cmu.jsphdev.picky.ws.remote.services.requests.picky;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
+import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
-public class VoteService extends AsyncTask<String, Void, Boolean> {
+public class DeleteRequest extends AsyncTask<String, Void, Picky> {
+
 
     private Callback<Boolean> callback;
 
-    public VoteService(Callback<Boolean> callback) {
+    public DeleteRequest(Callback<Boolean> callback) {
         this.callback = callback;
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
-
+    protected Picky doInBackground(String... params) {
         URL url = null;
         try {
-            url = new URL(BaseService.getAbsoluteUrl("/picky/vote"));
+            url = new URL(BaseRequest.getAbsoluteUrl("/picky/delete"));
         } catch (MalformedURLException e) {
             return null;
         }
 
         HttpURLConnection urlConnection = null;
         try {
-            String urlParameters = String.format("id=%s&vote=%s", params[0], params[1]);
-            byte[] postData = urlParameters.getBytes(BaseService.UTF8);
+            String urlParameters = String.format("id=%s", params[0]);
+            byte[] postData = urlParameters.getBytes(BaseRequest.UTF8);
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
@@ -40,30 +46,35 @@ public class VoteService extends AsyncTask<String, Void, Boolean> {
             urlConnection.setUseCaches(false);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            urlConnection.setRequestProperty("charset", BaseService.UTF8);
+            urlConnection.setRequestProperty("charset", BaseRequest.UTF8);
             urlConnection.setRequestProperty("Content-Length", Integer.toString(postData.length));
 
-            BaseService.setAuthHeader(urlConnection);
+            BaseRequest.setAuthHeader(urlConnection);
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
             wr.write(postData);
             wr.flush();
             wr.close();
 
-            return urlConnection.getResponseCode() != BaseService.OK_STATUS;
+            if (urlConnection.getResponseCode() != BaseRequest.OK_STATUS) {
+                return null;
+            }
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+            return new Gson().fromJson(in, Picky.class);
 
         } catch (IOException ex) {
             Log.e("ERROR", ex.getMessage());
-            return null;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
         }
+        return null;
     }
 
     @Override
-    protected void onPostExecute(Boolean result) {
-        callback.process(result);
+    protected void onPostExecute(Picky picky) {
+        callback.process(picky != null);
     }
 }

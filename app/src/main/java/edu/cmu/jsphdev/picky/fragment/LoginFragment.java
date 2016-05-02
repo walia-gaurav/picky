@@ -20,7 +20,8 @@ import edu.cmu.jsphdev.picky.activity.HomeActivity;
 import edu.cmu.jsphdev.picky.entities.User;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.util.CurrentSession;
-import edu.cmu.jsphdev.picky.ws.remote.service.LoginService;
+import edu.cmu.jsphdev.picky.ws.remote.interfaces.UserServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.services.UserService;
 
 /**
  * TabFragment to handle user log-in.
@@ -30,6 +31,7 @@ public class LoginFragment extends Fragment {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private ImageButton loginButton;
+    private UserServiceInterface userService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +41,7 @@ public class LoginFragment extends Fragment {
         usernameEditText = (EditText) view.findViewById(R.id.usernameEditText);
         passwordEditText = (EditText) view.findViewById(R.id.passwordEditText);
         loginButton = (ImageButton) view.findViewById(R.id.loginButton);
+        userService = new UserService();
 
         /*
         Takes the user to the HomeActivity on successful login.
@@ -65,8 +68,8 @@ public class LoginFragment extends Fragment {
                         startActivity(new Intent(getActivity(), HomeActivity.class));
                     }
                 };
-                LoginService loginService = new LoginService(callback);
-                loginService.execute(usernameEditText.getText().toString(), passwordEditText.getText().toString());
+                userService.login(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString(), callback);
             }
         });
         return view;

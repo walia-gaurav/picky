@@ -28,8 +28,8 @@ import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
 import edu.cmu.jsphdev.picky.util.CurrentSession;
-import edu.cmu.jsphdev.picky.ws.remote.service.TimelineService;
-import edu.cmu.jsphdev.picky.ws.remote.service.VoteService;
+import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.services.PickyService;
 
 /**
  * TabFragment to display the picky wall.
@@ -43,6 +43,8 @@ public class PublicFragment extends Fragment implements SensorEventListener {
     private float lastX;
     private boolean isRegistered;
     private long lastUpdate;
+
+    private PickyServiceInterface pickyService;
 
     private TextView titleTextView;
     private Button leftButton;
@@ -59,6 +61,8 @@ public class PublicFragment extends Fragment implements SensorEventListener {
         currentX = SensorManager.GRAVITY_EARTH;
         lastX = SensorManager.GRAVITY_EARTH;
         lastUpdate = 0;
+
+        pickyService = new PickyService();
 
         leftButton = (Button) view.findViewById(R.id.leftChoiceButton);
         rightButton = (Button) view.findViewById(R.id.rightChoiceButton);
@@ -126,8 +130,7 @@ public class PublicFragment extends Fragment implements SensorEventListener {
                 loadPicky();
             }
         };
-        VoteService voteService = new VoteService(callback);
-        voteService.execute(String.format("%d", picky.getId()), vote.name());
+        pickyService.vote(String.valueOf(picky.getId()), vote, callback);
     }
 
     @Override
@@ -234,6 +237,7 @@ public class PublicFragment extends Fragment implements SensorEventListener {
                 }
             }
         };
-        new TimelineService(callback).execute();
+        pickyService.next(callback);
     }
+
 }

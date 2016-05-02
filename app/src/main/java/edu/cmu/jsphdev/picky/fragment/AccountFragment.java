@@ -25,7 +25,8 @@ import edu.cmu.jsphdev.picky.entities.User;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.util.CurrentSession;
 import edu.cmu.jsphdev.picky.util.TextValidator;
-import edu.cmu.jsphdev.picky.ws.remote.service.UpdatePasswordService;
+import edu.cmu.jsphdev.picky.ws.remote.interfaces.UserServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.services.UserService;
 
 /**
  * TabFragment that takes care of the user account.
@@ -35,6 +36,7 @@ public class AccountFragment extends Fragment {
     private EditText newPasswordEditText;
     private EditText newPasswordConfirmationEditText;
     private CheckBox tiltCheckbox;
+    private UserServiceInterface userService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +46,7 @@ public class AccountFragment extends Fragment {
         newPasswordEditText = (EditText) view.findViewById(R.id.newPasswordEditText);
         newPasswordConfirmationEditText = (EditText) view.findViewById(R.id.newPasswordConfirmationEditText);
         tiltCheckbox = (CheckBox) view.findViewById(R.id.tiltCheckBox);
+        userService = new UserService();
 
         tiltCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -96,7 +99,6 @@ public class AccountFragment extends Fragment {
                         }
                     }
                 };
-                UpdatePasswordService updatePasswordService = new UpdatePasswordService(callback);
                 String password = newPasswordEditText.getText().toString();
                 String confirmation = newPasswordConfirmationEditText.getText().toString();
 
@@ -107,7 +109,7 @@ public class AccountFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(),
                             "Passwords does not match", Toast.LENGTH_LONG).show();
                 } else {
-                    updatePasswordService.equals(password);
+                    userService.updatePassword(password, callback);
                 }
             }
         });

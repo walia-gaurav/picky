@@ -18,13 +18,16 @@ import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.ImageDownloaderTask;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallback;
-import edu.cmu.jsphdev.picky.ws.remote.service.PickyDeleteService;
+import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.services.PickyService;
 
 class PickiesAdapter extends BaseAdapter {
 
     private LayoutInflater inflater = null;
     private Activity callerActivity;
     private List<Picky> pickies;
+    private PickyServiceInterface pickyService;
+
 
     /**
      * Constructing the adapter fields.
@@ -35,6 +38,7 @@ class PickiesAdapter extends BaseAdapter {
     public PickiesAdapter(Activity activity, List<Picky> pickies) {
         this.pickies = pickies;
         this.callerActivity = activity;
+        pickyService = new PickyService();
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -130,7 +134,7 @@ class PickiesAdapter extends BaseAdapter {
                                 .show();
                     }
                 };
-                new PickyDeleteService(callback).execute(String.valueOf(picky.getId()));
+                pickyService.delete(String.valueOf(picky.getId()), callback);
             }
         });
 

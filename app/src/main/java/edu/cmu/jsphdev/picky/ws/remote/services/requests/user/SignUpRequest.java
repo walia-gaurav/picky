@@ -1,4 +1,4 @@
-package edu.cmu.jsphdev.picky.ws.remote.service;
+package edu.cmu.jsphdev.picky.ws.remote.services.requests.user;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -15,21 +15,21 @@ import java.net.URL;
 
 import edu.cmu.jsphdev.picky.entities.User;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
+import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
-public class LoginService extends AsyncTask<String, Void, User> {
+public class SignUpRequest extends AsyncTask<String, Void, User> {
 
     private Callback<User> callback;
 
-    public LoginService(Callback<User> callback) {
+    public SignUpRequest(Callback<User> callback) {
         this.callback = callback;
     }
 
     @Override
     protected User doInBackground(String... params) {
-
         URL url = null;
         try {
-            url = new URL(BaseService.getAbsoluteUrl("/login"));
+            url = new URL(BaseRequest.getAbsoluteUrl("/signup"));
         } catch (MalformedURLException e) {
             return null;
         }
@@ -39,7 +39,7 @@ public class LoginService extends AsyncTask<String, Void, User> {
             String username = params[0];
             String password = params[1];
             String urlParameters = String.format("username=%s&password=%s", username, password);
-            byte[] postData = urlParameters.getBytes(BaseService.UTF8);
+            byte[] postData = urlParameters.getBytes(BaseRequest.UTF8);
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
@@ -47,7 +47,7 @@ public class LoginService extends AsyncTask<String, Void, User> {
             urlConnection.setUseCaches(false);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            urlConnection.setRequestProperty("charset", BaseService.UTF8);
+            urlConnection.setRequestProperty("charset", BaseRequest.UTF8);
             urlConnection.setRequestProperty("Content-Length", Integer.toString(postData.length));
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
@@ -55,10 +55,9 @@ public class LoginService extends AsyncTask<String, Void, User> {
             wr.flush();
             wr.close();
 
-            if (urlConnection.getResponseCode() != BaseService.OK_STATUS) {
+            if (urlConnection.getResponseCode() != BaseRequest.OK_STATUS) {
                 return null;
             }
-
             BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
             return new Gson().fromJson(in, User.class);
         } catch (IOException ex) {

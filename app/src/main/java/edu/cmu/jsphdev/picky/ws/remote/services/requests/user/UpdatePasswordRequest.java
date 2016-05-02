@@ -1,49 +1,39 @@
-package edu.cmu.jsphdev.picky.ws.remote.service;
+package edu.cmu.jsphdev.picky.ws.remote.services.requests.user;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.google.gson.Gson;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
-import edu.cmu.jsphdev.picky.entities.Photo;
-import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
+import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
-public class UploadPickyService extends AsyncTask<Picky, Void, Boolean> {
+public class UpdatePasswordRequest extends AsyncTask<String, Void, Boolean> {
 
     private Callback<Boolean> callback;
 
-    public UploadPickyService(Callback<Boolean> callback) {
+    public UpdatePasswordRequest(Callback<Boolean> callback) {
         this.callback = callback;
     }
 
     @Override
-    protected Boolean doInBackground(Picky... pickies) {
-
-        URL url;
+    protected Boolean doInBackground(String... params) {
+        URL url = null;
         try {
-            url = new URL(BaseService.getAbsoluteUrl("/picky/upload"));
+            url = new URL(BaseRequest.getAbsoluteUrl("/user/password"));
         } catch (MalformedURLException e) {
             return null;
         }
 
         HttpURLConnection urlConnection = null;
         try {
-            Picky picky = pickies[0];
-            Photo leftPhoto = picky.getLeftPhoto();
-            Photo rightPhoto = picky.getRightPhoto();
-            leftPhoto.setBase64Image(URLEncoder.encode(leftPhoto.getBase64Image(), "UTF-8"));
-            rightPhoto.setBase64Image(URLEncoder.encode(rightPhoto.getBase64Image(), "UTF-8"));
-
-            String urlParameters = String.format("picky=%s", new Gson().toJson(picky));
-            byte[] postData = urlParameters.getBytes(BaseService.UTF8);
+            String password = params[0];
+            String urlParameters = String.format("password=%s", password);
+            byte[] postData = urlParameters.getBytes(BaseRequest.UTF8);
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
@@ -51,21 +41,19 @@ public class UploadPickyService extends AsyncTask<Picky, Void, Boolean> {
             urlConnection.setUseCaches(false);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            urlConnection.setRequestProperty("charset", BaseService.UTF8);
+            urlConnection.setRequestProperty("charset", BaseRequest.UTF8);
             urlConnection.setRequestProperty("Content-Length", Integer.toString(postData.length));
-
-            BaseService.setAuthHeader(urlConnection);
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
             wr.write(postData);
             wr.flush();
             wr.close();
 
-            return urlConnection.getResponseCode() == BaseService.OK_STATUS;
+            return urlConnection.getResponseCode() != BaseRequest.OK_STATUS;
 
         } catch (IOException ex) {
             Log.e("ERROR", ex.getMessage());
-            return false;
+            return null;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -74,8 +62,7 @@ public class UploadPickyService extends AsyncTask<Picky, Void, Boolean> {
     }
 
     @Override
-    protected void onPostExecute(Boolean isSuccess) {
-        callback.process(isSuccess);
+    protected void onPostExecute(Boolean result) {
+        callback.process(result);
     }
-
 }

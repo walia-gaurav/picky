@@ -1,4 +1,4 @@
-package edu.cmu.jsphdev.picky.ws.remote.service;
+package edu.cmu.jsphdev.picky.ws.remote.services.requests.user;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -9,21 +9,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
+import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
-public class LogoutService extends AsyncTask<String, Void, Boolean> {
+public class LogoutRequest extends AsyncTask<String, Void, Boolean> {
 
     private Callback<Boolean> callback;
 
-    public LogoutService(Callback<Boolean> callback) {
+    public LogoutRequest(Callback<Boolean> callback) {
         this.callback = callback;
     }
 
     @Override
     protected Boolean doInBackground(String... params) {
-
         URL url = null;
         try {
-            url = new URL(BaseService.getAbsoluteUrl("/logout"));
+            url = new URL(BaseRequest.getAbsoluteUrl("/logout"));
         } catch (MalformedURLException e) {
             return false;
         }
@@ -35,9 +35,9 @@ public class LogoutService extends AsyncTask<String, Void, Boolean> {
             urlConnection.setUseCaches(false);
             urlConnection.setRequestMethod("GET");
 
-            BaseService.setAuthHeader(urlConnection);
+            BaseRequest.setAuthHeader(urlConnection);
 
-            return urlConnection.getResponseCode() == BaseService.OK_STATUS;
+            return urlConnection.getResponseCode() == BaseRequest.OK_STATUS;
         } catch (IOException ex) {
             Log.e("ERROR", ex.getMessage());
             return null;

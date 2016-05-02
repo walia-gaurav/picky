@@ -24,26 +24,29 @@ import edu.cmu.jsphdev.picky.entities.User;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.util.CurrentSession;
 import edu.cmu.jsphdev.picky.util.TextValidator;
-import edu.cmu.jsphdev.picky.ws.remote.service.SignUpService;
+import edu.cmu.jsphdev.picky.ws.remote.interfaces.UserServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.services.UserService;
 
 /**
  * TabFragment for signing up.
  */
 public class SignUpFragment extends Fragment {
 
-    EditText newUsername;
-    EditText newPassword;
-    EditText newPasswordConfirm;
+    private EditText newUsername;
+    private EditText newPassword;
+    private EditText newPasswordConfirm;
+    private UserServiceInterface userService;
+
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
 
-
         newUsername = (EditText) view.findViewById(R.id.newUsername);
         newPassword = (EditText) view.findViewById(R.id.newPassword);
         newPasswordConfirm = (EditText) view.findViewById(R.id.newPasswordConfirm);
+        userService = new UserService();
 
         ImageButton signUpButton = (ImageButton) view.findViewById(R.id.signupButton);
 
@@ -107,8 +110,7 @@ public class SignUpFragment extends Fragment {
                             startActivity(new Intent(getActivity(), HomeActivity.class));
                         }
                     };
-                    SignUpService signUpService = new SignUpService(callback);
-                    signUpService.execute(newUsername.getText().toString(), newPassword.getText().toString());
+                    userService.signUp(newUsername.getText().toString(), newPassword.getText().toString(), callback);
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), "Password must match!",
                             Toast.LENGTH_LONG).show();
@@ -137,4 +139,5 @@ public class SignUpFragment extends Fragment {
         Pattern pattern = Pattern.compile(passwordPattern);
         return pattern.matcher(password).matches();
     }
+
 }

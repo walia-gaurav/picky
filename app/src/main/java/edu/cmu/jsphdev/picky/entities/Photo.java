@@ -1,6 +1,6 @@
 package edu.cmu.jsphdev.picky.entities;
 
-import edu.cmu.jsphdev.picky.ws.remote.service.BaseService;
+import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
 /**
  * Entity to hold pictures uploaded by Users.
@@ -27,7 +27,7 @@ public class Photo {
     }
 
     public String getUrl() {
-        return BaseService.IP + "/uploads/" + url;
+        return BaseRequest.IP + "/uploads/" + url;
     }
 
     public void setUrl(String url) {

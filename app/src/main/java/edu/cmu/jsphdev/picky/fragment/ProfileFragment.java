@@ -13,7 +13,8 @@ import java.util.List;
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
-import edu.cmu.jsphdev.picky.ws.remote.service.PickyHistoryService;
+import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.services.PickyService;
 
 /**
  * TabFragment to display user's profile page.
@@ -22,11 +23,13 @@ public class ProfileFragment extends Fragment {
 
     private View view;
     private PickiesAdapter pickiesAdapter;
+    private PickyServiceInterface pickyService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+        pickyService = new PickyService();
         loadPickyHistory();
         return view;
     }
@@ -46,6 +49,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         };
-        new PickyHistoryService(callback).execute();
+        pickyService.getHistory(callback);
     }
 }

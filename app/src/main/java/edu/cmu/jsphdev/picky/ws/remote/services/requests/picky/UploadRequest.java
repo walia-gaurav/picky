@@ -1,45 +1,49 @@
-package edu.cmu.jsphdev.picky.ws.remote.service;
+package edu.cmu.jsphdev.picky.ws.remote.services.requests.picky;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
-import edu.cmu.jsphdev.picky.entities.User;
+import edu.cmu.jsphdev.picky.entities.Photo;
+import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
+import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
-public class SignUpService extends AsyncTask<String, Void, User> {
+public class UploadRequest extends AsyncTask<Picky, Void, Boolean> {
 
-    private Callback<User> callback;
+    private Callback<Boolean> callback;
 
-    public SignUpService(Callback<User> callback) {
+    public UploadRequest(Callback<Boolean> callback) {
         this.callback = callback;
     }
 
     @Override
-    protected User doInBackground(String... params) {
-
-        URL url = null;
+    protected Boolean doInBackground(Picky... pickies) {
+        URL url;
         try {
-            url = new URL(BaseService.getAbsoluteUrl("/signup"));
+            url = new URL(BaseRequest.getAbsoluteUrl("/picky/upload"));
         } catch (MalformedURLException e) {
             return null;
         }
 
         HttpURLConnection urlConnection = null;
         try {
-            String username = params[0];
-            String password = params[1];
-            String urlParameters = String.format("username=%s&password=%s", username, password);
-            byte[] postData = urlParameters.getBytes(BaseService.UTF8);
+            Picky picky = pickies[0];
+            Photo leftPhoto = picky.getLeftPhoto();
+            Photo rightPhoto = picky.getRightPhoto();
+            leftPhoto.setBase64Image(URLEncoder.encode(leftPhoto.getBase64Image(), "UTF-8"));
+            rightPhoto.setBase64Image(URLEncoder.encode(rightPhoto.getBase64Image(), "UTF-8"));
+
+            String urlParameters = String.format("picky=%s", new Gson().toJson(picky));
+            byte[] postData = urlParameters.getBytes(BaseRequest.UTF8);
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoOutput(true);
@@ -47,22 +51,21 @@ public class SignUpService extends AsyncTask<String, Void, User> {
             urlConnection.setUseCaches(false);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            urlConnection.setRequestProperty("charset", BaseService.UTF8);
+            urlConnection.setRequestProperty("charset", BaseRequest.UTF8);
             urlConnection.setRequestProperty("Content-Length", Integer.toString(postData.length));
+
+            BaseRequest.setAuthHeader(urlConnection);
 
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
             wr.write(postData);
             wr.flush();
             wr.close();
 
-            if (urlConnection.getResponseCode() != BaseService.OK_STATUS) {
-                return null;
-            }
-            BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-            return new Gson().fromJson(in, User.class);
+            return urlConnection.getResponseCode() == BaseRequest.OK_STATUS;
+
         } catch (IOException ex) {
             Log.e("ERROR", ex.getMessage());
-            return null;
+            return false;
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -71,7 +74,8 @@ public class SignUpService extends AsyncTask<String, Void, User> {
     }
 
     @Override
-    protected void onPostExecute(User user) {
-        callback.process(user);
+    protected void onPostExecute(Boolean isSuccess) {
+        callback.process(isSuccess);
     }
+
 }

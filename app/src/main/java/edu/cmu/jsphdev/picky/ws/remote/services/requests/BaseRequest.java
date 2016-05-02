@@ -1,4 +1,4 @@
-package edu.cmu.jsphdev.picky.ws.remote.service;
+package edu.cmu.jsphdev.picky.ws.remote.services.requests;
 
 import java.net.HttpURLConnection;
 
@@ -7,7 +7,7 @@ import edu.cmu.jsphdev.picky.util.CurrentSession;
 /**
  * Basic server properties needed by other services.
  */
-public class BaseService {
+public class BaseRequest {
 
     public static final String IP = "http://172.29.93.234:8080";
     public static final String AUTH_HEADER = "X-Auth-Token";

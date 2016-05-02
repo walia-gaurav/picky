@@ -16,7 +16,8 @@ import android.widget.Toast;
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.activity.MainActivity;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
-import edu.cmu.jsphdev.picky.ws.remote.service.LogoutService;
+import edu.cmu.jsphdev.picky.ws.remote.interfaces.UserServiceInterface;
+import edu.cmu.jsphdev.picky.ws.remote.services.UserService;
 
 /**
  * LogoutFragment to handle loggin out of the user.
@@ -25,6 +26,7 @@ public class LogoutFragment extends Fragment {
 
     private Button okButton;
     private Button cancelButton;
+    private UserServiceInterface userService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +35,7 @@ public class LogoutFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_logout, container, false);
         okButton = (Button) view.findViewById(R.id.okButton);
         cancelButton = (Button) view.findViewById(R.id.cancelButton);
+        userService = new UserService();
 
         /*
         Takes you the login page, after successful logout.
@@ -58,7 +61,7 @@ public class LogoutFragment extends Fragment {
                         startActivity(intent);
                     }
                 };
-                new LogoutService(callback).execute();
+                userService.logout(callback);
             }
         });
 
