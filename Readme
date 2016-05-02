@@ -62,4 +62,29 @@ Classes to perform DB operations using SQLite.
 
 How to run:
 
+Before running the server (picky-engine) do the following:
+
+Create the following directory: /var/webapp/upload/
+
+sudo mdkir -p /var/webapp/upload/
+sudo chmod -R 777 /var/webapp/upload/
+
+In the TOMCAT home folder go to conf folder and edit server.xml:
+
+Add <Context docBase="/var/webapp/upload" path="/uploads" /> inside <Host> </Host> tags.
+
+When running TOMCAT make sure that same folder is the CATALINA_HOME variable.
+
+In Intellij you will need to edit the run/debug settings and add this enviroment variable in the startup.
+
+After doing this run the server.
+
+Find out the ip and context path the server is running.
+
+Open Picky project in Android Studio. Open the file name BaseService and put in IP field the host (ex: http://172.29.93.234:8080) and in HOST_ENDPOINT put the context between %s/ and /api (ex: %s/picky-engine/api).
+
 Build the app and transfer it into an Android device. This is fair simple to do using Android Studio.
+
+Use Picky :)
+
+
