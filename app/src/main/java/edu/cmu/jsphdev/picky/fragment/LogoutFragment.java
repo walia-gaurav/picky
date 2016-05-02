@@ -24,6 +24,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.UserService;
  */
 public class LogoutFragment extends Fragment {
 
+    private static final String TAG = LogoutFragment.class.getSimpleName();
+
     private Button okButton;
     private Button cancelButton;
     private UserServiceInterface userService;

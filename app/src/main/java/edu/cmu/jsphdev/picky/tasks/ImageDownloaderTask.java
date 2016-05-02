@@ -20,6 +20,8 @@ import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderCallback;
  */
 public class ImageDownloaderTask<T> extends AsyncTask<String, Void, List<Bitmap>> {
 
+    private static final String TAG = ImageDownloaderTask.class.getSimpleName();
+
     private final ImageDownloaderCallback<T> callback;
 
     public ImageDownloaderTask(ImageDownloaderCallback<T> callback) {
@@ -42,7 +44,7 @@ public class ImageDownloaderTask<T> extends AsyncTask<String, Void, List<Bitmap>
                 return BitmapFactory.decodeStream(inputStream);
             }
         } catch (Exception e) {
-            Log.w("ImageDownloader", "Error downloading image from " + url);
+            Log.w(TAG, "Error downloading image from " + url);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

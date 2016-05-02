@@ -33,6 +33,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.UserService;
  */
 public class AccountFragment extends Fragment {
 
+    private static final String TAG = AccountFragment.class.getSimpleName();
+
     private EditText newPasswordEditText;
     private EditText newPasswordConfirmationEditText;
     private CheckBox tiltCheckbox;

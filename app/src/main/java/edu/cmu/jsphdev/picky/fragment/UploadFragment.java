@@ -42,6 +42,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.PickyService;
  */
 public class UploadFragment extends Fragment {
 
+    private static final String TAG = UploadFragment.class.getSimpleName();
+
     private View view;
     private ImageView leftPicky;
     private ImageView rightPicky;

@@ -1,4 +1,4 @@
-package edu.cmu.jsphdev.picky.fragment;
+package edu.cmu.jsphdev.picky.util;
 
 import android.app.Activity;
 import android.content.Intent;

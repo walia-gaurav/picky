@@ -8,6 +8,8 @@ import java.util.List;
 
 public abstract class ImageDownloaderCallback<T> {
 
+    protected static final String TAG = ImageDownloaderCallback.class.getSimpleName();
+
     protected final T leftElement;
     protected final T rightElement;
     protected final Resources resources;

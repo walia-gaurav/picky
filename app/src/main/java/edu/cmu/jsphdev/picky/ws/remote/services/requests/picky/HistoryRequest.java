@@ -20,6 +20,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
 public class HistoryRequest extends AsyncTask<String, Void, List<Picky>> {
 
+    private static final String TAG = HistoryRequest.class.getSimpleName();
+
     private Callback<List<Picky>> callback;
 
     public HistoryRequest(Callback<List<Picky>> callback) {

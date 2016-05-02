@@ -13,14 +13,14 @@ import android.widget.TextView;
 
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.fragment.PublicFragment;
-import edu.cmu.jsphdev.picky.fragment.UploadHelper;
+import edu.cmu.jsphdev.picky.util.UploadHelper;
 
 /**
  * HomeActivity that initializes the tab widget in the app, for different menu.
  */
 public class HomeActivity extends AppCompatActivity {
 
-    private static final String TAG = "HOME_ACTIVITY_LOGGER";
+    private static final String TAG = HomeActivity.class.getSimpleName();
 
     /* Resource Id for the selected picky (to identify between left/right buttons */
     private int selectedPicky;

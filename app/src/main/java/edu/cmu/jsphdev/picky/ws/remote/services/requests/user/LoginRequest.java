@@ -19,6 +19,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
 public class LoginRequest extends AsyncTask<String, Void, User> {
 
+    private static final String TAG = LoginRequest.class.getSimpleName();
+
     private Callback<User> callback;
 
     public LoginRequest(Callback<User> callback) {

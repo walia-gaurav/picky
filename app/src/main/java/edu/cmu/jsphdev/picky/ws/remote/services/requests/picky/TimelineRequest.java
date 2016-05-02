@@ -18,6 +18,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
 public class TimelineRequest extends AsyncTask<String, Void, Picky> {
 
+    private static final String TAG = TimelineRequest.class.getSimpleName();
+
     private Callback<Picky> callback;
 
     public TimelineRequest(Callback<Picky> callback) {

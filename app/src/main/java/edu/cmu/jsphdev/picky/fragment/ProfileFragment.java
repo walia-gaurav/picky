@@ -11,6 +11,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import edu.cmu.jsphdev.picky.R;
+import edu.cmu.jsphdev.picky.adapters.PickiesAdapter;
 import edu.cmu.jsphdev.picky.entities.Picky;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyServiceInterface;
@@ -20,6 +21,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.PickyService;
  * TabFragment to display user's profile page.
  */
 public class ProfileFragment extends Fragment {
+
+    private static final String TAG = ProfileFragment.class.getSimpleName();
 
     private View view;
     private PickiesAdapter pickiesAdapter;

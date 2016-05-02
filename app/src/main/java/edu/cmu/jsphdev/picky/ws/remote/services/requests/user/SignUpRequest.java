@@ -19,6 +19,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
 public class SignUpRequest extends AsyncTask<String, Void, User> {
 
+    private static final String TAG = SignUpRequest.class.getSimpleName();
+
     private Callback<User> callback;
 
     public SignUpRequest(Callback<User> callback) {

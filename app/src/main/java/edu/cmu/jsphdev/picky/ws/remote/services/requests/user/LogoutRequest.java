@@ -13,6 +13,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
 public class LogoutRequest extends AsyncTask<String, Void, Boolean> {
 
+    private static final String TAG = LogoutRequest.class.getSimpleName();
+
     private Callback<Boolean> callback;
 
     public LogoutRequest(Callback<Boolean> callback) {

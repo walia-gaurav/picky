@@ -19,6 +19,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
 public class UploadRequest extends AsyncTask<Picky, Void, Boolean> {
 
+    private static final String TAG = UploadRequest.class.getSimpleName();
+
     private Callback<Boolean> callback;
 
     public UploadRequest(Callback<Boolean> callback) {

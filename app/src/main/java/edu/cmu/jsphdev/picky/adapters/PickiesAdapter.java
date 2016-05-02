@@ -1,4 +1,4 @@
-package edu.cmu.jsphdev.picky.fragment;
+package edu.cmu.jsphdev.picky.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,7 +21,9 @@ import edu.cmu.jsphdev.picky.tasks.callbacks.images.ImageDownloaderButtonCallbac
 import edu.cmu.jsphdev.picky.ws.remote.interfaces.PickyServiceInterface;
 import edu.cmu.jsphdev.picky.ws.remote.services.PickyService;
 
-class PickiesAdapter extends BaseAdapter {
+public class PickiesAdapter extends BaseAdapter {
+
+    private static final String TAG = PickiesAdapter.class.getSimpleName();
 
     private LayoutInflater inflater = null;
     private Activity callerActivity;

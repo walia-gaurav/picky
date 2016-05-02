@@ -14,6 +14,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
 public class VoteRequest extends AsyncTask<String, Void, Boolean> {
 
+    private static final String TAG = VoteRequest.class.getSimpleName();
+
     private Callback<Boolean> callback;
 
     public VoteRequest(Callback<Boolean> callback) {

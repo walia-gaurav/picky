@@ -28,6 +28,7 @@ import edu.cmu.jsphdev.picky.util.CurrentSession;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private static final int ALL_PERMISSIONS_REQUEST_CODE = 1;
 
     /* Static array of all permissions needed. */

@@ -32,6 +32,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.UserService;
  */
 public class SignUpFragment extends Fragment {
 
+    private static final String TAG = SignUpFragment.class.getSimpleName();
+
     private EditText newUsername;
     private EditText newPassword;
     private EditText newPasswordConfirm;

@@ -4,9 +4,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.TextView;
 
-/**
- * Created by hoavu on 4/29/16.
- */
 public abstract class TextValidator implements TextWatcher {
     private final TextView textView;
 

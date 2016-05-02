@@ -19,6 +19,7 @@ import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
 public class DeleteRequest extends AsyncTask<String, Void, Picky> {
 
+    private static final String TAG = DeleteRequest.class.getSimpleName();
 
     private Callback<Boolean> callback;
 

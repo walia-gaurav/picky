@@ -14,6 +14,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.requests.BaseRequest;
 
 public class UpdatePasswordRequest extends AsyncTask<String, Void, Boolean> {
 
+    private static final String TAG = UpdatePasswordRequest.class.getSimpleName();
+
     private Callback<Boolean> callback;
 
     public UpdatePasswordRequest(Callback<Boolean> callback) {

@@ -28,6 +28,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.UserService;
  */
 public class LoginFragment extends Fragment {
 
+    private static final String TAG = LoginFragment.class.getSimpleName();
+
     private EditText usernameEditText;
     private EditText passwordEditText;
     private ImageButton loginButton;

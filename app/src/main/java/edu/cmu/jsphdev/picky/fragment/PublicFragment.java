@@ -36,6 +36,8 @@ import edu.cmu.jsphdev.picky.ws.remote.services.PickyService;
  */
 public class PublicFragment extends Fragment implements SensorEventListener {
 
+    private static final String TAG = PublicFragment.class.getSimpleName();
+
     private SensorManager sensorManager;
     private Sensor accelerometer;
     private float[] gravity;
