@@ -7,13 +7,28 @@
     android:padding="10dp"
     tools:context=".fragment.AccountFragment">
 
-    <Switch
-        android:id="@+id/tiltButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:switchPadding="10dp"
-        android:text="Tilt to vote"
-        />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Switch
+            android:id="@+id/tiltButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:switchPadding="10dp"
+            android:text="Toggle Manual/Tilt voting"
+            android:textAlignment="center">
+        </Switch>
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
 
     <Button
         android:id="@+id/updatePasswordButton"
