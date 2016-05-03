@@ -17,7 +17,7 @@
         android:minHeight="120dp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
-        android:text=".  p  .  i  .  c  .  k  .  y  ."
+        android:text="@string/p_i_c_k_y"
         android:textColor="#FFFFFF"
         android:textSize="40dp"></TextView>
 
