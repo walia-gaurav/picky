@@ -46,12 +46,14 @@ public class UpdatePasswordRequest extends AsyncTask<String, Void, Boolean> {
             urlConnection.setRequestProperty("charset", BaseRequest.UTF8);
             urlConnection.setRequestProperty("Content-Length", Integer.toString(postData.length));
 
+            BaseRequest.setAuthHeader(urlConnection);
+
             DataOutputStream wr = new DataOutputStream(urlConnection.getOutputStream());
             wr.write(postData);
             wr.flush();
             wr.close();
 
-            return urlConnection.getResponseCode() != BaseRequest.OK_STATUS;
+            return urlConnection.getResponseCode() == BaseRequest.OK_STATUS;
 
         } catch (IOException ex) {
             Log.e(TAG, "Problem making the request", ex);

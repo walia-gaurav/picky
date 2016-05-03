@@ -156,8 +156,8 @@ public class UserService {
         try (Connection connection = MySQLConnectionFactory.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
 
-            preparedStatement.setInt(1, user.getId());
-            preparedStatement.setString(2, newPassword);
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setInt(2, user.getId());
             preparedStatement.executeUpdate();
 
             return true;

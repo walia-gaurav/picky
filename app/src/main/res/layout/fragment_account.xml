@@ -1,50 +1,30 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="vertical"
-              android:padding="40dp"
-              tools:context="edu.cmu.jsphdev.picky.fragment.AccountFragment">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".fragment.AccountFragment">
 
-    <CheckBox
+    <Switch
+        android:id="@+id/tiltButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tilt_to_vote"
-        android:id="@+id/tiltCheckBox" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/newPassword"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint=""
-        android:inputType="text"
-        android:id="@+id/newPasswordEditText" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/confirmPassword"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint=""
-        android:inputType="text"
-        android:id="@+id/newPasswordConfirmationEditText" />
+        android:switchPadding="10dp"
+        android:text="Tilt to vote"
+        />
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/updatePasswordButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:id="@+id/saveButton"
-        android:layout_gravity="center_horizontal" />
+        android:text="Update Password"/>
 
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout"/>
 
 </LinearLayout>

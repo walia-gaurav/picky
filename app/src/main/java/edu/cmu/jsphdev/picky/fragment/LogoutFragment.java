@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 import edu.cmu.jsphdev.picky.R;
@@ -22,7 +21,7 @@ import edu.cmu.jsphdev.picky.ws.remote.services.UserService;
 /**
  * LogoutFragment to handle loggin out of the user.
  */
-public class LogoutFragment extends Fragment {
+public class LogoutFragment extends DialogFragment {
 
     private static final String TAG = LogoutFragment.class.getSimpleName();
 
@@ -67,13 +66,10 @@ public class LogoutFragment extends Fragment {
             }
         });
 
-        /*
-        Takes you to the home page on cancel event.
-         */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((TabHost) getActivity().findViewById(R.id.homeTabHost)).setCurrentTab(0);
+                getDialog().dismiss();
             }
         });
 

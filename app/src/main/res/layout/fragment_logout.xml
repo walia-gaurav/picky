@@ -5,27 +5,30 @@
               android:gravity="center"
               android:orientation="vertical"
               android:padding="40dp"
-              tools:context="edu.cmu.jsphdev.picky.fragment.AccountFragment">
+              tools:context=".fragment.UpdatePasswordFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/logoutMessage"
+        android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <Button
+            android:id="@+id/okButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ok"
-            android:id="@+id/okButton" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cancel"
-                android:id="@+id/cancelButton" />
+            android:text="@string/ok"/>
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"/>
     </LinearLayout>
 
 

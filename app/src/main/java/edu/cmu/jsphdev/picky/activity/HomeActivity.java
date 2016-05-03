@@ -37,11 +37,10 @@ public class HomeActivity extends AppCompatActivity {
         tabHost.setup();
 
         /* Initializing different tab holders. */
-        addTabSpecs("Public", R.id.publicTab, R.drawable.group_icon);
-        addTabSpecs("Upload", R.id.uploadTab, R.drawable.upload_icon);
+        addTabSpecs("Public", R.id.publicTab, R.drawable.picky_logo);
+        addTabSpecs("Upload", R.id.uploadTab, R.drawable.upload_picky_logo);
         addTabSpecs("Profile", R.id.profileTab, R.drawable.profile_icon);
-        addTabSpecs("Account", R.id.accountTab, R.drawable.account_icon);
-        addTabSpecs("Logout", R.id.logoutTab, R.drawable.logout_icon);
+        addTabSpecs("Account", R.id.accountTab, R.drawable.account_logo);
 
         /*
         Refreshing fragments on tabChangeEvent.
@@ -132,7 +131,6 @@ public class HomeActivity extends AppCompatActivity {
             outState.putInt("selectedPicky", Integer.parseInt(((TextView) findViewById(R.id.selectedPicky)).getText()
                     .toString()));
         } catch (NumberFormatException ex) {
-            Log.e(TAG, "Problem parsing number", ex);
         }
         super.onSaveInstanceState(outState);
     }

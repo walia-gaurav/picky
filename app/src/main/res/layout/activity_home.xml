@@ -91,18 +91,6 @@
                         android:layout_height="match_parent"></fragment>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/logoutTab"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <fragment
-                        android:name="edu.cmu.jsphdev.picky.fragment.LogoutFragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"></fragment>
-                </LinearLayout>
-
             </FrameLayout>
         </LinearLayout>
     </TabHost>
