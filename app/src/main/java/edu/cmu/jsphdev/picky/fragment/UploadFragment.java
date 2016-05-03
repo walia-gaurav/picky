@@ -89,6 +89,7 @@ public class UploadFragment extends Fragment {
                 title = (EditText) view.findViewById(R.id.descriptionEditText);
 
                 if (leftPicky.getBackground() == null && rightPicky.getBackground() == null) {
+
                     Toast.makeText(getActivity(), "Uploading", Toast.LENGTH_SHORT).show();
 
                     /* Fetching LastKnownLocation */
@@ -115,7 +116,6 @@ public class UploadFragment extends Fragment {
                                 refreshUploadFragment();
                             } else {
                                 Toast.makeText(getActivity(), "Upload Failed!", Toast.LENGTH_SHORT).show();
-
                             }
                         }
                     };

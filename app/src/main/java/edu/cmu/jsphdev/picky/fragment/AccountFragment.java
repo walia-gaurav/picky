@@ -35,9 +35,9 @@ public class AccountFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 User user = CurrentSession.getActiveUser();
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-
                 user.setTiltActive(isChecked);
+
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
                 editor.putString("existingUser", (new Gson()).toJson(user));
                 editor.apply();
             }

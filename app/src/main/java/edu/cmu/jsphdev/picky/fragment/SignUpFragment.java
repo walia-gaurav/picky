@@ -21,6 +21,9 @@ import java.util.regex.Pattern;
 import edu.cmu.jsphdev.picky.R;
 import edu.cmu.jsphdev.picky.activity.HomeActivity;
 import edu.cmu.jsphdev.picky.entities.User;
+import edu.cmu.jsphdev.picky.exception.InvalidCredentialGrammarExceptipn;
+import edu.cmu.jsphdev.picky.exception.PickyException;
+import edu.cmu.jsphdev.picky.exception.UsernameAlreadyPresentException;
 import edu.cmu.jsphdev.picky.tasks.callbacks.Callback;
 import edu.cmu.jsphdev.picky.util.CurrentSession;
 import edu.cmu.jsphdev.picky.util.TextValidator;
@@ -56,8 +59,13 @@ public class SignUpFragment extends Fragment {
             @Override
             public void validate(TextView textView, String text) {
                 // validate username
-                if (!isValidUsername(text)) {
-                    textView.setError("Username has to be at least 3 characters long");
+                try {
+                    if (!isValidUsername(text)) {
+                        throw new InvalidCredentialGrammarExceptipn(textView, "Username has to be at least 3 " +
+                                "characters long!");
+                    }
+                } catch (PickyException e) {
+                    e.fix();
                 }
             }
         });
@@ -65,10 +73,14 @@ public class SignUpFragment extends Fragment {
         newPassword.addTextChangedListener(new TextValidator(newPassword) {
             @Override
             public void validate(TextView textView, String text) {
-                // validate passwords
-                if (!isValidPassword(text)) {
-                    textView.setError("Password must has at least 4 characters contains 1 capital letter, 1 number, 1" +
-                            " symbol");
+                try {
+                    // validate passwords
+                    if (!isValidPassword(text)) {
+                        throw new InvalidCredentialGrammarExceptipn(textView, "Password must has at least 4 " +
+                                "characters contains 1 capital letter, 1 number, 1 symbol");
+                    }
+                } catch (PickyException e) {
+                    e.fix();
                 }
             }
         });
@@ -91,30 +103,34 @@ public class SignUpFragment extends Fragment {
                 String passConfirm = newPasswordConfirm.getText().toString();
 
 
-                if (passConfirm.equals(pass)) {
+                if (passConfirm.equals(pass) && !pass.isEmpty()) {
 
                     Callback<User> callback = new Callback<User>() {
                         @Override
                         public void process(User user) {
-                            if (user == null) {
-                                Toast.makeText(getActivity().getApplicationContext(), "Username already taken!",
-                                        Toast.LENGTH_LONG).show();
-                                return;
+
+                            try {
+                                if (user == null) {
+                                    throw new UsernameAlreadyPresentException(getActivity().getApplicationContext());
+                                }
+                                /*
+                                Session persistence in SharedPreferences.
+                                 */
+                                CurrentSession.setActiveUser(user);
+                                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences
+                                        (getActivity()).edit();
+                                editor.putString("existingUser", (new Gson()).toJson(user));
+                                editor.apply();
+                                startActivity(new Intent(getActivity(), HomeActivity.class));
+                            } catch (PickyException e) {
+                                e.fix();
                             }
-                            /*
-                            Session persistence in SharedPreferences.
-                             */
-                            CurrentSession.setActiveUser(user);
-                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences
-                                    (getActivity()).edit();
-                            editor.putString("existingUser", (new Gson()).toJson(user));
-                            editor.apply();
-                            startActivity(new Intent(getActivity(), HomeActivity.class));
                         }
                     };
                     userService.signUp(newUsername.getText().toString(), newPassword.getText().toString(), callback);
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "Password must match!",
+                    Toast.makeText(getActivity().getApplicationContext(), "Passwords should not be empty, and must " +
+                                    "always match!",
                             Toast.LENGTH_LONG).show();
                 }
             }

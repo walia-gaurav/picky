@@ -2,16 +2,15 @@
 
 * app folder
 * Readme
-* picky-engine folder
+* picky-engine folder (SERVER code)
 * Documentation folder
-	** ClassDiagram.png
-	** screenshots folder
 	** BusinessModel.png
-	** ClassDiagram.png
-	** DB-Schema.png
-	** Documentation.pdf
-	** ProjectRequirements.pdf
-
+	** ClassDiagrams.png
+	** DatabaseSchema.png
+	** RestAPIDIagram.png
+	** Unit1_CompileProjectRequirement_Documentation.pdf
+	** Unit3_DesignProject_Documentation.pdf
+	** screenshots
 
 The client code is organized in different packages:
 
@@ -19,7 +18,7 @@ The client code is organized in different packages:
 Contain the two main activities of the app: HomeActivity and MainActivity. The first one will contain all the operations an user can do when he is logged in. The second one is just the login and sign up screents.
 
 * entities
-Differents models used in the app: Location, Photo, User, Vote and Picky. 
+Different models used in the app: Location, Photo, User, Vote and Picky. 
 
 * fragment
 Fragments used in the activities: AccountFragment, LoginFragment, LogoutFragment, ProfileFragment, PublicFragment, SignUpFragment and UploadFragment.
@@ -67,6 +66,8 @@ Contains PickyServerContext which initialize services, logging and database.
 -Maven
 -Gradle
 
+
+
 ** How to run **
 
 1)Create the following directory: /var/webapp/upload/
@@ -92,7 +93,7 @@ Open MySQL paste file contents or load the script.
 
 7)Find out the ip and context path the server is running.
 
-Open Picky project in Android Studio. Open the file name BaseService and put in IP field the host (ex: http://172.29.93.234:8080) and in HOST_ENDPOINT put the context between %s/ and /api (ex: %s/picky-engine/api).
+Open Picky project in Android Studio. Open the file name BaseRequest and put in IP field the host (ex: http://172.29.93.234:8080) and in HOST_ENDPOINT put the context between %s/ and /api (ex: %s/picky-engine/api).
 
 8)Build the app and transfer it into an Android device. This is fair simple to do using Android Studio.
 

@@ -11,30 +11,22 @@ import edu.cmu.jsphdev.picky.ws.remote.services.requests.user.UpdatePasswordRequ
 public class UserService implements UserServiceInterface {
 
     public void login(String username, String password, Callback<User> callback) {
-        LoginRequest loginRequest = new LoginRequest(callback);
-
-        loginRequest.execute(username, password);
+        new LoginRequest(callback).execute(username, password);
     }
 
     @Override
     public void logout(Callback<Boolean> callback) {
-        LogoutRequest logoutRequest = new LogoutRequest(callback);
-
-        logoutRequest.execute();
+        new LogoutRequest(callback).execute();
     }
 
     @Override
     public void signUp(String username, String password, Callback<User> callback) {
-        SignUpRequest signUpRequest = new SignUpRequest(callback);
-
-        signUpRequest.execute(username, password);
+        new SignUpRequest(callback).execute(username, password);
     }
 
     @Override
     public void updatePassword(String password, Callback<Boolean> callback) {
-        UpdatePasswordRequest updatePasswordRequest = new UpdatePasswordRequest(callback);
-
-        updatePasswordRequest.execute(password);
+        new UpdatePasswordRequest(callback).execute(password);
     }
 
 }

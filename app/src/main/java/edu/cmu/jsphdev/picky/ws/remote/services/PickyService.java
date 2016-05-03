@@ -16,37 +16,27 @@ public class PickyService implements PickyServiceInterface {
 
     @Override
     public void delete(String id, Callback<Boolean> callback) {
-        DeleteRequest deleteRequest = new DeleteRequest(callback);
-
-        deleteRequest.execute(id);
+        new DeleteRequest(callback).execute(id);
     }
 
     @Override
     public void history(Callback<List<Picky>> callback) {
-        HistoryRequest historyRequest = new HistoryRequest(callback);
-
-        historyRequest.execute();
+        new HistoryRequest(callback).execute();
     }
 
     @Override
     public void next(Callback<Picky> callback) {
-        TimelineRequest timelineRequest = new TimelineRequest(callback);
-
-        timelineRequest.execute();
+        new TimelineRequest(callback).execute();
     }
 
     @Override
     public void upload(Picky picky, Callback<Boolean> callback) {
-        UploadRequest uploadRequest = new UploadRequest(callback);
-
-        uploadRequest.execute(picky);
+        new UploadRequest(callback).execute(picky);
     }
 
     @Override
     public void vote(String id, Vote vote, Callback<Boolean> callback) {
-        VoteRequest voteRequest = new VoteRequest(callback);
-
-        voteRequest.execute(id, vote.name());
+        new VoteRequest(callback).execute(id, vote.name());
     }
 
 }
