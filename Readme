@@ -1,32 +1,8 @@
-** Coding Progress **
-Client Side :
-- Login
-- Signup
-- Logout
-- Uploading Picky (2 images, 1 description, 1 GPSCoordinates)
-
-Server Side :
-- LoginServlet
-- LogoutServlet
-- SignUpServlet
-- UploadServlet
-- DeletePickyServlet
-- TimelineServlet
-- UpdatePasswordServlet
-- MyPickiesServlet
-
-** Coding left **
-- Fetching the pickies in client side.
-- Displaying historic pickies in ‘My Pickies’ section.
-- Managing ‘My account’
-- Marking pickies as complete.
-- Using Gyro to emulate voting for pickies.
-
 ** Files included **
 
 * app folder
 * Readme
-* picky-rest-api folder
+* picky-engine folder
 * Documentation folder
 	** ClassDiagram.png
 	** screenshots folder
@@ -37,7 +13,7 @@ Server Side :
 	** ProjectRequirements.pdf
 
 
-The code is organized in different packages:
+The client code is organized in different packages:
 
 * activity
 Contain the two main activities of the app: HomeActivity and MainActivity. The first one will contain all the operations an user can do when he is logged in. The second one is just the login and sign up screents.
@@ -52,7 +28,7 @@ Fragments used in the activities: AccountFragment, LoginFragment, LogoutFragment
 Classes that perform operations asynchronously: ImageDownloaderTask, ImageDownloaderButtonCallback and ImageDownloaderCallback.
 
 * ws
-Communication classes with web services (APIs). It has a remote package with three interfaces: PickyConsumerWebServiceInterface, PickyProducerWebServiceInterface and UserWebServiceInterface.
+Communication classes with web services (APIs). It has a remote package with two interfaces: PickyServiceInterface and UserServiceInterface.
 
 * exceptions
 All custom exceptions and handles used in the code.
@@ -60,30 +36,65 @@ All custom exceptions and handles used in the code.
 * db
 Classes to perform DB operations using SQLite.
 
-How to run:
+The server code:
 
-Before running the server (picky-engine) do the following:
+*db
+Handles connections to MySQL database. It only has MySQLConnectionFactory class.
 
-Create the following directory: /var/webapp/upload/
+*filters
+Filters all requests with /api path. It only has LoginFilter class.
+
+*model
+Same as client entities, plus one Error model.
+
+*services
+Code that performs database operations: AuthService, LocationService, PhotoService, PickyService, TokenService, UserService and VoteService.
+
+*servlets
+Handles different requests: DeletePickyServlet.java, LoginServlet.java, LogoutServlet.java, MyPickiesServlet.java, SignUpServlet.java, TimelineServlet.java, UpdatePasswordServlet.java, UploadServlet.java and VotePickyServlet.java.
+
+*utils
+Common code: ImageUtils, LoggingConfigurator and ServletUtils.
+
+*base
+Contains PickyServerContext which initialize services, logging and database.
+
+** Requirements **
+
+-Java
+-MySQL
+-Tomcat
+-Maven
+-Gradle
+
+** How to run **
+
+1)Create the following directory: /var/webapp/upload/
 
 sudo mdkir -p /var/webapp/upload/
 sudo chmod -R 777 /var/webapp/upload/
 
-In the TOMCAT home folder go to conf folder and edit server.xml:
+2)In the TOMCAT home folder go to conf folder and edit server.xml:
 
 Add <Context docBase="/var/webapp/upload" path="/uploads" /> inside <Host> </Host> tags.
 
-When running TOMCAT make sure that same folder is the CATALINA_BASE variable.
+3)When running TOMCAT make sure that same folder is the CATALINA_BASE variable.
 
 In Intellij you will need to edit the run/debug settings and add this enviroment variable in the startup.
 
-After doing this run the server.
+4)Create the database. Use the script located in tables.sql.
 
-Find out the ip and context path the server is running.
+Open MySQL paste file contents or load the script.
+
+5)Update username and password fields in bonecp.properties file in the resource folder of the server.
+
+6)Run the server.
+
+7)Find out the ip and context path the server is running.
 
 Open Picky project in Android Studio. Open the file name BaseService and put in IP field the host (ex: http://172.29.93.234:8080) and in HOST_ENDPOINT put the context between %s/ and /api (ex: %s/picky-engine/api).
 
-Build the app and transfer it into an Android device. This is fair simple to do using Android Studio.
+8)Build the app and transfer it into an Android device. This is fair simple to do using Android Studio.
 
 Use Picky :)
 

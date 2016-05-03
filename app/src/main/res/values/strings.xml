@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">picky</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_home">HomeActivity</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="logoutMessage">Are you sure you want to logout?</string>
@@ -17,5 +14,8 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="picked">picked !</string>
-    <string name="tilt_to_vote">Tilt to Vote</string>
+    <string name="tiltToVote">Tilt to Vote</string>
+    <string name="p_i_c_k_y">. p . i . c . k . y .</string>
+    <string name="uploadPicky">Upload Picky</string>
+
 </resources>
