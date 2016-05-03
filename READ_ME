@@ -1,103 +1,107 @@
 ** Files included **
 
-* app folder
-* Readme
-* picky-engine folder (SERVER code)
-* Documentation folder
-	** BusinessModel.png
-	** ClassDiagrams.png
-	** DatabaseSchema.png
-	** RestAPIDIagram.png
-	** Unit1_CompileProjectRequirement_Documentation.pdf
-	** Unit3_DesignProject_Documentation.pdf
-	** Unit5_ConstructionPhase2_TestCases_and_Screenshots (THIS SUBMISSION)
-	** screenshots
+	* app folder
+	* Readme
+	* picky-engine folder (SERVER code)
+	* Documentation folder
+		** BusinessModel.png
+		** ClassDiagrams.png
+		** DatabaseSchema.png
+		** RestAPIDIagram.png
+		** Unit1_CompileProjectRequirement_Documentation.pdf
+		** Unit3_DesignProject_Documentation.pdf
+		** Unit5_ConstructionPhase2_TestCases_and_Screenshots (THIS SUBMISSION)
+		** screenshots
 
-The client code is organized in different packages:
 
-* activity
-Contain the two main activities of the app: HomeActivity and MainActivity. The first one will contain all the operations an user can do when he is logged in. The second one is just the login and sign up screents.
+** The client code is organized in different packages **
 
-* entities
-Different models used in the app: Location, Photo, User, Vote and Picky. 
+	* activity
+	Contain the two main activities of the app: HomeActivity and MainActivity. The first one will contain all the operations an user can do when he is logged in. The second one is just the login and sign up screents.
 
-* fragment
-Fragments used in the activities: AccountFragment, LoginFragment, LogoutFragment, ProfileFragment, PublicFragment, SignUpFragment and UploadFragment.
+	* entities
+	Different models used in the app: Location, Photo, User, Vote and Picky. 
 
-* tasks
-Classes that perform operations asynchronously: ImageDownloaderTask, ImageDownloaderButtonCallback and ImageDownloaderCallback.
+	* fragment
+	Fragments used in the activities: AccountFragment, LoginFragment, LogoutFragment, ProfileFragment, PublicFragment, SignUpFragment and UploadFragment.
 
-* ws
-Communication classes with web services (APIs). It has a remote package with two interfaces: PickyServiceInterface and UserServiceInterface.
+	* tasks
+	Classes that perform operations asynchronously: ImageDownloaderTask, ImageDownloaderButtonCallback and ImageDownloaderCallback.
 
-* exceptions
-All custom exceptions and handles used in the code.
+	* ws
+	Communication classes with web services (APIs). It has a remote package with two interfaces: PickyServiceInterface and UserServiceInterface.
 
-* db
-Classes to perform DB operations using SQLite.
+	* exceptions
+	All custom exceptions and handles used in the code.
 
-The server code:
+	* db
+	Classes to perform DB operations using SQLite.
 
-*db
-Handles connections to MySQL database. It only has MySQLConnectionFactory class.
 
-*filters
-Filters all requests with /api path. It only has LoginFilter class.
+** The server code is organized in different packages **
 
-*model
-Same as client entities, plus one Error model.
+	* db
+	Handles connections to MySQL database. It only has MySQLConnectionFactory class.
 
-*services
-Code that performs database operations: AuthService, LocationService, PhotoService, PickyService, TokenService, UserService and VoteService.
+	* filters
+	Filters all requests with /api path. It only has LoginFilter class.
 
-*servlets
-Handles different requests: DeletePickyServlet.java, LoginServlet.java, LogoutServlet.java, MyPickiesServlet.java, SignUpServlet.java, TimelineServlet.java, UpdatePasswordServlet.java, UploadServlet.java and VotePickyServlet.java.
+	* model
+	Same as client entities, plus one Error model.
 
-*utils
-Common code: ImageUtils, LoggingConfigurator and ServletUtils.
+	* services
+	Code that performs database operations: AuthService, LocationService, PhotoService, PickyService, TokenService, UserService and VoteService.
 
-*base
-Contains PickyServerContext which initialize services, logging and database.
+	* servlets
+	Handles different requests: DeletePickyServlet.java, LoginServlet.java, LogoutServlet.java, MyPickiesServlet.java, SignUpServlet.java, TimelineServlet.java, UpdatePasswordServlet.java, UploadServlet.java and VotePickyServlet.java.
+
+	* utils
+	Common code: ImageUtils, LoggingConfigurator and ServletUtils.
+
+	* base
+	Contains PickyServerContext which initialize services, logging and database.
+
 
 ** Requirements **
 
--Java
--MySQL
--Tomcat
--Maven
--Gradle
+	-Java
+	-MySQL
+	-Tomcat
+	-Maven
+	-Gradle
+
+
+** How to run the app (and the server) **
+
+	1)Create the following directory: /var/webapp/upload/
+
+	sudo mdkir -p /var/webapp/upload/
+	sudo chmod -R 777 /var/webapp/upload/
+
+	2)In the TOMCAT home folder go to conf folder and edit server.xml:
+
+	Add <Context docBase="/var/webapp/upload" path="/uploads" /> inside <Host> </Host> tags.
+
+	3)When running TOMCAT make sure that same folder is the CATALINA_BASE variable.
+
+	In Intellij you will need to edit the run/debug settings and add this enviroment variable in the startup.
+
+	4)Create the database. Use the script located in tables.sql.
+
+	Open MySQL paste file contents or load the script.
+
+	5)Update username and password fields in bonecp.properties file in the resource folder of the server.
+
+	6)Run the server.
+
+	7)Find out the ip and context path the server is running.
+
+	Open Picky project in Android Studio. Open the file name BaseRequest and put in IP field the host (ex: http://172.29.93.234:8080) and in HOST_ENDPOINT put the context between %s/ and /api (ex: %s/picky-engine/api).
+
+	8)Build the app and transfer it into an Android device. This is fair simple to do using Android Studio.
 
 
 
-** How to run **
-
-1)Create the following directory: /var/webapp/upload/
-
-sudo mdkir -p /var/webapp/upload/
-sudo chmod -R 777 /var/webapp/upload/
-
-2)In the TOMCAT home folder go to conf folder and edit server.xml:
-
-Add <Context docBase="/var/webapp/upload" path="/uploads" /> inside <Host> </Host> tags.
-
-3)When running TOMCAT make sure that same folder is the CATALINA_BASE variable.
-
-In Intellij you will need to edit the run/debug settings and add this enviroment variable in the startup.
-
-4)Create the database. Use the script located in tables.sql.
-
-Open MySQL paste file contents or load the script.
-
-5)Update username and password fields in bonecp.properties file in the resource folder of the server.
-
-6)Run the server.
-
-7)Find out the ip and context path the server is running.
-
-Open Picky project in Android Studio. Open the file name BaseRequest and put in IP field the host (ex: http://172.29.93.234:8080) and in HOST_ENDPOINT put the context between %s/ and /api (ex: %s/picky-engine/api).
-
-8)Build the app and transfer it into an Android device. This is fair simple to do using Android Studio.
-
-Use Picky :)
+** Use Picky :) **
 
 

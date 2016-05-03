@@ -1,0 +1,22 @@
+** How to run picky-engine (server) **
+
+1)Create the following directory: /var/webapp/upload/
+
+sudo mdkir -p /var/webapp/upload/
+sudo chmod -R 777 /var/webapp/upload/
+
+2)In the TOMCAT home folder go to conf folder and edit server.xml:
+
+Add <Context docBase="/var/webapp/upload" path="/uploads" /> inside <Host> </Host> tags.
+
+3)When running TOMCAT make sure that same folder is the CATALINA_BASE variable.
+
+In Intellij you will need to edit the run/debug settings and add this enviroment variable in the startup.
+
+4)Create the database. Use the script located in tables.sql.
+
+Open MySQL paste file contents or load the script.
+
+5)Update username and password fields in bonecp.properties file in the resource folder of the server.
+
+6)Run the server.
