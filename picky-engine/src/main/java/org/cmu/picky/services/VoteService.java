@@ -51,8 +51,8 @@ public class VoteService {
     public boolean vote(int userId, int pickyId, Vote vote) {
         final String insertQuery = "INSERT INTO UserVote(userId, pickyId) VALUES(?, ?)";
         final String updateQuery = (vote == Vote.RIGHT ?
-                "UPDATE Picky SET rightPhotoId = rightPhotoId + 1 " :
-                "UPDATE Picky SET leftPhotoId = leftPhotoId + 1 ") + "WHERE id = ?";
+                "UPDATE Picky SET rightVotes = rightVotes + 1 " :
+                "UPDATE Picky SET leftVotes = leftVotes + 1 ") + "WHERE id = ?";
 
         try (Connection connection = MySQLConnectionFactory.getConnection()) {
             connection.setAutoCommit(false);

@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Handles picky timeline.
+ */
 public class TimelineServlet extends HttpServlet {
 
     private static AuthService authService;

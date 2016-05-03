@@ -30,7 +30,7 @@ public class PhotoService {
         this.tokenService = tokenService;
     }
 
-    public Photo savePhoto(String imageBase64) {
+    public Photo save(String imageBase64) {
         BufferedImage bufferedImage = ImageUtils.decodeToImage(imageBase64);
         Photo photo = null;
 

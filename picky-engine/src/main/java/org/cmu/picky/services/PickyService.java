@@ -149,11 +149,11 @@ public class PickyService {
      * Save picky in the database. Returns true if everything went well else false.
      */
     public boolean save(Picky picky) {
-        Photo leftPhoto = photoService.savePhoto(picky.getLeftPhoto().getBase64Image());
+        Photo leftPhoto = photoService.save(picky.getLeftPhoto().getBase64Image());
 
         if (leftPhoto == null) return false;
         picky.setLeftPhoto(leftPhoto);
-        Photo rightPhoto = photoService.savePhoto(picky.getRightPhoto().getBase64Image());
+        Photo rightPhoto = photoService.save(picky.getRightPhoto().getBase64Image());
 
         if (rightPhoto == null) return false;
         picky.setRightPhoto(rightPhoto);
