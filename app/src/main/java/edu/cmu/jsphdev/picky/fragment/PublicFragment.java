@@ -49,6 +49,7 @@ public class PublicFragment extends Fragment implements SensorEventListener {
     private PickyServiceInterface pickyService;
 
     private TextView titleTextView;
+    private TextView locationView;
     private Button leftButton;
     private Button rightButton;
     private Picky picky;
@@ -69,6 +70,7 @@ public class PublicFragment extends Fragment implements SensorEventListener {
         leftButton = (Button) view.findViewById(R.id.leftChoiceButton);
         rightButton = (Button) view.findViewById(R.id.rightChoiceButton);
         titleTextView = (TextView) view.findViewById(R.id.titleTextView);
+        locationView = (TextView) view.findViewById(R.id.publicPickyLocation);
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.INTERNET) !=
                 PackageManager.PERMISSION_GRANTED) {
@@ -221,6 +223,7 @@ public class PublicFragment extends Fragment implements SensorEventListener {
                     buttonsDownloaderTask.execute(pickyResult.getLeftPhoto().getUrl(), pickyResult.getRightPhoto()
                             .getUrl());
                     titleTextView.setText(pickyResult.getTitle());
+                    locationView.setText(pickyResult.getLocation().getLocationName());
                     enableButtons();
                     customTouchListener(leftButton, Vote.LEFT);
                     customTouchListener(rightButton, Vote.RIGHT);
