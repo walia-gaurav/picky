@@ -5,8 +5,17 @@ public class Location {
     private int id;
     private double latitude;
     private double longitude;
+    private String locationName;
 
-    public Location() {}
+    public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
+	public Location() {}
 
     public double getLatitude() {
         return latitude;

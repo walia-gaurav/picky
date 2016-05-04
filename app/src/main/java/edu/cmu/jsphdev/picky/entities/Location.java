@@ -8,6 +8,7 @@ public class Location {
     private int id;
     private double latitude;
     private double longitude;
+    private String locationName;
 
     public Location() {
     }
@@ -39,6 +40,14 @@ public class Location {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 
     @Override

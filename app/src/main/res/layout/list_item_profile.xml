@@ -1,25 +1,47 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
 
     <TextView
+        android:id="@+id/profilePickyTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:id="@+id/profilePickyTitle"
+        android:text="title"
         android:textAlignment="center"
-        android:text=""/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/location_icon"/>
+
+        <TextView
+            android:id="@+id/profilePickyLocation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Location"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+    </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/profilePickyFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@id/profilePickyTitle"
+        android:orientation="horizontal"
         android:paddingBottom="10dp">
 
         <Button
@@ -43,29 +65,33 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/profilePickyVoting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/profilePickyVoting"
         android:layout_below="@id/profilePickyFrame"
         android:orientation="horizontal">
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:id="@+id/leftVotes"
-            android:text=""/>
-        <TextView
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""/>
+
+        <TextView
             android:id="@+id/rightVotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text=""/>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/profilePickyVoting">
+
         <Button
             android:id="@+id/detelePickyButton"
             android:layout_width="0dp"
@@ -75,4 +101,4 @@
             />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

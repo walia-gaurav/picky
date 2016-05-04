@@ -79,7 +79,8 @@ public class PickyService {
         location.setId(rs.getInt("locationId"));
         location.setLatitude(rs.getDouble("latitude"));
         location.setLongitude(rs.getDouble("longitude"));
-
+        LocationService.fetchGeoLocation(location);
+        
         picky.setId(rs.getInt("id"));
         picky.setTitle(rs.getString("title"));
         picky.setLeftPhoto(leftPhoto);
@@ -87,7 +88,7 @@ public class PickyService {
         picky.setLocation(location);
         picky.setLeftVotes(rs.getInt("leftVotes"));
         picky.setRightVotes(rs.getInt("rightVotes"));
-
+        
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

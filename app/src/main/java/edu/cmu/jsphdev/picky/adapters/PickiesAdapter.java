@@ -80,9 +80,11 @@ public class PickiesAdapter extends BaseAdapter {
         TextView leftVotes = (TextView) convertView.findViewById(R.id.leftVotes);
         TextView rightVotes = (TextView) convertView.findViewById(R.id.rightVotes);
         Button deleteButton = (Button) convertView.findViewById(R.id.detelePickyButton);
+        TextView location = (TextView) convertView.findViewById(R.id.profilePickyLocation);
 
         final Picky picky = (Picky) getItem(position);
         title.setText(picky.getTitle());
+        location.setText(picky.getLocation().getLocationName());
 
         /*
         Calculating voting percentages.
